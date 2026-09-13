@@ -1,4 +1,4 @@
-# Rooster balance CLI
+# Roster balance CLI
 
 <!--
 Starlark wurde ursprünglich für Konfigurations- und Build-Systeme entwickelt und ist bewusst eine deterministische, eingeschränkte Python-ähnliche Sprache. Für RosterBalance passt das konzeptionell sehr gut.

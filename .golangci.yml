@@ -151,14 +151,17 @@ formatters:
       sections:
         - standard
         - default
-        - prefix(github.com/iilei/rooster-balance-cli)
-    gofumpt:
-      extra-rules: true
+        - prefix(github.com/iilei/rosterbalance-cli)
     goimports:
       local-prefixes:
-        - github.com/iilei/rooster-balance-cli
+        - github.com/iilei/rosterbalance-cli
     golines:
       max-len: 120
+    gofumpt:
+      extra:
+        group-params: true
+        clothe-returns: true
+        balance-calls: true
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0

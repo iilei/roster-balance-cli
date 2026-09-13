@@ -6,11 +6,11 @@
 
 
 [settings.url_replacements]
-"regex:^https://github\\.com/iilei/rooster-balance-cli/releases/download/v([^/]+)/(.+)" = "http://localhost:8081/artifactory/example-repo-local/rooster-balance-cli/$1/$2"
+"regex:^https://github\\.com/iilei/rosterbalance-cli/releases/download/v([^/]+)/(.+)" = "http://localhost:8081/artifactory/example-repo-local/rosterbalance-cli/$1/$2"
 
 [tools]
 jfrog-cli = "latest"
-"github:iilei/rooster-balance-cli" = "0.0.0+pre-001"
+# "github:iilei/rosterbalance-cli" = "0.0.0+pre-001"
 go = "1.25.0"
 prek = "0.5.0"
 rumdl = "0.2.62"
@@ -22,15 +22,15 @@ raw = true
 raw_args = true
 run = "jf"
 
-[tasks.rooster-balance-cli]
-description = "Run the mise-managed rooster-balance-cli CLI"
+[tasks.rosterbalance-cli]
+description = "Run the mise-managed rosterbalance-cli CLI"
 raw = true
 raw_args = true
-run = "rooster-balance-cli"
+run = "rosterbalance-cli"
 
-[tasks.rooster-balance-cli-help]
-description = "Show rooster-balance-cli help"
-run = "rooster-balance-cli --help"
+[tasks.rosterbalance-cli-help]
+description = "Show rosterbalance-cli help"
+run = "rosterbalance-cli --help"
 
 [tasks.fmt]
 description = "Format Go sources"
