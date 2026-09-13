@@ -625,3 +625,12 @@ Everything that influences planning decisions must be representable as a registe
 
 Das wäre für mich einer der zentralen Design-Sätze von RosterBalance.
 -->
+
+## Calendar ingestion
+
+For v0, the CLI stays dumb about calendar providers and accepts normalized input through a single adapter layer. The first supported import format should be ICS exports, which lets Outlook and other corporate calendars work without committing to Graph or OAuth integration. Direct Outlook sync can come later only if the operational need justifies the extra scope.
+In the future, a Starlark-based ingestion layer could map raw calendar events into roster concepts like availability, absences, or team-specific exceptions while keeping provider connectors in Go.
+
+## Team-Owned Policies
+
+For v0, Team-owned policies are git-managed.

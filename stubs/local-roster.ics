@@ -1,0 +1,392 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//rooster-balance//fixtures//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Local Platform Operations
+X-WR-TIMEZONE:UTC
+BEGIN:VEVENT
+UID:00000000-0000-4000-8000-000000000201@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART:20260801T070000Z
+DTEND:20260802T070000Z
+SUMMARY:On-call assignment: Sam Okafor
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-7\; member=Sam Okafor\; source=planner\; locked=false\; selected_by_tie_break=true
+CATEGORIES:assignment,on-call
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-7
+X-ROSTER-SOURCE:planner
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4000-8000-000000000202@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART:20260803T070000Z
+DTEND:20260804T070000Z
+SUMMARY:On-call assignment: DreM
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-6\; member=Drew Martin\; source=planner\; locked=false\; selected_by_tie_break=true
+CATEGORIES:assignment,on-call
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-6
+X-ROSTER-SOURCE:planner
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4000-8000-000000000203@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART:20260805T070000Z
+DTEND:20260806T070000Z
+SUMMARY:On-call assignment: Avery Wilson
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-5\; member=Avery Wilson\; source=manual\; locked=true\; selected_by_tie_break=false
+CATEGORIES:assignment,on-call
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-5
+X-ROSTER-SOURCE:manual
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4000-8000-000000000204@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART:20260808T070000Z
+DTEND:20260810T070000Z
+SUMMARY:On-call assignment: Riley
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-4\; member=Riley Shah\; source=planner\; locked=false\; selected_by_tie_break=true
+CATEGORIES:assignment,on-call
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-4
+X-ROSTER-SOURCE:planner
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4000-8000-000000000205@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART:20260812T070000Z
+DTEND:20260814T070000Z
+SUMMARY:On-call assignment: CaRi
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; source=import\; locked=false\; selected_by_tie_break=false
+CATEGORIES:assignment,on-call
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-SOURCE:import
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260508
+DTEND;VALUE=DATE:20260512
+SUMMARY:Unavailable: CaRi — Long weekend
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Long weekend
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260522
+DTEND;VALUE=DATE:20260526
+SUMMARY:Unavailable: CaRi — Long weekend
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Long weekend
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260605
+DTEND;VALUE=DATE:20260609
+SUMMARY:Unavailable: CaRi — Long weekend
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Long weekend
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001004@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260619
+DTEND;VALUE=DATE:20260623
+SUMMARY:Unavailable: CaRi — Long weekend
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Long weekend
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001005@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260717
+DTEND;VALUE=DATE:20260721
+SUMMARY:Unavailable: CaRi — Long weekend
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Long weekend
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001006@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260815
+SUMMARY:Unavailable: CaRi — Summer vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Summer vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001007@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261005
+DTEND;VALUE=DATE:20261010
+SUMMARY:Unavailable: CaRi — Autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000001008@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261207
+DTEND;VALUE=DATE:20261212
+SUMMARY:Unavailable: CaRi — Winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-1\; member=Casey Rivera\; calendar_type=vacation\; reason=Winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-1
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000002001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260223
+DTEND;VALUE=DATE:20260314
+SUMMARY:Unavailable: Morgan Chen — Late-winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-2\; member=Morgan Chen\; calendar_type=vacation\; reason=Late-winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-2
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000002002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260511
+DTEND;VALUE=DATE:20260516
+SUMMARY:Unavailable: Morgan Chen — Spring vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-2\; member=Morgan Chen\; calendar_type=vacation\; reason=Spring vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-2
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000002003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260928
+DTEND;VALUE=DATE:20261003
+SUMMARY:Unavailable: Morgan Chen — Autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-2\; member=Morgan Chen\; calendar_type=vacation\; reason=Autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-2
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000003001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260119
+DTEND;VALUE=DATE:20260124
+SUMMARY:Unavailable: Taylor Brooks — Winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-3\; member=Taylor Brooks\; calendar_type=vacation\; reason=Winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-3
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000003002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260629
+DTEND;VALUE=DATE:20260704
+SUMMARY:Unavailable: Taylor Brooks — Early-summer overlap
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-3\; member=Taylor Brooks\; calendar_type=vacation\; reason=Early-summer overlap
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-3
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000003003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260803
+DTEND;VALUE=DATE:20260815
+SUMMARY:Unavailable: Taylor Brooks — Summer vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-3\; member=Taylor Brooks\; calendar_type=vacation\; reason=Summer vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-3
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000003004@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261107
+SUMMARY:Unavailable: Taylor Brooks — Autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-3\; member=Taylor Brooks\; calendar_type=vacation\; reason=Autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-3
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000004001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260413
+DTEND;VALUE=DATE:20260418
+SUMMARY:Unavailable: Riley — Spring vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-4\; member=Riley Shah\; calendar_type=vacation\; reason=Spring vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-4
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000004002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260622
+DTEND;VALUE=DATE:20260711
+SUMMARY:Unavailable: Riley — Three-week summer vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-4\; member=Riley Shah\; calendar_type=vacation\; reason=Three-week summer vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-4
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000004003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261207
+DTEND;VALUE=DATE:20261212
+SUMMARY:Unavailable: Riley — Winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-4\; member=Riley Shah\; calendar_type=vacation\; reason=Winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-4
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000005001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260420
+DTEND;VALUE=DATE:20260502
+SUMMARY:Unavailable: Avery Wilson — Spring vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-5\; member=Avery Wilson\; calendar_type=vacation\; reason=Spring vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-5
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000005002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260817
+DTEND;VALUE=DATE:20260829
+SUMMARY:Unavailable: Avery Wilson — Late-summer vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-5\; member=Avery Wilson\; calendar_type=vacation\; reason=Late-summer vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-5
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000005003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261219
+SUMMARY:Unavailable: Avery Wilson — Winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-5\; member=Avery Wilson\; calendar_type=vacation\; reason=Winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-5
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000006001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260209
+DTEND;VALUE=DATE:20260214
+SUMMARY:Unavailable: DreM — Winter vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-6\; member=Drew Martin\; calendar_type=vacation\; reason=Winter vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-6
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000006002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260629
+DTEND;VALUE=DATE:20260718
+SUMMARY:Unavailable: DreM — Three-week summer vacation overlap
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-6\; member=Drew Martin\; calendar_type=vacation\; reason=Three-week summer vacation overlap
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-6
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000006003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261012
+DTEND;VALUE=DATE:20261017
+SUMMARY:Unavailable: DreM — Autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-6\; member=Drew Martin\; calendar_type=vacation\; reason=Autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-6
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000007001@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260629
+DTEND;VALUE=DATE:20260718
+SUMMARY:Unavailable: Sam Okafor — Three-week summer vacation overlap
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-7\; member=Sam Okafor\; calendar_type=vacation\; reason=Three-week summer vacation overlap
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-7
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000007002@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20260914
+DTEND;VALUE=DATE:20260919
+SUMMARY:Unavailable: Sam Okafor — Early-autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-7\; member=Sam Okafor\; calendar_type=vacation\; reason=Early-autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-7
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+BEGIN:VEVENT
+UID:00000000-0000-4001-9000-000000007003@rooster-balance
+DTSTAMP:20260913T000000Z
+DTSTART;VALUE=DATE:20261109
+DTEND;VALUE=DATE:20261114
+SUMMARY:Unavailable: Sam Okafor — Late-autumn vacation
+DESCRIPTION:team=Local Platform Operations\; team_id=00000000-0000-4000-8000-000000000001\; member_id=local:seed-member-7\; member=Sam Okafor\; calendar_type=vacation\; reason=Late-autumn vacation
+CATEGORIES:availability,vacation
+X-ROSTER-TEAM-ID:00000000-0000-4000-8000-000000000001
+X-ROSTER-MEMBER-ID:local:seed-member-7
+X-ROSTER-CALENDAR-TYPE:vacation
+END:VEVENT
+END:VCALENDAR
