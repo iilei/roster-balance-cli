@@ -101,8 +101,6 @@ rosterbalance inspect factors \
   | neato -n2 -Tsvg > factor-curve.svg
 ```
 
-The `--decay-profile` inspection option can select any built-in profile when comparing curve outputs.
-
 Generate diagrams for all built-in decay profiles with Mise:
 
 ```sh
@@ -110,6 +108,19 @@ mise run factor-curves
 ```
 
 The generated SVGs are written to `docs/factor-curves/`.
+
+### Previewing your own factor configuration
+
+To preview curves for your own config on your own machine, install [Graphviz](https://graphviz.org/download/) and [gomplate](https://docs.gomplate.ca/installing/), then either use the shipped Mise task against your config:
+
+```sh
+rosterbalance inspect factors --config path/to/your-config.toml \
+  | gomplate -d config='stdin:///dev/stdin?type=application/json' \
+      -f templates/factor-curve.dot.tmpl \
+  | neato -n2 -Tsvg > preview.svg
+```
+
+or adapt the `factor-curves-dot`/`factor-curves` tasks in `mise.toml` to point at your own config files. No data leaves your machine; the whole pipeline runs locally.
 
 ## Math and Config
 
@@ -151,9 +162,9 @@ The built-in decay profiles are:
 
 The lifecycle has two distinct boundaries:
 
-![Default duty-work-served lifecycle](docs/duty-work-served-lifecycle.svg)
+![Front-loaded duty-work-served lifecycle](docs/factor-curves/front-loaded.svg)
 
-This diagram illustrates the current default lifecycle. The canonical machine-readable representation remains the JSON emitted by `rosterbalance inspect factors`.
+This diagram illustrates the `front-loaded` profile from [examples/factor-profiles/front-loaded.toml](examples/factor-profiles/front-loaded.toml), generated with `mise run factor-curves`. The canonical machine-readable representation remains the JSON emitted by `rosterbalance inspect factors`.
 
 ```text
 0 -------- hold_duration ---------------- irrelevant_after

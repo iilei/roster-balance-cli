@@ -50,7 +50,6 @@ func newInspectCommand() *cobra.Command {
 
 func newInspectFactorsCommand() *cobra.Command {
 	var options config.LoadOptions
-	var decayProfileOverride string
 
 	cmd := &cobra.Command{
 		Use:   "factors",
@@ -67,11 +66,6 @@ func newInspectFactorsCommand() *cobra.Command {
 				Factors:       make([]factorOutputItem, 0, len(loaded.Factors)),
 			}
 			for _, factor := range loaded.Factors {
-				decayProfile := factor.Lifecycle.DecayProfile
-				if decayProfileOverride != "" {
-					decayProfile = decayProfileOverride
-				}
-
 				hold, err := parseLifecycleDuration(factor.Lifecycle.HoldDuration)
 				if err != nil {
 					return fmt.Errorf("factor %q hold_duration: %w", factor.Name, err)
@@ -80,14 +74,14 @@ func newInspectFactorsCommand() *cobra.Command {
 				if err != nil {
 					return fmt.Errorf("factor %q irrelevant_after: %w", factor.Name, err)
 				}
-				curve, err := buildDecayCurve(decayProfile)
+				curve, err := buildDecayCurve(factor.Lifecycle.DecayProfile, hold.Hours(), irrelevantAfter.Hours())
 				if err != nil {
 					return fmt.Errorf("factor %q: %w", factor.Name, err)
 				}
 				output.Factors = append(output.Factors, factorOutputItem{
 					Name: factor.Name,
 					Lifecycle: lifecycleOutput{
-						DecayProfile:         decayProfile,
+						DecayProfile:         factor.Lifecycle.DecayProfile,
 						HoldDurationHours:    hold.Hours(),
 						IrrelevantAfterHours: irrelevantAfter.Hours(),
 						Curve:                curve,
@@ -102,7 +96,6 @@ func newInspectFactorsCommand() *cobra.Command {
 	}
 
 	bindLoadFlags(cmd, &options)
-	cmd.Flags().StringVar(&decayProfileOverride, "decay-profile", "", "Override the decay profile in inspection output")
 	return cmd
 }
 
@@ -126,6 +119,7 @@ type lifecycleOutput struct {
 type decayCurveOutput struct {
 	Kind     string       `json:"kind"`
 	Exponent float64      `json:"exponent,omitempty"`
+	Formula  string       `json:"formula"`
 	Samples  []curvePoint `json:"samples"`
 }
 
@@ -134,8 +128,16 @@ type curvePoint struct {
 	Impact float64 `json:"impact"`
 }
 
-func buildDecayCurve(profile string) (decayCurveOutput, error) {
-	const sampleCount = 16
+func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (decayCurveOutput, error) {
+	const sampleCount = 48
+
+	if holdHours >= irrelevantAfterHours {
+		return decayCurveOutput{}, fmt.Errorf(
+			"hold_duration_hours (%g) must be less than irrelevant_after_hours (%g)",
+			holdHours,
+			irrelevantAfterHours,
+		)
+	}
 
 	curve := decayCurveOutput{
 		Kind:    "power",
@@ -144,32 +146,40 @@ func buildDecayCurve(profile string) (decayCurveOutput, error) {
 	switch profile {
 	case "hard-drop":
 		curve.Kind = "step"
+		curve.Formula = "impact = 1 until hold_duration, then 0"
 	case "front-loaded":
 		curve.Exponent = 0.1
+		curve.Formula = "impact = 1 - x^0.1"
 	case "linear":
 		curve.Exponent = 1
+		curve.Formula = "impact = 1 - x"
 	case "back-loaded":
 		curve.Exponent = 4
+		curve.Formula = "impact = 1 - x^4"
 	case "flat":
 		curve.Kind = "step"
+		curve.Formula = "impact = 1 until irrelevant_after, then 0"
 	default:
 		return decayCurveOutput{}, fmt.Errorf("unsupported decay profile %q", profile)
 	}
 
+	// x is normalized over the full lifecycle; decay only starts after the hold span.
+	holdX := holdHours / irrelevantAfterHours
 	for index := 0; index <= sampleCount; index++ {
 		x := float64(index) / sampleCount
 		impact := 0.0
-		switch profile {
-		case "hard-drop":
-			if index == 0 {
-				impact = 1
-			}
-		case "flat":
+		switch {
+		case x < holdX:
+			impact = 1
+		case profile == "hard-drop":
+			impact = 0
+		case profile == "flat":
 			if index < sampleCount {
 				impact = 1
 			}
 		default:
-			impact = 1 - math.Pow(x, curve.Exponent)
+			decayX := (x - holdX) / (1 - holdX)
+			impact = 1 - math.Pow(decayX, curve.Exponent)
 		}
 		curve.Samples = append(curve.Samples, curvePoint{X: x, Impact: impact})
 	}

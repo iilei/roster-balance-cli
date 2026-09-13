@@ -1,7 +1,7 @@
 digraph factor_lifecycles {
   graph [bgcolor="transparent", compound=true, overlap=false, outputorder=edgesfirst]
   node [color="#334155", fontcolor="#0f172a", fontname=" sans", fontsize=10]
-  edge [color="#2563eb", fontname=" sans", fontsize=9, arrowsize=0.4]
+  edge [color="#2563eb", fontname=" sans", fontsize=9, arrowhead=none]
 
 {{ $config := datasource "config" }}
 {{ range $index, $factor := $config.factors }}
@@ -10,19 +10,29 @@ digraph factor_lifecycles {
     color="#cbd5e1"
     labelloc="t"
 
-    start_{{ $index }} [label="impact\n100%", shape=box, style="rounded,filled", fillcolor="#dbeafe", pos="0,240!"]
-    hold_{{ $index }} [label={{ printf "\"hold\\n%v h\"" $factor.lifecycle.hold_duration_hours }}, shape=box, style="rounded,filled", fillcolor="#e0f2fe", pos="{{ mul (div $factor.lifecycle.hold_duration_hours $factor.lifecycle.irrelevant_after_hours) 500 }},240!"]
-    end_{{ $index }} [label={{ printf "\"irrelevant\\n%v h\"" $factor.lifecycle.irrelevant_after_hours }}, shape=box, style="rounded,filled", fillcolor="#dcfce7", pos="500,0!"]
+    origin_{{ $index }} [shape=point, width=0.001, style=invis, pos="0,0!"]
+    xaxis_end_{{ $index }} [shape=point, width=0.001, style=invis, pos="520,0!"]
+    yaxis_end_{{ $index }} [shape=point, width=0.001, style=invis, pos="0,270!"]
+    origin_{{ $index }} -> xaxis_end_{{ $index }} [color="#0f172a", penwidth=1, arrowhead=normal, arrowsize=0.5]
+    origin_{{ $index }} -> yaxis_end_{{ $index }} [color="#0f172a", penwidth=1, arrowhead=normal, arrowsize=0.5]
 
-    start_{{ $index }} -> hold_{{ $index }} [color="#64748b", label="unchanged"]
+    axis_x_{{ $index }} [label="time", shape=none, fontsize=9, pos="536,-4!"]
+    axis_y_{{ $index }} [label="impact", shape=none, fontsize=9, pos="-20,282!"]
+
+    info_{{ $index }} [
+      label={{ printf "\"%s\\l%s\\lhold_duration: %v h\\lirrelevant_after: %v h\\l\"" $factor.name $factor.lifecycle.curve.formula $factor.lifecycle.hold_duration_hours $factor.lifecycle.irrelevant_after_hours }},
+      shape=box, style="filled", fillcolor="#f8fafc", color="#94a3b8", fontsize=9,
+      width=3.1, height=0.85, fixedsize=true,
+      pos="66.4,185.4!"
+    ]
+
 {{ range $pointIndex, $point := $factor.lifecycle.curve.samples }}
-    curve_{{ $index }}_{{ $pointIndex }} [label="", shape=point, width=0.08, pos="{{ mul (div (add $factor.lifecycle.hold_duration_hours (mul $point.x (sub $factor.lifecycle.irrelevant_after_hours $factor.lifecycle.hold_duration_hours))) $factor.lifecycle.irrelevant_after_hours) 500 }},{{ mul $point.impact 240 }}!"]
+    curve_{{ $index }}_{{ $pointIndex }} [label="", shape=point, width=0.02, pos="{{ mul $point.x 500 }},{{ mul $point.impact 240 }}!"]
 {{ if gt $pointIndex 0 }}
     curve_{{ $index }}_{{ sub $pointIndex 1 }} -> curve_{{ $index }}_{{ $pointIndex }}
 {{ end }}
 {{ end }}
-    curve_{{ $index }}_0 -> hold_{{ $index }} [dir=none, color="#64748b"]
-    curve_{{ $index }}_{{ sub (len $factor.lifecycle.curve.samples) 1 }} -> end_{{ $index }} [dir=none, color="#64748b"]
   }
 {{ end }}
 }
+

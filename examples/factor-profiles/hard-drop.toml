@@ -1,0 +1,7 @@
+[[factors]]
+name = "duty-work-served"
+
+[factors.lifecycle]
+decay_profile = "hard-drop"
+hold_duration = "672h"
+irrelevant_after = "720h"

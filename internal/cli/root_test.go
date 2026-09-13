@@ -98,13 +98,13 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 	if got.Factors[0].Lifecycle.Curve.Kind != "power" {
 		t.Fatalf("curve kind = %q", got.Factors[0].Lifecycle.Curve.Kind)
 	}
-	if len(got.Factors[0].Lifecycle.Curve.Samples) != 17 {
-		t.Fatalf("curve sample count = %d, want 17", len(got.Factors[0].Lifecycle.Curve.Samples))
+	if len(got.Factors[0].Lifecycle.Curve.Samples) != 49 {
+		t.Fatalf("curve sample count = %d, want 49", len(got.Factors[0].Lifecycle.Curve.Samples))
 	}
-	if got.Factors[0].Lifecycle.Curve.Samples[8].Impact >= 0.5 {
+	if got.Factors[0].Lifecycle.Curve.Samples[24].Impact >= 0.5 {
 		t.Fatalf(
 			"front-loaded midpoint impact = %g, want less than 0.5",
-			got.Factors[0].Lifecycle.Curve.Samples[8].Impact,
+			got.Factors[0].Lifecycle.Curve.Samples[24].Impact,
 		)
 	}
 }
