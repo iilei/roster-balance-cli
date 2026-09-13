@@ -1,19 +1,21 @@
-package config
+package config_test
 
 import (
 	"os"
 	"path/filepath"
 	"reflect"
 	"testing"
+
+	"github.com/iilei/roster-balance-cli/internal/config"
 )
 
 func TestLoadUsesBuiltInDefaultsWhenNoConfigIsPresent(t *testing.T) {
-	loaded, err := Load(LoadOptions{})
+	loaded, err := config.Load(config.LoadOptions{})
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}
 
-	want := DefaultConfig()
+	want := config.DefaultConfig()
 	if !reflect.DeepEqual(want, loaded) {
 		t.Fatalf("Load() mismatch: want %#v, got %#v", want, loaded)
 	}
@@ -42,18 +44,9 @@ id = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	originalDir, err := os.Getwd()
-	if err != nil {
-		t.Fatalf("Getwd() error = %v", err)
-	}
-	if err := os.Chdir(workDir); err != nil {
-		t.Fatalf("Chdir() error = %v", err)
-	}
-	t.Cleanup(func() {
-		_ = os.Chdir(originalDir)
-	})
+	t.Chdir(workDir)
 
-	loaded, err := Load(LoadOptions{DaysOverride: 21})
+	loaded, err := config.Load(config.LoadOptions{DaysOverride: 21})
 	if err != nil {
 		t.Fatalf("Load() error = %v", err)
 	}

@@ -1,6 +1,7 @@
 package policy
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"time"
@@ -11,25 +12,27 @@ import (
 	"github.com/iilei/roster-balance-cli/internal/domain"
 )
 
+const maxInstantArgumentCount = 2
+
 // Runtime evaluates event rules and converts their declarative results to domain effects.
 type Runtime struct{}
 
 // EvaluateEvent runs on_event(ctx) from a Starlark source file.
-func (Runtime) EvaluateEvent(event domain.Event, source string) ([]domain.Effect, error) {
+func (Runtime) EvaluateEvent(event *domain.Event, source string) ([]domain.Effect, error) {
 	thread := &starlark.Thread{Name: "rosterbalance-policy"}
 	globals, err := starlark.ExecFileOptions(
 		&syntax.FileOptions{},
 		thread,
 		"policy.star",
 		source,
-		predeclared(thread, event),
+		predeclared(thread),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("execute policy: %w", err)
 	}
 	function, ok := globals["on_event"]
 	if !ok {
-		return nil, fmt.Errorf("policy must define on_event(ctx)")
+		return nil, errors.New("policy must define on_event(ctx)")
 	}
 	result, err := starlark.Call(thread, function, starlark.Tuple{eventContext(event)}, nil)
 	if err != nil {
@@ -38,7 +41,7 @@ func (Runtime) EvaluateEvent(event domain.Event, source string) ([]domain.Effect
 	return effectsFromValue(event, result)
 }
 
-func predeclared(thread *starlark.Thread, event domain.Event) starlark.StringDict {
+func predeclared(thread *starlark.Thread) starlark.StringDict {
 	timeNamespace, _ := starlarkstruct.Make(thread, nil, nil, []starlark.Tuple{
 		{starlark.String("max"), starlark.NewBuiltin("max", maxInstant)},
 	})
@@ -52,7 +55,7 @@ func predeclared(thread *starlark.Thread, event domain.Event) starlark.StringDic
 	}
 }
 
-func eventContext(event domain.Event) starlark.Value {
+func eventContext(event *domain.Event) starlark.Value {
 	eventFields := []starlark.Tuple{
 		{starlark.String("id"), starlark.String(event.ID)},
 		{starlark.String("type"), starlark.String(event.Type)},
@@ -106,24 +109,24 @@ func maxInstant(
 	args starlark.Tuple,
 	_ []starlark.Tuple,
 ) (starlark.Value, error) {
-	if len(args) != 2 {
-		return nil, fmt.Errorf("time.max expects two instants")
+	if len(args) != maxInstantArgumentCount {
+		return nil, errors.New("time.max expects two instants")
 	}
 	left, ok := args[0].(starlark.Int)
 	if !ok {
-		return nil, fmt.Errorf("time.max expects integer instants")
+		return nil, errors.New("time.max expects integer instants")
 	}
 	right, ok := args[1].(starlark.Int)
 	if !ok {
-		return nil, fmt.Errorf("time.max expects integer instants")
+		return nil, errors.New("time.max expects integer instants")
 	}
 	leftInt, ok := left.Int64()
 	if !ok {
-		return nil, fmt.Errorf("time.max instant is out of range")
+		return nil, errors.New("time.max instant is out of range")
 	}
 	rightInt, ok := right.Int64()
 	if !ok {
-		return nil, fmt.Errorf("time.max instant is out of range")
+		return nil, errors.New("time.max instant is out of range")
 	}
 	if rightInt > leftInt {
 		return right, nil
@@ -170,16 +173,16 @@ func effectValue(kind string, args starlark.Tuple, kwargs []starlark.Tuple) (sta
 	return result, nil
 }
 
-func effectsFromValue(event domain.Event, value starlark.Value) ([]domain.Effect, error) {
+func effectsFromValue(event *domain.Event, value starlark.Value) ([]domain.Effect, error) {
 	list, ok := value.(*starlark.List)
 	if !ok {
-		return nil, fmt.Errorf("on_event must return a list of effects")
+		return nil, errors.New("on_event must return a list of effects")
 	}
 	effects := make([]domain.Effect, 0, list.Len())
 	for value := range list.Elements() {
 		dict, ok := value.(*starlark.Dict)
 		if !ok {
-			return nil, fmt.Errorf("effect must be a dictionary")
+			return nil, errors.New("effect must be a dictionary")
 		}
 		kind, err := dictString(dict, "kind")
 		if err != nil {
@@ -277,7 +280,7 @@ func starlarkNumber(value starlark.Value) (float64, error) {
 	case starlark.Int:
 		integer, ok := value.Int64()
 		if !ok {
-			return 0, fmt.Errorf("integer is out of range")
+			return 0, errors.New("integer is out of range")
 		}
 		return float64(integer), nil
 	case starlark.Float:

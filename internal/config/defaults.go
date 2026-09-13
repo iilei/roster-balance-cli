@@ -1,3 +1,4 @@
+// Package config loads and validates rosterbalance configuration.
 package config
 
 const (

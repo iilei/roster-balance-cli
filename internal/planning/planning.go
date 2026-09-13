@@ -1,3 +1,4 @@
+// Package planning derives roster planning inputs.
 package planning
 
 import "github.com/iilei/roster-balance-cli/internal/config"
@@ -12,7 +13,7 @@ type PreviewResult struct {
 }
 
 // Preview returns a lightweight planning summary for the current config.
-func Preview(cfg config.Config) PreviewResult {
+func Preview(cfg *config.Config) PreviewResult {
 	return PreviewResult{
 		TeamID:      cfg.Plan.Options.Team.ID,
 		PolicyID:    cfg.Plan.Options.Policy.ID,

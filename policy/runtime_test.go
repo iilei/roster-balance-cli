@@ -1,10 +1,11 @@
-package policy
+package policy_test
 
 import (
 	"testing"
 	"time"
 
 	"github.com/iilei/roster-balance-cli/internal/domain"
+	"github.com/iilei/roster-balance-cli/policy"
 )
 
 func TestRuntimeEvaluatesOnCallEffects(t *testing.T) {
@@ -33,7 +34,7 @@ def on_event(ctx):
     ]
 `
 
-	effects, err := (Runtime{}).EvaluateEvent(event, source)
+	effects, err := (policy.Runtime{}).EvaluateEvent(&event, source)
 	if err != nil {
 		t.Fatalf("EvaluateEvent() error = %v", err)
 	}

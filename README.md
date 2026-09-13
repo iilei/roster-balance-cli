@@ -5,30 +5,48 @@
 For v0, the CLI stays dumb about calendar providers and accepts normalized input through a single adapter layer. The first supported import format should be ICS exports, which lets Outlook and other corporate calendars work without committing to Graph or OAuth integration. Direct Outlook sync can come later only if the operational need justifies the extra scope.
 In the future, a Starlark-based ingestion layer could map raw calendar events into roster concepts like availability, absences, or team-specific exceptions while keeping provider connectors in Go.
 
-## Identity and event effects
+## Event occurrences and impacts
 
 External inputs are resolved to a stable internal `MemberID` before they enter the domain model. Ingress adapters may start with an email address, calendar identity, or provider-specific user ID, but policies do not resolve identities themselves.
 
-The event flow is:
+An **event occurrence** is an immutable, binary fact: it happened or it did not. It contains its type, canonical member ID, start time, and elapsed duration. It contains no policy, pay grade, tag, penalty, or impact value.
 
 ```text
 external input
   -> identity resolution
-  -> domain event with canonical member ID
-  -> track record
-  -> Starlark event rule
-  -> declarative effect
+  -> event occurrence
+  -> event type composite
+  -> impact math
+  -> planner application
 ```
 
-For example, an `on-call-call` event is recorded against a member. A Starlark event rule may then emit an eligibility lock for that member and role; the Go planner remains responsible for applying the effect and producing the explanation trace.
+All time spans use half-open intervals, [`starts_at`, `ends_at`): the lower boundary is inclusive and the upper boundary is exclusive. An occurrence ends at `starts_at + duration`; a zero-duration occurrence is a valid point fact. This avoids fractional-duration workarounds at boundaries.
+
+An **impact math** is a named, reusable lifecycle. It selects an anchor such as `event.ends_at`, a decay profile, and an impact duration. An **event type** is a composite definition that selects one or more impact applications. An occurrence refers only to its event type, so distinct contractual or operational cases may use distinct user-defined event types without exposing personal pay-grade information.
+
+```toml
+[impact_maths.call_recovery_24h]
+starts_from = "event.ends_at"
+decay_profile = "flat"
+impact_duration = "24h"
+
+[[event_types.on_call_call_answered.impacts]]
+impact_math = "call_recovery_24h"
+application = "roster-lock"
+```
+
+For an answered call, the factual call duration and the protection period are independent. The `roster-lock` application treats a positive `flat` impact as a hard lock, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.
+
+Each lifecycle must remain within the system-wide maximum EOL, initially `26280h` (three 365-day years). This is a resource boundary for predictable planner lookback and memory allocation, not a default or a recommended impact duration. Durable audit retention remains independent of that limit.
 
 These concepts remain separate:
 
 * **Team membership**: association and authorization within a team.
 * **Roster eligibility**: whether a member may be assigned to a roster.
-* **Event effects**: temporary restrictions or state changes derived from recorded events.
+* **Event occurrence**: a historical fact associated with a member.
+* **Impact math**: the bounded time-varying consequence of an occurrence.
 
-Team membership does not imply roster eligibility. Effects target the canonical member identity, never an email address or an unresolved external identity.
+Team membership does not imply roster eligibility. Event occurrences and applied impacts target the canonical member identity, never an email address or an unresolved external identity.
 
 ## Time semantics and timezone data
 

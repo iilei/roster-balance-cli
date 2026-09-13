@@ -11,19 +11,24 @@ import (
 	"github.com/spf13/viper"
 )
 
+type configPathDiscovery struct {
+	Path     string
+	Explicit bool
+}
+
 // Load returns the effective config after defaults, discovery, and overrides.
 func Load(options LoadOptions) (Config, error) {
 	loaded := DefaultConfig()
 	v := viper.New()
-	setDefaults(v, loaded)
+	setDefaults(v, &loaded)
 
-	configPath, explicit, err := discoverConfigPath(options.ConfigPath)
+	discovery, err := discoverConfigPath(options.ConfigPath)
 	if err != nil {
 		return Config{}, err
 	}
-	if configPath != "" {
-		if err := readConfigFile(v, configPath); err != nil {
-			if explicit || !isConfigNotFound(err) {
+	if discovery.Path != "" {
+		if err := readConfigFile(v, discovery.Path); err != nil {
+			if discovery.Explicit || !isConfigNotFound(err) {
 				return Config{}, err
 			}
 		}
@@ -40,7 +45,7 @@ func Load(options LoadOptions) (Config, error) {
 	return loaded, nil
 }
 
-func setDefaults(v *viper.Viper, cfg Config) {
+func setDefaults(v *viper.Viper, cfg *Config) {
 	v.SetDefault("plan.options.team.id", cfg.Plan.Options.Team.ID)
 	v.SetDefault("plan.options.policy.id", cfg.Plan.Options.Policy.ID)
 	v.SetDefault("plan.options.days", cfg.Plan.Options.Days)
@@ -49,21 +54,22 @@ func setDefaults(v *viper.Viper, cfg Config) {
 	v.SetDefault("factors", cfg.Factors)
 }
 
-func discoverConfigPath(configPath string) (string, bool, error) {
+func discoverConfigPath(configPath string) (configPathDiscovery, error) {
 	if configPath != "" {
 		if _, err := os.Stat(configPath); err != nil {
-			return "", true, fmt.Errorf("open config %q: %w", configPath, err)
+			return configPathDiscovery{}, fmt.Errorf("open config %q: %w", configPath, err)
 		}
-		return configPath, true, nil
+		return configPathDiscovery{Path: configPath, Explicit: true}, nil
 	}
 
-	candidates := []string{".rosterbalance", ".rosterbalance.toml"}
+	const configBaseName = ".rosterbalance"
+	candidates := []string{configBaseName, configBaseName + ".toml"}
 	for _, candidate := range candidates {
 		if _, err := os.Stat(candidate); err == nil {
-			return candidate, false, nil
+			return configPathDiscovery{Path: candidate}, nil
 		}
 	}
-	return "", false, nil
+	return configPathDiscovery{}, nil
 }
 
 func readConfigFile(v *viper.Viper, path string) error {
@@ -90,7 +96,7 @@ func applyOverrides(cfg *Config, options LoadOptions) {
 }
 
 // Validate validates the effective config against schema and semantic rules.
-func (cfg Config) Validate() error {
+func (cfg *Config) Validate() error {
 	if err := validateSchema(cfg); err != nil {
 		return err
 	}
@@ -106,7 +112,7 @@ func (cfg Config) Validate() error {
 	return nil
 }
 
-func normalizeJSON(cfg Config) ([]byte, error) {
+func normalizeJSON(cfg *Config) ([]byte, error) {
 	return json.Marshal(cfg)
 }
 

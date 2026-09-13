@@ -1,22 +1,25 @@
-package policy
+package policy_test
 
 import (
 	"strings"
 	"testing"
 
 	"github.com/canonical/starlark/starlark"
+	"github.com/iilei/roster-balance-cli/policy"
 )
+
+const stubCallableName = "stub"
 
 type stubCallable struct{}
 
-func (stubCallable) String() string { return "stub" }
-func (stubCallable) Type() string   { return "stub" }
+func (stubCallable) String() string { return stubCallableName }
+func (stubCallable) Type() string   { return stubCallableName }
 func (stubCallable) Freeze()        {}
 func (stubCallable) Truth() starlark.Bool {
 	return starlark.True
 }
 func (stubCallable) Hash() (uint32, error) { return 0, nil }
-func (stubCallable) Name() string          { return "stub" }
+func (stubCallable) Name() string          { return stubCallableName }
 func (stubCallable) CallInternal(
 	_ *starlark.Thread,
 	_ starlark.Tuple,
@@ -26,7 +29,7 @@ func (stubCallable) CallInternal(
 }
 
 func TestDefaultDecayRegistryIncludesBuiltins(t *testing.T) {
-	reg := DefaultDecayRegistry()
+	reg := policy.DefaultDecayRegistry()
 	profile, ok := reg.Describe("front-loaded")
 	if !ok {
 		t.Fatal("front-loaded profile missing from default registry")
@@ -46,7 +49,7 @@ func TestDefaultDecayRegistryIncludesBuiltins(t *testing.T) {
 }
 
 func TestDecayRegistryRejectsDuplicateAliases(t *testing.T) {
-	reg := NewDecayRegistry()
+	reg := policy.NewDecayRegistry()
 	if err := reg.Register("linear", stubCallable{}, "stub"); err != nil {
 		t.Fatalf("Register() first call error = %v", err)
 	}
@@ -55,15 +58,12 @@ func TestDecayRegistryRejectsDuplicateAliases(t *testing.T) {
 	}
 }
 
-func TestDecayProfileDescriptionIsAttachedToWrapper(t *testing.T) {
-	profile := decayProfileValue{
-		evaluator:   stubCallable{},
-		description: "lambda x: 1.0 - math.pow(x, 4.0)",
+func TestDecayProfileDescriptionIsExposed(t *testing.T) {
+	profile, ok := policy.DefaultDecayRegistry().Describe("back-loaded")
+	if !ok {
+		t.Fatal("back-loaded profile missing from default registry")
 	}
-	if got := profile.Description(); !strings.Contains(got, "math.pow") {
-		t.Fatalf("profile.Description() = %q, want description containing math.pow", got)
-	}
-	if got := profile.String(); !strings.Contains(got, "math.pow") {
-		t.Fatalf("profile.String() = %q, want description containing math.pow", got)
+	if got := profile.Description; !strings.Contains(got, "math.pow") {
+		t.Fatalf("profile description = %q, want description containing math.pow", got)
 	}
 }

@@ -3,6 +3,7 @@ package domain
 import (
 	"errors"
 	"fmt"
+	"maps"
 	"time"
 )
 
@@ -13,7 +14,7 @@ type TrackRecord struct {
 }
 
 // Record appends an event and effects derived from that event.
-func (record *TrackRecord) Record(event Event, effects ...Effect) error {
+func (record *TrackRecord) Record(event *Event, effects ...Effect) error {
 	if event.ID == "" {
 		return errors.New("event ID is required")
 	}
@@ -32,7 +33,8 @@ func (record *TrackRecord) Record(event Event, effects ...Effect) error {
 		}
 	}
 
-	for _, effect := range effects {
+	for index := range effects {
+		effect := &effects[index]
 		if effect.SourceEventID != event.ID {
 			return fmt.Errorf("effect source event %q does not match event %q", effect.SourceEventID, event.ID)
 		}
@@ -52,7 +54,8 @@ func (record *TrackRecord) Record(event Event, effects ...Effect) error {
 // EventsBetween returns events in the half-open interval [from, until).
 func (record *TrackRecord) EventsBetween(memberID string, from, until time.Time) []Event {
 	result := make([]Event, 0)
-	for _, event := range record.events {
+	for index := range record.events {
+		event := &record.events[index]
 		if event.MemberID == memberID && inHalfOpenRange(event.OccurredAt, from, until) {
 			result = append(result, copyEvent(event))
 		}
@@ -63,18 +66,19 @@ func (record *TrackRecord) EventsBetween(memberID string, from, until time.Time)
 // EffectsOverlapping returns effects that can influence the half-open interval [from, until).
 func (record *TrackRecord) EffectsOverlapping(memberID string, from, until time.Time) []Effect {
 	result := make([]Effect, 0)
-	for _, effect := range record.effects {
+	for index := range record.effects {
+		effect := &record.effects[index]
 		if effect.MemberID != memberID || effect.StartsAt.After(until) {
 			continue
 		}
 		if effect.EndsAt.IsZero() {
 			if inHalfOpenRange(effect.StartsAt, from, until) {
-				result = append(result, effect)
+				result = append(result, *effect)
 			}
 			continue
 		}
 		if effect.EndsAt.After(from) && effect.StartsAt.Before(until) {
-			result = append(result, effect)
+			result = append(result, *effect)
 		}
 	}
 	return result
@@ -84,11 +88,9 @@ func inHalfOpenRange(value, from, until time.Time) bool {
 	return !value.Before(from) && value.Before(until)
 }
 
-func copyEvent(event Event) Event {
-	attributes := make(map[string]any, len(event.Attributes))
-	for key, value := range event.Attributes {
-		attributes[key] = value
-	}
-	event.Attributes = attributes
-	return event
+func copyEvent(event *Event) Event {
+	eventCopy := *event
+	eventCopy.Attributes = make(map[string]any, len(event.Attributes))
+	maps.Copy(eventCopy.Attributes, event.Attributes)
+	return eventCopy
 }

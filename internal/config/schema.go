@@ -10,16 +10,15 @@ import (
 	"github.com/santhosh-tekuri/jsonschema/v5"
 )
 
-//go:embed schema/*.json
-var schemaFS embed.FS
-
 var (
+	//go:embed schema/*.json
+	schemaFS   embed.FS
 	schemaOnce sync.Once
 	schemaErr  error
 	schemaObj  *jsonschema.Schema
 )
 
-func validateSchema(cfg Config) error {
+func validateSchema(cfg *Config) error {
 	schema, err := loadSchema()
 	if err != nil {
 		return err

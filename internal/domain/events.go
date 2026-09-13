@@ -1,38 +1,41 @@
+// Package domain defines roster planning concepts and invariants.
 package domain
 
 import "time"
-
-// Event is an immutable domain fact associated with a canonical member.
-type Event struct {
-	ID         string
-	Type       string
-	MemberID   string
-	OccurredAt time.Time
-	Attributes map[string]any
-}
-
-// EffectKind identifies the distinct ways an event can influence planning.
-type EffectKind string
 
 const (
 	EffectEligibilityLock EffectKind = "eligibility-lock"
 	EffectFactorEvent     EffectKind = "factor-event"
 )
 
-// Effect is a declarative result derived from an event.
-type Effect struct {
-	Kind          EffectKind
-	SourceEventID string
-	MemberID      string
-	Role          string
-	Factor        string
-	StartsAt      time.Time
-	EndsAt        time.Time
-	Reason        string
-}
+type (
+	// Event is an immutable domain fact associated with a canonical member.
+	Event struct {
+		OccurredAt time.Time
+		Attributes map[string]any
+		ID         string
+		Type       string
+		MemberID   string
+	}
+
+	// EffectKind identifies the distinct ways an event can influence planning.
+	EffectKind string
+
+	// Effect is a declarative result derived from an event.
+	Effect struct {
+		Kind          EffectKind
+		SourceEventID string
+		MemberID      string
+		Role          string
+		Factor        string
+		StartsAt      time.Time
+		EndsAt        time.Time
+		Reason        string
+	}
+)
 
 // EligibilityLock creates a hard exclusion for a member and role.
-func EligibilityLock(event Event, role string, startsAt time.Time, duration time.Duration, reason string) Effect {
+func EligibilityLock(event *Event, role string, startsAt time.Time, duration time.Duration, reason string) Effect {
 	return Effect{
 		Kind:          EffectEligibilityLock,
 		SourceEventID: event.ID,
@@ -45,7 +48,7 @@ func EligibilityLock(event Event, role string, startsAt time.Time, duration time
 }
 
 // FactorEvent records a soft factor contribution caused by an event.
-func FactorEvent(event Event, factor string, occurredAt time.Time) Effect {
+func FactorEvent(event *Event, factor string, occurredAt time.Time) Effect {
 	return Effect{
 		Kind:          EffectFactorEvent,
 		SourceEventID: event.ID,

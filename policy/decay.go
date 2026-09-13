@@ -1,7 +1,9 @@
+// Package policy evaluates roster policy logic.
 package policy
 
 import (
 	_ "embed"
+	"errors"
 	"fmt"
 	"math"
 	"strings"
@@ -12,29 +14,42 @@ import (
 	"github.com/canonical/starlark/syntax"
 )
 
+const (
+	decayProfileName     = "DecayProfile"
+	evaluatorKeyword     = "evaluator"
+	descriptionKeyword   = "description"
+	defaultBuiltinSource = "builtin"
+)
+
 var (
 	defaultDecayRegistry     *DecayRegistry
 	defaultDecayRegistryOnce sync.Once
+	//go:embed builtins.star
+	decayBuiltinsSource []byte
 )
 
-//go:embed builtins.star
-var decayBuiltinsSource []byte
-
 // EvaluatorDescriptor describes a decay evaluator's metadata and callable.
-type EvaluatorDescriptor struct {
-	Reference   string
-	Origin      string
-	Language    string
-	Source      string
-	Description string
-	Evaluator   starlark.Callable
-}
+type (
+	EvaluatorDescriptor struct {
+		Evaluator   starlark.Callable
+		Reference   string
+		Origin      string
+		Language    string
+		Source      string
+		Description string
+	}
 
-// DecayRegistry stores decay profile evaluators and metadata.
-type DecayRegistry struct {
-	mu     sync.RWMutex
-	values map[string]EvaluatorDescriptor
-}
+	// DecayRegistry stores decay profile evaluators and metadata.
+	DecayRegistry struct {
+		values map[string]EvaluatorDescriptor
+		mu     sync.RWMutex
+	}
+
+	decayProfileValue struct {
+		evaluator   starlark.Callable
+		description string
+	}
+)
 
 // DefaultDecayRegistry returns the package default built-in decay registry.
 func DefaultDecayRegistry() *DecayRegistry {
@@ -56,7 +71,7 @@ func NewDecayRegistry() *DecayRegistry {
 // LoadBuiltins registers the embedded Starlark decay profiles.
 func (r *DecayRegistry) LoadBuiltins() error {
 	if len(decayBuiltinsSource) == 0 {
-		return fmt.Errorf("built-in decay source is empty")
+		return errors.New("built-in decay source is empty")
 	}
 	thread := &starlark.Thread{Name: "rosterbalance-decay"}
 	_, err := starlark.ExecFileOptions(
@@ -65,8 +80,8 @@ func (r *DecayRegistry) LoadBuiltins() error {
 		"builtins.star",
 		string(decayBuiltinsSource),
 		starlark.StringDict{
-			"DecayProfile": starlark.NewBuiltin("DecayProfile", decayProfile),
-			"math":         starlarkmath.Module,
+			decayProfileName: starlark.NewBuiltin(decayProfileName, decayProfile),
+			"math":           starlarkmath.Module,
 			"register": starlark.NewBuiltin("register", func(
 				_ *starlark.Thread,
 				_ *starlark.Builtin,
@@ -74,14 +89,14 @@ func (r *DecayRegistry) LoadBuiltins() error {
 				kwargs []starlark.Tuple,
 			) (starlark.Value, error) {
 				if len(args) != 0 {
-					return nil, fmt.Errorf("register accepts keyword arguments only")
+					return nil, errors.New("register accepts keyword arguments only")
 				}
 				var alias string
 				var evaluator starlark.Value
 				for _, kwarg := range kwargs {
 					key, ok := kwarg[0].(starlark.String)
 					if !ok {
-						return nil, fmt.Errorf("register keyword name is not a string")
+						return nil, errors.New("register keyword name is not a string")
 					}
 					switch string(key) {
 					case "alias":
@@ -90,16 +105,16 @@ func (r *DecayRegistry) LoadBuiltins() error {
 							return nil, fmt.Errorf("register alias: %w", err)
 						}
 						alias = value
-					case "evaluator":
+					case evaluatorKeyword:
 						evaluator = kwarg[1]
 					}
 				}
 				if alias == "" {
-					return nil, fmt.Errorf("register requires alias")
+					return nil, errors.New("register requires alias")
 				}
 				callable, ok := evaluator.(starlark.Callable)
 				if !ok {
-					return nil, fmt.Errorf("register expects a callable evaluator")
+					return nil, errors.New("register expects a callable evaluator")
 				}
 				if err := r.Register(alias, callable, "builtins.star"); err != nil {
 					return nil, err
@@ -114,17 +129,17 @@ func (r *DecayRegistry) LoadBuiltins() error {
 // Register stores a decay evaluator under an alias.
 func (r *DecayRegistry) Register(alias string, evaluator starlark.Callable, source string) error {
 	if r == nil {
-		return fmt.Errorf("decay registry is nil")
+		return errors.New("decay registry is nil")
 	}
 	if evaluator == nil {
-		return fmt.Errorf("decay evaluator is nil")
+		return errors.New("decay evaluator is nil")
 	}
 	canonical := normalizeAlias(alias)
 	if canonical == "" {
-		return fmt.Errorf("decay alias must not be empty")
+		return errors.New("decay alias must not be empty")
 	}
 	if source == "" {
-		source = "builtin"
+		source = defaultBuiltinSource
 	}
 	descText := descriptionFor(evaluator)
 	r.mu.Lock()
@@ -157,7 +172,7 @@ func (r *DecayRegistry) Describe(alias string) (EvaluatorDescriptor, bool) {
 // Evaluate computes the decay impact for a normalized lifecycle point x in [0, 1].
 func (r *DecayRegistry) Evaluate(alias string, x float64) (float64, error) {
 	if r == nil {
-		return 0, fmt.Errorf("decay registry is nil")
+		return 0, errors.New("decay registry is nil")
 	}
 	if x < 0 || x > 1 {
 		return 0, fmt.Errorf("decay x = %g, want value in [0, 1]", x)
@@ -195,7 +210,7 @@ func descriptionFor(value starlark.Callable) string {
 		}
 	}
 	if hasAttrs, ok := value.(starlark.HasAttrs); ok {
-		if attr, err := hasAttrs.Attr("description"); err == nil {
+		if attr, err := hasAttrs.Attr(descriptionKeyword); err == nil {
 			if text, ok := starlarkString(attr); ok == nil {
 				return text
 			}
@@ -207,27 +222,22 @@ func descriptionFor(value starlark.Callable) string {
 	return "<callable>"
 }
 
-type decayProfileValue struct {
-	evaluator   starlark.Callable
-	description string
-}
-
 func (d decayProfileValue) Attr(name string) (starlark.Value, error) {
 	switch name {
-	case "evaluator":
+	case evaluatorKeyword:
 		return d.evaluator, nil
-	case "description":
+	case descriptionKeyword:
 		return starlark.String(d.description), nil
 	default:
-		return nil, nil
+		return nil, starlark.NoSuchAttrError(fmt.Sprintf("DecayProfile has no attribute %q", name))
 	}
 }
 
 func (d decayProfileValue) AttrNames() []string {
-	return []string{"evaluator", "description"}
+	return []string{evaluatorKeyword, descriptionKeyword}
 }
 
-func (d decayProfileValue) Name() string { return "DecayProfile" }
+func (d decayProfileValue) Name() string { return decayProfileName }
 
 func (d decayProfileValue) CallInternal(
 	thread *starlark.Thread,
@@ -244,7 +254,7 @@ func (d decayProfileValue) String() string {
 	return d.evaluator.String()
 }
 
-func (d decayProfileValue) Type() string { return "DecayProfile" }
+func (d decayProfileValue) Type() string { return decayProfileName }
 
 func (d decayProfileValue) Freeze() {}
 
@@ -261,31 +271,31 @@ func decayProfile(
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
 	if len(args) > 1 {
-		return nil, fmt.Errorf("DecayProfile expects at most one callable argument")
+		return nil, fmt.Errorf("%s expects at most one callable argument", decayProfileName)
 	}
 	var description string
 	for _, kwarg := range kwargs {
 		key, ok := kwarg[0].(starlark.String)
 		if !ok {
-			return nil, fmt.Errorf("DecayProfile keyword name is not a string")
+			return nil, errors.New("DecayProfile keyword name is not a string")
 		}
 		switch string(key) {
-		case "description":
+		case descriptionKeyword:
 			value, err := starlarkString(kwarg[1])
 			if err != nil {
-				return nil, fmt.Errorf("DecayProfile description: %w", err)
+				return nil, fmt.Errorf("%s description: %w", decayProfileName, err)
 			}
 			description = value
 		default:
-			return nil, fmt.Errorf("DecayProfile does not accept keyword %q", key)
+			return nil, fmt.Errorf("%s does not accept keyword %q", decayProfileName, key)
 		}
 	}
 	if len(args) == 0 {
-		return nil, fmt.Errorf("DecayProfile expects one callable argument")
+		return nil, fmt.Errorf("%s expects one callable argument", decayProfileName)
 	}
 	callable, ok := args[0].(starlark.Callable)
 	if !ok {
-		return nil, fmt.Errorf("DecayProfile expects a callable argument")
+		return nil, fmt.Errorf("%s expects a callable argument", decayProfileName)
 	}
 	if description == "" {
 		description = callable.String()

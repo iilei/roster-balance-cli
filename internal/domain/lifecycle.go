@@ -6,22 +6,24 @@ import (
 	"time"
 )
 
-// Lifecycle defines the factor-specific time boundaries before system limits.
-type Lifecycle struct {
-	HoldDuration    time.Duration
-	IrrelevantAfter time.Duration
-}
+type (
+	// Lifecycle defines the factor-specific time boundaries before system limits.
+	Lifecycle struct {
+		HoldDuration    time.Duration
+		IrrelevantAfter time.Duration
+	}
 
-// SystemLimits bounds lifetimes shared by planning and maintenance.
-type SystemLimits struct {
-	MaxFactorLifetime time.Duration
-}
+	// SystemLimits bounds lifetimes shared by planning and maintenance.
+	SystemLimits struct {
+		MaxFactorLifetime time.Duration
+	}
 
-// ResolvedLifecycle contains the effective lifecycle after system limits apply.
-type ResolvedLifecycle struct {
-	HoldDuration    time.Duration
-	IrrelevantAfter time.Duration
-}
+	// ResolvedLifecycle contains the effective lifecycle after system limits apply.
+	ResolvedLifecycle struct {
+		HoldDuration    time.Duration
+		IrrelevantAfter time.Duration
+	}
+)
 
 // ResolveLifecycle validates a factor lifecycle and applies the system maximum.
 func ResolveLifecycle(lifecycle Lifecycle, limits SystemLimits) (ResolvedLifecycle, error) {
@@ -36,10 +38,7 @@ func ResolveLifecycle(lifecycle Lifecycle, limits SystemLimits) (ResolvedLifecyc
 		)
 	}
 
-	resolved := ResolvedLifecycle{
-		HoldDuration:    lifecycle.HoldDuration,
-		IrrelevantAfter: lifecycle.IrrelevantAfter,
-	}
+	resolved := ResolvedLifecycle(lifecycle)
 	if limits.MaxFactorLifetime > 0 && resolved.IrrelevantAfter > limits.MaxFactorLifetime {
 		resolved.IrrelevantAfter = limits.MaxFactorLifetime
 		if resolved.IrrelevantAfter <= resolved.HoldDuration {

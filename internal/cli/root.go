@@ -1,7 +1,9 @@
+// Package cli defines the rosterbalance command-line interface.
 package cli
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -13,12 +15,52 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Version contains the build metadata injected at build time.
-type Version struct {
-	Version string
-	Commit  string
-	Date    string
-}
+const (
+	flatDecayProfile = "flat"
+	hoursPerDay      = 24
+)
+
+type (
+	// Version contains the build metadata injected at build time.
+	Version struct {
+		Version string
+		Commit  string
+		Date    string
+	}
+
+	factorOutput struct {
+		SchemaVersion string             `json:"schema_version"`
+		Factors       []factorOutputItem `json:"factors"`
+	}
+
+	factorOutputItem struct {
+		Name      string          `json:"name"`
+		Lifecycle lifecycleOutput `json:"lifecycle"`
+	}
+
+	lifecycleOutput struct {
+		DecayProfile         string           `json:"decay_profile"`
+		Curve                decayCurveOutput `json:"curve"`
+		HoldDurationHours    float64          `json:"hold_duration_hours"`
+		IrrelevantAfterHours float64          `json:"irrelevant_after_hours"`
+	}
+
+	decayCurveOutput struct {
+		Reference   string       `json:"reference"`
+		Origin      string       `json:"origin"`
+		Language    string       `json:"language"`
+		Source      string       `json:"source,omitempty"`
+		Description string       `json:"description,omitempty"`
+		Kind        string       `json:"kind"`
+		Samples     []curvePoint `json:"samples"`
+		Exponent    float64      `json:"exponent,omitempty"`
+	}
+
+	curvePoint struct {
+		X      float64 `json:"x"`
+		Impact float64 `json:"impact"`
+	}
+)
 
 // NewRootCommand returns the CLI root command.
 func NewRootCommand(version Version) *cobra.Command {
@@ -99,39 +141,6 @@ func newInspectFactorsCommand() *cobra.Command {
 	return cmd
 }
 
-type factorOutput struct {
-	SchemaVersion string             `json:"schema_version"`
-	Factors       []factorOutputItem `json:"factors"`
-}
-
-type factorOutputItem struct {
-	Name      string          `json:"name"`
-	Lifecycle lifecycleOutput `json:"lifecycle"`
-}
-
-type lifecycleOutput struct {
-	DecayProfile         string           `json:"decay_profile"`
-	HoldDurationHours    float64          `json:"hold_duration_hours"`
-	IrrelevantAfterHours float64          `json:"irrelevant_after_hours"`
-	Curve                decayCurveOutput `json:"curve"`
-}
-
-type decayCurveOutput struct {
-	Reference   string       `json:"reference"`
-	Origin      string       `json:"origin"`
-	Language    string       `json:"language"`
-	Source      string       `json:"source,omitempty"`
-	Description string       `json:"description,omitempty"`
-	Kind        string       `json:"kind"`
-	Exponent    float64      `json:"exponent,omitempty"`
-	Samples     []curvePoint `json:"samples"`
-}
-
-type curvePoint struct {
-	X      float64 `json:"x"`
-	Impact float64 `json:"impact"`
-}
-
 func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (decayCurveOutput, error) {
 	const sampleCount = 48
 
@@ -159,7 +168,7 @@ func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (d
 		Samples:     make([]curvePoint, 0, sampleCount+1),
 	}
 	switch profile {
-	case "flat":
+	case flatDecayProfile:
 		curve.Kind = "step"
 	case "front-loaded":
 		curve.Exponent = 0.1
@@ -177,7 +186,7 @@ func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (d
 		switch {
 		case x < holdX:
 			impact = 1
-		case profile == "flat":
+		case profile == flatDecayProfile:
 			if index < sampleCount {
 				impact = 1
 			}
@@ -198,12 +207,12 @@ func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (d
 }
 
 func parseLifecycleDuration(value string) (time.Duration, error) {
-	if strings.HasSuffix(value, "d") {
-		days, err := strconv.ParseFloat(strings.TrimSuffix(value, "d"), 64)
+	if daysText, ok := strings.CutSuffix(value, "d"); ok {
+		days, err := strconv.ParseFloat(daysText, 64)
 		if err != nil {
 			return 0, err
 		}
-		return time.Duration(days * float64(24*time.Hour)), nil
+		return time.Duration(days * float64(hoursPerDay*time.Hour)), nil
 	}
 	return time.ParseDuration(value)
 }
@@ -217,7 +226,7 @@ func newValidateCommand() *cobra.Command {
 		Long:  "Validate the effective rosterbalance config after defaults, file discovery, and overrides are applied.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) != 0 {
-				return fmt.Errorf("validate does not accept positional arguments")
+				return errors.New("validate does not accept positional arguments")
 			}
 
 			_, err := config.Load(options)
@@ -243,7 +252,7 @@ func newPlanCommand() *cobra.Command {
 		Long:  "Plan roster assignments from the effective config without requiring positional arguments.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) != 0 {
-				return fmt.Errorf("plan does not accept positional arguments")
+				return errors.New("plan does not accept positional arguments")
 			}
 
 			loaded, err := config.Load(options)
@@ -251,7 +260,7 @@ func newPlanCommand() *cobra.Command {
 				return err
 			}
 
-			result := planning.Preview(loaded)
+			result := planning.Preview(&loaded)
 			cmd.Printf(
 				"plan ready: team=%s policy=%s days=%d teams=%d policies=%d\n",
 				result.TeamID,
