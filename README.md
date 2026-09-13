@@ -137,7 +137,22 @@ The `duty-work-served` weight uses a bounded decay profile. Each factor owns its
 
 The first version keeps this deliberately small. The calculation is an implementation detail; user config refers to the semantic distribution of impact over the factor lifecycle.
 
-## User-facing reference
+## Factor curves
+
+A factor curve models how a historical factor's impact diminishes over time across three lifecycle parameters:
+
+* `hold_duration`: keeps the initial impact unchanged ($1.0$) for at least that long.
+* `decay_profile`: controls the transition curve shape between `hold_duration` and end of life.
+* `irrelevant_after` (EOL): the end-of-life boundary where the factor's impact reaches zero and no longer affects planning decisions.
+
+```text
+0 -------- hold_duration ---------------- irrelevant_after (EOL)
+|          |                              |
+initial    decay profile                  zero impact
+impact     transition                     and irrelevant
+```
+
+### User-facing configuration
 
 ```yaml
 factors:
@@ -150,34 +165,43 @@ factors:
 
 **Reading it in plain English:** *"Previous duty work keeps its initial impact for two days, then fades in a front-loaded way and is irrelevant after fourteen days."*
 
-The lifecycle boundaries are factor configuration. A system-wide maximum may still limit `irrelevant_after`, but it does not replace the factor lifecycle.
+### Built-in decay profiles
 
-The built-in decay profiles are:
+Each profile below can be generated locally with `mise run factor-curves` from its example configuration in [examples/factor-profiles/](examples/factor-profiles/).
 
-* `hard-drop`: hold the impact until `hold_duration`, then make it zero.
-* `front-loaded`: concentrate the decay near the beginning of the transition.
-* `linear`: decrease the impact uniformly through the transition.
-* `back-loaded`: preserve most of the impact until later in the transition.
-* `flat`: do not decay before `irrelevant_after`, then make the impact zero.
+#### `front-loaded`
 
-The lifecycle has two distinct boundaries:
+Concentrate the decay near the beginning of the transition after `hold_duration`.
 
 ![Front-loaded duty-work-served lifecycle](docs/factor-curves/front-loaded.svg)
 
-This diagram illustrates the `front-loaded` profile from [examples/factor-profiles/front-loaded.toml](examples/factor-profiles/front-loaded.toml), generated with `mise run factor-curves`. The canonical machine-readable representation remains the JSON emitted by `rosterbalance inspect factors`.
+#### `linear`
 
-```text
-0 -------- hold_duration ---------------- irrelevant_after
-|          |                              |
-initial    decay profile                  zero impact
-impact     transition                     and irrelevant
-```
+Decrease the impact uniformly through the transition from `hold_duration` to `irrelevant_after`.
 
-* `hold_duration` keeps the initial impact unchanged for at least that long.
-* `irrelevant_after` means the factor's impact is zero and must no longer affect planning.
-* `decay_profile` controls the transition between those boundaries.
+![Linear duty-work-served lifecycle](docs/factor-curves/linear.svg)
 
-Lifecycle validation must ensure that durations are non-negative, `irrelevant_after` is greater than `hold_duration`, impact stays between zero and one, impact does not increase after the hold period, and impact is zero at `irrelevant_after`.
+#### `back-loaded`
+
+Preserve most of the impact until later in the transition, dropping steeply near `irrelevant_after`.
+
+![Back-loaded duty-work-served lifecycle](docs/factor-curves/back-loaded.svg)
+
+#### `flat`
+
+Do not decay before `irrelevant_after`, retaining full impact until the end-of-life cutoff.
+
+![Flat duty-work-served lifecycle](docs/factor-curves/flat.svg)
+
+### Lifecycle validation
+
+Lifecycle validation ensures:
+
+* Durations are non-negative.
+* `irrelevant_after` (EOL) is strictly greater than `hold_duration`.
+* Impact stays between $0$ and $1$.
+* Impact does not increase after the hold period.
+* Impact is zero at `irrelevant_after`.
 
 ## Why the power curve is the sweet spot
 

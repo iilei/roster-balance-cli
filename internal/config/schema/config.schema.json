@@ -87,7 +87,7 @@
       "additionalProperties": false,
       "properties": {
        "decay_profile": {
-        "enum": ["hard-drop", "front-loaded", "linear", "back-loaded", "flat"]
+        "enum": ["front-loaded", "linear", "back-loaded", "flat"]
        },
        "hold_duration": {
         "type": "string",

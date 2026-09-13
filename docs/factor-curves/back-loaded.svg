@@ -23,242 +23,242 @@
 <!-- curve_0_0&#45;&gt;curve_0_1 -->
 <g id="edge3" class="edge">
 <title>curve_0_0&#45;&gt;curve_0_1</title>
-<path fill="none" stroke="#2563eb" d="M47.96,-262C49.9,-262 54.25,-262 56.3,-262"/>
+<path fill="none" stroke="#d85e91" d="M47.96,-262C49.9,-262 54.25,-262 56.3,-262"/>
 </g>
 <!-- curve_0_1&#45;&gt;curve_0_2 -->
 <g id="edge4" class="edge">
 <title>curve_0_1&#45;&gt;curve_0_2</title>
-<path fill="none" stroke="#2563eb" d="M58.38,-262C60.31,-262 64.66,-262 66.72,-262"/>
+<path fill="none" stroke="#d85e91" d="M58.38,-262C60.31,-262 64.66,-262 66.72,-262"/>
 </g>
 <!-- curve_0_2&#45;&gt;curve_0_3 -->
 <g id="edge5" class="edge">
 <title>curve_0_2&#45;&gt;curve_0_3</title>
-<path fill="none" stroke="#2563eb" d="M68.79,-262C70.73,-262 75.08,-262 77.14,-262"/>
+<path fill="none" stroke="#d85e91" d="M68.79,-262C70.73,-262 75.08,-262 77.14,-262"/>
 </g>
 <!-- curve_0_3&#45;&gt;curve_0_4 -->
 <g id="edge6" class="edge">
 <title>curve_0_3&#45;&gt;curve_0_4</title>
-<path fill="none" stroke="#2563eb" d="M79.21,-262C81.15,-262 85.5,-262 87.55,-262"/>
+<path fill="none" stroke="#d85e91" d="M79.21,-262C81.15,-262 85.5,-262 87.55,-262"/>
 </g>
 <!-- curve_0_4&#45;&gt;curve_0_5 -->
 <g id="edge7" class="edge">
 <title>curve_0_4&#45;&gt;curve_0_5</title>
-<path fill="none" stroke="#2563eb" d="M89.63,-262C91.56,-262 95.91,-262 97.97,-262"/>
+<path fill="none" stroke="#d85e91" d="M89.63,-262C91.56,-262 95.91,-262 97.97,-262"/>
 </g>
 <!-- curve_0_5&#45;&gt;curve_0_6 -->
 <g id="edge8" class="edge">
 <title>curve_0_5&#45;&gt;curve_0_6</title>
-<path fill="none" stroke="#2563eb" d="M100.04,-262C101.98,-262 106.33,-262 108.39,-262"/>
+<path fill="none" stroke="#d85e91" d="M100.04,-262C101.98,-262 106.33,-262 108.39,-262"/>
 </g>
 <!-- curve_0_6&#45;&gt;curve_0_7 -->
 <g id="edge9" class="edge">
 <title>curve_0_6&#45;&gt;curve_0_7</title>
-<path fill="none" stroke="#2563eb" d="M110.46,-262C112.4,-262 116.75,-262 118.8,-262"/>
+<path fill="none" stroke="#d85e91" d="M110.46,-262C112.4,-262 116.75,-262 118.8,-262"/>
 </g>
 <!-- curve_0_7&#45;&gt;curve_0_8 -->
 <g id="edge10" class="edge">
 <title>curve_0_7&#45;&gt;curve_0_8</title>
-<path fill="none" stroke="#2563eb" d="M120.88,-262C122.81,-262 127.16,-262 129.22,-262"/>
+<path fill="none" stroke="#d85e91" d="M120.88,-262C122.81,-262 127.16,-262 129.22,-262"/>
 </g>
 <!-- curve_0_8&#45;&gt;curve_0_9 -->
 <g id="edge11" class="edge">
 <title>curve_0_8&#45;&gt;curve_0_9</title>
-<path fill="none" stroke="#2563eb" d="M131.29,-262C133.23,-262 137.58,-262 139.64,-262"/>
+<path fill="none" stroke="#d85e91" d="M131.29,-262C133.23,-262 137.58,-262 139.64,-262"/>
 </g>
 <!-- curve_0_9&#45;&gt;curve_0_10 -->
 <g id="edge12" class="edge">
 <title>curve_0_9&#45;&gt;curve_0_10</title>
-<path fill="none" stroke="#2563eb" d="M141.71,-262C143.65,-262 148,-261.99 150.05,-261.99"/>
+<path fill="none" stroke="#d85e91" d="M141.71,-262C143.65,-262 148,-261.99 150.05,-261.99"/>
 </g>
 <!-- curve_0_10&#45;&gt;curve_0_11 -->
 <g id="edge13" class="edge">
 <title>curve_0_10&#45;&gt;curve_0_11</title>
-<path fill="none" stroke="#2563eb" d="M152.13,-261.99C154.06,-261.99 158.41,-261.98 160.47,-261.98"/>
+<path fill="none" stroke="#d85e91" d="M152.13,-261.99C154.06,-261.99 158.41,-261.98 160.47,-261.98"/>
 </g>
 <!-- curve_0_11&#45;&gt;curve_0_12 -->
 <g id="edge14" class="edge">
 <title>curve_0_11&#45;&gt;curve_0_12</title>
-<path fill="none" stroke="#2563eb" d="M162.54,-261.97C164.48,-261.97 168.83,-261.95 170.89,-261.95"/>
+<path fill="none" stroke="#d85e91" d="M162.54,-261.97C164.48,-261.97 168.83,-261.95 170.89,-261.95"/>
 </g>
 <!-- curve_0_12&#45;&gt;curve_0_13 -->
 <g id="edge15" class="edge">
 <title>curve_0_12&#45;&gt;curve_0_13</title>
-<path fill="none" stroke="#2563eb" d="M172.96,-261.94C174.9,-261.92 179.25,-261.9 181.3,-261.89"/>
+<path fill="none" stroke="#d85e91" d="M172.96,-261.94C174.9,-261.92 179.25,-261.9 181.3,-261.89"/>
 </g>
 <!-- curve_0_13&#45;&gt;curve_0_14 -->
 <g id="edge16" class="edge">
 <title>curve_0_13&#45;&gt;curve_0_14</title>
-<path fill="none" stroke="#2563eb" d="M183.38,-261.87C185.31,-261.85 189.66,-261.81 191.72,-261.79"/>
+<path fill="none" stroke="#d85e91" d="M183.38,-261.87C185.31,-261.85 189.66,-261.81 191.72,-261.79"/>
 </g>
 <!-- curve_0_14&#45;&gt;curve_0_15 -->
 <g id="edge17" class="edge">
 <title>curve_0_14&#45;&gt;curve_0_15</title>
-<path fill="none" stroke="#2563eb" d="M193.79,-261.77C195.73,-261.74 200.08,-261.68 202.14,-261.65"/>
+<path fill="none" stroke="#d85e91" d="M193.79,-261.77C195.73,-261.74 200.08,-261.68 202.14,-261.65"/>
 </g>
 <!-- curve_0_15&#45;&gt;curve_0_16 -->
 <g id="edge18" class="edge">
 <title>curve_0_15&#45;&gt;curve_0_16</title>
-<path fill="none" stroke="#2563eb" d="M204.21,-261.61C206.15,-261.57 210.5,-261.48 212.55,-261.44"/>
+<path fill="none" stroke="#d85e91" d="M204.21,-261.61C206.15,-261.57 210.5,-261.48 212.55,-261.44"/>
 </g>
 <!-- curve_0_16&#45;&gt;curve_0_17 -->
 <g id="edge19" class="edge">
 <title>curve_0_16&#45;&gt;curve_0_17</title>
-<path fill="none" stroke="#2563eb" d="M214.63,-261.39C216.56,-261.33 220.91,-261.21 222.97,-261.15"/>
+<path fill="none" stroke="#d85e91" d="M214.63,-261.39C216.56,-261.33 220.91,-261.21 222.97,-261.15"/>
 </g>
 <!-- curve_0_17&#45;&gt;curve_0_18 -->
 <g id="edge20" class="edge">
 <title>curve_0_17&#45;&gt;curve_0_18</title>
-<path fill="none" stroke="#2563eb" d="M225.04,-261.08C226.98,-261 231.33,-260.83 233.39,-260.75"/>
+<path fill="none" stroke="#d85e91" d="M225.04,-261.08C226.98,-261 231.33,-260.83 233.39,-260.75"/>
 </g>
 <!-- curve_0_18&#45;&gt;curve_0_19 -->
 <g id="edge21" class="edge">
 <title>curve_0_18&#45;&gt;curve_0_19</title>
-<path fill="none" stroke="#2563eb" d="M235.46,-260.66C237.4,-260.56 241.75,-260.34 243.8,-260.24"/>
+<path fill="none" stroke="#d85e91" d="M235.46,-260.66C237.4,-260.56 241.75,-260.34 243.8,-260.24"/>
 </g>
 <!-- curve_0_19&#45;&gt;curve_0_20 -->
 <g id="edge22" class="edge">
 <title>curve_0_19&#45;&gt;curve_0_20</title>
-<path fill="none" stroke="#2563eb" d="M245.88,-260.12C247.81,-259.99 252.16,-259.71 254.22,-259.57"/>
+<path fill="none" stroke="#d85e91" d="M245.88,-260.12C247.81,-259.99 252.16,-259.71 254.22,-259.57"/>
 </g>
 <!-- curve_0_20&#45;&gt;curve_0_21 -->
 <g id="edge23" class="edge">
 <title>curve_0_20&#45;&gt;curve_0_21</title>
-<path fill="none" stroke="#2563eb" d="M256.29,-259.42C258.23,-259.26 262.58,-258.91 264.64,-258.74"/>
+<path fill="none" stroke="#d85e91" d="M256.29,-259.42C258.23,-259.26 262.58,-258.91 264.64,-258.74"/>
 </g>
 <!-- curve_0_21&#45;&gt;curve_0_22 -->
 <g id="edge24" class="edge">
 <title>curve_0_21&#45;&gt;curve_0_22</title>
-<path fill="none" stroke="#2563eb" d="M266.71,-258.55C268.65,-258.36 273,-257.92 275.05,-257.71"/>
+<path fill="none" stroke="#d85e91" d="M266.71,-258.55C268.65,-258.36 273,-257.92 275.05,-257.71"/>
 </g>
 <!-- curve_0_22&#45;&gt;curve_0_23 -->
 <g id="edge25" class="edge">
 <title>curve_0_22&#45;&gt;curve_0_23</title>
-<path fill="none" stroke="#2563eb" d="M277.13,-257.48C279.06,-257.24 283.41,-256.7 285.47,-256.45"/>
+<path fill="none" stroke="#d85e91" d="M277.13,-257.48C279.06,-257.24 283.41,-256.7 285.47,-256.45"/>
 </g>
 <!-- curve_0_23&#45;&gt;curve_0_24 -->
 <g id="edge26" class="edge">
 <title>curve_0_23&#45;&gt;curve_0_24</title>
-<path fill="none" stroke="#2563eb" d="M287.54,-256.17C289.48,-255.88 293.83,-255.24 295.89,-254.93"/>
+<path fill="none" stroke="#d85e91" d="M287.54,-256.17C289.48,-255.88 293.83,-255.24 295.89,-254.93"/>
 </g>
 <!-- curve_0_24&#45;&gt;curve_0_25 -->
 <g id="edge27" class="edge">
 <title>curve_0_24&#45;&gt;curve_0_25</title>
-<path fill="none" stroke="#2563eb" d="M297.96,-254.6C299.9,-254.25 304.25,-253.49 306.3,-253.12"/>
+<path fill="none" stroke="#d85e91" d="M297.96,-254.6C299.9,-254.25 304.25,-253.49 306.3,-253.12"/>
 </g>
 <!-- curve_0_25&#45;&gt;curve_0_26 -->
 <g id="edge28" class="edge">
 <title>curve_0_25&#45;&gt;curve_0_26</title>
-<path fill="none" stroke="#2563eb" d="M308.38,-252.72C310.31,-252.32 314.66,-251.41 316.72,-250.98"/>
+<path fill="none" stroke="#d85e91" d="M308.38,-252.72C310.31,-252.32 314.66,-251.41 316.72,-250.98"/>
 </g>
 <!-- curve_0_26&#45;&gt;curve_0_27 -->
 <g id="edge29" class="edge">
 <title>curve_0_26&#45;&gt;curve_0_27</title>
-<path fill="none" stroke="#2563eb" d="M318.79,-250.52C320.73,-250.05 325.08,-248.98 327.14,-248.48"/>
+<path fill="none" stroke="#d85e91" d="M318.79,-250.52C320.73,-250.05 325.08,-248.98 327.14,-248.48"/>
 </g>
 <!-- curve_0_27&#45;&gt;curve_0_28 -->
 <g id="edge30" class="edge">
 <title>curve_0_27&#45;&gt;curve_0_28</title>
-<path fill="none" stroke="#2563eb" d="M329.21,-247.94C331.15,-247.39 335.5,-246.16 337.55,-245.58"/>
+<path fill="none" stroke="#d85e91" d="M329.21,-247.94C331.15,-247.39 335.5,-246.16 337.55,-245.58"/>
 </g>
 <!-- curve_0_28&#45;&gt;curve_0_29 -->
 <g id="edge31" class="edge">
 <title>curve_0_28&#45;&gt;curve_0_29</title>
-<path fill="none" stroke="#2563eb" d="M339.63,-244.95C341.56,-244.32 345.91,-242.9 347.97,-242.23"/>
+<path fill="none" stroke="#d85e91" d="M339.63,-244.95C341.56,-244.32 345.91,-242.9 347.97,-242.23"/>
 </g>
 <!-- curve_0_29&#45;&gt;curve_0_30 -->
 <g id="edge32" class="edge">
 <title>curve_0_29&#45;&gt;curve_0_30</title>
-<path fill="none" stroke="#2563eb" d="M350.04,-241.51C351.98,-240.78 356.33,-239.16 358.39,-238.39"/>
+<path fill="none" stroke="#d85e91" d="M350.04,-241.51C351.98,-240.78 356.33,-239.16 358.39,-238.39"/>
 </g>
 <!-- curve_0_30&#45;&gt;curve_0_31 -->
 <g id="edge33" class="edge">
 <title>curve_0_30&#45;&gt;curve_0_31</title>
-<path fill="none" stroke="#2563eb" d="M360.46,-237.56C362.4,-236.74 366.75,-234.89 368.8,-234.02"/>
+<path fill="none" stroke="#d85e91" d="M360.46,-237.56C362.4,-236.74 366.75,-234.89 368.8,-234.02"/>
 </g>
 <!-- curve_0_31&#45;&gt;curve_0_32 -->
 <g id="edge34" class="edge">
 <title>curve_0_31&#45;&gt;curve_0_32</title>
-<path fill="none" stroke="#2563eb" d="M370.88,-233.08C372.97,-232.07 377.91,-229.7 379.68,-228.84"/>
+<path fill="none" stroke="#d85e91" d="M370.88,-233.08C372.97,-232.07 377.91,-229.7 379.68,-228.84"/>
 </g>
 <!-- curve_0_32&#45;&gt;curve_0_33 -->
 <g id="edge35" class="edge">
 <title>curve_0_32&#45;&gt;curve_0_33</title>
-<path fill="none" stroke="#2563eb" d="M381.29,-228.01C383.39,-226.87 388.32,-224.19 390.1,-223.23"/>
+<path fill="none" stroke="#d85e91" d="M381.29,-228.01C383.39,-226.87 388.32,-224.19 390.1,-223.23"/>
 </g>
 <!-- curve_0_33&#45;&gt;curve_0_34 -->
 <g id="edge36" class="edge">
 <title>curve_0_33&#45;&gt;curve_0_34</title>
-<path fill="none" stroke="#2563eb" d="M391.71,-222.29C393.81,-221.02 398.74,-218.01 400.52,-216.93"/>
+<path fill="none" stroke="#d85e91" d="M391.71,-222.29C393.81,-221.02 398.74,-218.01 400.52,-216.93"/>
 </g>
 <!-- curve_0_34&#45;&gt;curve_0_35 -->
 <g id="edge37" class="edge">
 <title>curve_0_34&#45;&gt;curve_0_35</title>
-<path fill="none" stroke="#2563eb" d="M402.13,-215.88C404.22,-214.46 409.16,-211.11 410.93,-209.9"/>
+<path fill="none" stroke="#d85e91" d="M402.13,-215.88C404.22,-214.46 409.16,-211.11 410.93,-209.9"/>
 </g>
 <!-- curve_0_35&#45;&gt;curve_0_36 -->
 <g id="edge38" class="edge">
 <title>curve_0_35&#45;&gt;curve_0_36</title>
-<path fill="none" stroke="#2563eb" d="M412.54,-208.73C414.64,-207.15 419.57,-203.42 421.35,-202.08"/>
+<path fill="none" stroke="#d85e91" d="M412.54,-208.73C414.64,-207.15 419.57,-203.42 421.35,-202.08"/>
 </g>
 <!-- curve_0_36&#45;&gt;curve_0_37 -->
 <g id="edge39" class="edge">
 <title>curve_0_36&#45;&gt;curve_0_37</title>
-<path fill="none" stroke="#2563eb" d="M422.68,-201.01C424.57,-199.43 429.81,-195.03 431.72,-193.44"/>
+<path fill="none" stroke="#d85e91" d="M422.68,-201.01C424.57,-199.43 429.81,-195.03 431.72,-193.44"/>
 </g>
 <!-- curve_0_37&#45;&gt;curve_0_38 -->
 <g id="edge40" class="edge">
 <title>curve_0_37&#45;&gt;curve_0_38</title>
-<path fill="none" stroke="#2563eb" d="M433.1,-192.22C434.98,-190.48 440.23,-185.62 442.13,-183.86"/>
+<path fill="none" stroke="#d85e91" d="M433.1,-192.22C434.98,-190.48 440.23,-185.62 442.13,-183.86"/>
 </g>
 <!-- curve_0_38&#45;&gt;curve_0_39 -->
 <g id="edge41" class="edge">
 <title>curve_0_38&#45;&gt;curve_0_39</title>
-<path fill="none" stroke="#2563eb" d="M443.52,-182.51C445.4,-180.59 450.65,-175.24 452.55,-173.31"/>
+<path fill="none" stroke="#d85e91" d="M443.52,-182.51C445.4,-180.59 450.65,-175.24 452.55,-173.31"/>
 </g>
 <!-- curve_0_39&#45;&gt;curve_0_40 -->
 <g id="edge42" class="edge">
 <title>curve_0_39&#45;&gt;curve_0_40</title>
-<path fill="none" stroke="#2563eb" d="M453.93,-171.83C455.82,-169.72 461.06,-163.85 462.97,-161.72"/>
+<path fill="none" stroke="#d85e91" d="M453.93,-171.83C455.82,-169.72 461.06,-163.85 462.97,-161.72"/>
 </g>
 <!-- curve_0_40&#45;&gt;curve_0_41 -->
 <g id="edge43" class="edge">
 <title>curve_0_40&#45;&gt;curve_0_41</title>
-<path fill="none" stroke="#2563eb" d="M464.35,-160.1C466.23,-157.79 471.48,-151.36 473.38,-149.03"/>
+<path fill="none" stroke="#d85e91" d="M464.35,-160.1C466.23,-157.79 471.48,-151.36 473.38,-149.03"/>
 </g>
 <!-- curve_0_41&#45;&gt;curve_0_42 -->
 <g id="edge44" class="edge">
 <title>curve_0_41&#45;&gt;curve_0_42</title>
-<path fill="none" stroke="#2563eb" d="M474.77,-147.26C476.65,-144.74 481.9,-137.72 483.8,-135.18"/>
+<path fill="none" stroke="#d85e91" d="M474.77,-147.26C476.65,-144.74 481.9,-137.72 483.8,-135.18"/>
 </g>
 <!-- curve_0_42&#45;&gt;curve_0_43 -->
 <g id="edge45" class="edge">
 <title>curve_0_42&#45;&gt;curve_0_43</title>
-<path fill="none" stroke="#2563eb" d="M485.18,-133.25C487.14,-130.4 492.72,-122.26 494.42,-119.79"/>
+<path fill="none" stroke="#d85e91" d="M485.18,-133.25C487.14,-130.4 492.72,-122.26 494.42,-119.79"/>
 </g>
 <!-- curve_0_43&#45;&gt;curve_0_44 -->
 <g id="edge46" class="edge">
 <title>curve_0_43&#45;&gt;curve_0_44</title>
-<path fill="none" stroke="#2563eb" d="M495.36,-118.36C497.05,-115.7 502.99,-106.3 504.8,-103.42"/>
+<path fill="none" stroke="#d85e91" d="M495.36,-118.36C497.05,-115.7 502.99,-106.3 504.8,-103.42"/>
 </g>
 <!-- curve_0_44&#45;&gt;curve_0_45 -->
 <g id="edge47" class="edge">
 <title>curve_0_44&#45;&gt;curve_0_45</title>
-<path fill="none" stroke="#2563eb" d="M505.78,-101.81C507.46,-98.93 513.4,-88.74 515.22,-85.62"/>
+<path fill="none" stroke="#d85e91" d="M505.78,-101.81C507.46,-98.93 513.4,-88.74 515.22,-85.62"/>
 </g>
 <!-- curve_0_45&#45;&gt;curve_0_46 -->
 <g id="edge48" class="edge">
 <title>curve_0_45&#45;&gt;curve_0_46</title>
-<path fill="none" stroke="#2563eb" d="M516.31,-83.67C518.14,-80.28 523.9,-69.58 525.65,-66.33"/>
+<path fill="none" stroke="#d85e91" d="M516.31,-83.67C518.14,-80.28 523.9,-69.58 525.65,-66.33"/>
 </g>
 <!-- curve_0_46&#45;&gt;curve_0_47 -->
 <g id="edge49" class="edge">
 <title>curve_0_46&#45;&gt;curve_0_47</title>
-<path fill="none" stroke="#2563eb" d="M526.61,-64.48C528.3,-61.1 534.24,-49.2 536.05,-45.56"/>
+<path fill="none" stroke="#d85e91" d="M526.61,-64.48C528.3,-61.1 534.24,-49.2 536.05,-45.56"/>
 </g>
 <!-- curve_0_47&#45;&gt;curve_0_48 -->
 <g id="edge50" class="edge">
 <title>curve_0_47&#45;&gt;curve_0_48</title>
-<path fill="none" stroke="#2563eb" d="M537.03,-43.53C538.78,-39.76 545.1,-26.1 546.65,-22.75"/>
+<path fill="none" stroke="#d85e91" d="M537.03,-43.53C538.78,-39.76 545.1,-26.1 546.65,-22.75"/>
 </g>
 <!-- origin_0 -->
 <!-- xaxis_end_0 -->
@@ -276,256 +276,258 @@
 <!-- info_0 -->
 <g id="node6" class="node">
 <title>info_0</title>
-<polygon fill="#f8fafc" stroke="#94a3b8" points="225,-238 1.8,-238 1.8,-176.8 225,-176.8 225,-238"/>
-<text xml:space="preserve" text-anchor="start" x="9.8" y="-221.35" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">duty&#45;work&#45;served</text>
-<text xml:space="preserve" text-anchor="start" x="9.8" y="-210.1" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">impact = 1 &#45; x^4</text>
-<text xml:space="preserve" text-anchor="start" x="9.8" y="-198.85" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">hold_duration: 48 h</text>
-<text xml:space="preserve" text-anchor="start" x="9.8" y="-187.6" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">irrelevant_after: 336 h</text>
+<polygon fill="#f8fafc" stroke="#94a3b8" points="278.88,-225.15 26.62,-225.15 26.62,-149.65 278.88,-149.65 278.88,-225.15"/>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-212.6" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">duty&#45;work&#45;served</text>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-201.35" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">reference: back&#45;loaded</text>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-190.1" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">description: lambda x: 1.0 &#45; math.pow(x, 4.0)</text>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-178.85" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">source: builtins.star</text>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-167.6" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">hold_duration: 48 h</text>
+<text xml:space="preserve" text-anchor="start" x="34.62" y="-156.35" font-family="Ubuntu Mono" font-size="9.00" fill="#0f172a">irrelevant_after: 336 h</text>
 </g>
 <!-- curve_0_0 -->
 <g id="node7" class="node">
 <title>curve_0_0</title>
-<ellipse fill="#334155" stroke="#334155" cx="47" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="47" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_1 -->
 <g id="node8" class="node">
 <title>curve_0_1</title>
-<ellipse fill="#334155" stroke="#334155" cx="57.42" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="57.42" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_2 -->
 <g id="node9" class="node">
 <title>curve_0_2</title>
-<ellipse fill="#334155" stroke="#334155" cx="67.83" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="67.83" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_3 -->
 <g id="node10" class="node">
 <title>curve_0_3</title>
-<ellipse fill="#334155" stroke="#334155" cx="78.25" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="78.25" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_4 -->
 <g id="node11" class="node">
 <title>curve_0_4</title>
-<ellipse fill="#334155" stroke="#334155" cx="88.67" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="88.67" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_5 -->
 <g id="node12" class="node">
 <title>curve_0_5</title>
-<ellipse fill="#334155" stroke="#334155" cx="99.08" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="99.08" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_6 -->
 <g id="node13" class="node">
 <title>curve_0_6</title>
-<ellipse fill="#334155" stroke="#334155" cx="109.5" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="109.5" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_7 -->
 <g id="node14" class="node">
 <title>curve_0_7</title>
-<ellipse fill="#334155" stroke="#334155" cx="119.92" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="119.92" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_8 -->
 <g id="node15" class="node">
 <title>curve_0_8</title>
-<ellipse fill="#334155" stroke="#334155" cx="130.33" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="130.33" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_9 -->
 <g id="node16" class="node">
 <title>curve_0_9</title>
-<ellipse fill="#334155" stroke="#334155" cx="140.75" cy="-262" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="140.75" cy="-262" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_10 -->
 <g id="node17" class="node">
 <title>curve_0_10</title>
-<ellipse fill="#334155" stroke="#334155" cx="151.17" cy="-261.99" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="151.17" cy="-261.99" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_11 -->
 <g id="node18" class="node">
 <title>curve_0_11</title>
-<ellipse fill="#334155" stroke="#334155" cx="161.58" cy="-261.98" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="161.58" cy="-261.98" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_12 -->
 <g id="node19" class="node">
 <title>curve_0_12</title>
-<ellipse fill="#334155" stroke="#334155" cx="172" cy="-261.94" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="172" cy="-261.94" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_13 -->
 <g id="node20" class="node">
 <title>curve_0_13</title>
-<ellipse fill="#334155" stroke="#334155" cx="182.42" cy="-261.88" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="182.42" cy="-261.88" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_14 -->
 <g id="node21" class="node">
 <title>curve_0_14</title>
-<ellipse fill="#334155" stroke="#334155" cx="192.83" cy="-261.78" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="192.83" cy="-261.78" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_15 -->
 <g id="node22" class="node">
 <title>curve_0_15</title>
-<ellipse fill="#334155" stroke="#334155" cx="203.25" cy="-261.63" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="203.25" cy="-261.63" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_16 -->
 <g id="node23" class="node">
 <title>curve_0_16</title>
-<ellipse fill="#334155" stroke="#334155" cx="213.67" cy="-261.41" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="213.67" cy="-261.41" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_17 -->
 <g id="node24" class="node">
 <title>curve_0_17</title>
-<ellipse fill="#334155" stroke="#334155" cx="224.08" cy="-261.11" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="224.08" cy="-261.11" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_18 -->
 <g id="node25" class="node">
 <title>curve_0_18</title>
-<ellipse fill="#334155" stroke="#334155" cx="234.5" cy="-260.71" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="234.5" cy="-260.71" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_19 -->
 <g id="node26" class="node">
 <title>curve_0_19</title>
-<ellipse fill="#334155" stroke="#334155" cx="244.92" cy="-260.18" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="244.92" cy="-260.18" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_20 -->
 <g id="node27" class="node">
 <title>curve_0_20</title>
-<ellipse fill="#334155" stroke="#334155" cx="255.33" cy="-259.5" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="255.33" cy="-259.5" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_21 -->
 <g id="node28" class="node">
 <title>curve_0_21</title>
-<ellipse fill="#334155" stroke="#334155" cx="265.75" cy="-258.65" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="265.75" cy="-258.65" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_22 -->
 <g id="node29" class="node">
 <title>curve_0_22</title>
-<ellipse fill="#334155" stroke="#334155" cx="276.17" cy="-257.6" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="276.17" cy="-257.6" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_23 -->
 <g id="node30" class="node">
 <title>curve_0_23</title>
-<ellipse fill="#334155" stroke="#334155" cx="286.58" cy="-256.31" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="286.58" cy="-256.31" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_24 -->
 <g id="node31" class="node">
 <title>curve_0_24</title>
-<ellipse fill="#334155" stroke="#334155" cx="297" cy="-254.77" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="297" cy="-254.77" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_25 -->
 <g id="node32" class="node">
 <title>curve_0_25</title>
-<ellipse fill="#334155" stroke="#334155" cx="307.42" cy="-252.92" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="307.42" cy="-252.92" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_26 -->
 <g id="node33" class="node">
 <title>curve_0_26</title>
-<ellipse fill="#334155" stroke="#334155" cx="317.83" cy="-250.75" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="317.83" cy="-250.75" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_27 -->
 <g id="node34" class="node">
 <title>curve_0_27</title>
-<ellipse fill="#334155" stroke="#334155" cx="328.25" cy="-248.21" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="328.25" cy="-248.21" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_28 -->
 <g id="node35" class="node">
 <title>curve_0_28</title>
-<ellipse fill="#334155" stroke="#334155" cx="338.67" cy="-245.26" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="338.67" cy="-245.26" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_29 -->
 <g id="node36" class="node">
 <title>curve_0_29</title>
-<ellipse fill="#334155" stroke="#334155" cx="349.08" cy="-241.86" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="349.08" cy="-241.86" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_30 -->
 <g id="node37" class="node">
 <title>curve_0_30</title>
-<ellipse fill="#334155" stroke="#334155" cx="359.5" cy="-237.97" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="359.5" cy="-237.97" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_31 -->
 <g id="node38" class="node">
 <title>curve_0_31</title>
-<ellipse fill="#334155" stroke="#334155" cx="369.92" cy="-233.54" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="369.92" cy="-233.54" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_32 -->
 <g id="node39" class="node">
 <title>curve_0_32</title>
-<ellipse fill="#334155" stroke="#334155" cx="380.33" cy="-228.53" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="380.33" cy="-228.53" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_33 -->
 <g id="node40" class="node">
 <title>curve_0_33</title>
-<ellipse fill="#334155" stroke="#334155" cx="390.75" cy="-222.88" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="390.75" cy="-222.88" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_34 -->
 <g id="node41" class="node">
 <title>curve_0_34</title>
-<ellipse fill="#334155" stroke="#334155" cx="401.17" cy="-216.54" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="401.17" cy="-216.54" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_35 -->
 <g id="node42" class="node">
 <title>curve_0_35</title>
-<ellipse fill="#334155" stroke="#334155" cx="411.58" cy="-209.46" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="411.58" cy="-209.46" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_36 -->
 <g id="node43" class="node">
 <title>curve_0_36</title>
-<ellipse fill="#334155" stroke="#334155" cx="422" cy="-201.58" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="422" cy="-201.58" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_37 -->
 <g id="node44" class="node">
 <title>curve_0_37</title>
-<ellipse fill="#334155" stroke="#334155" cx="432.42" cy="-192.85" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="432.42" cy="-192.85" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_38 -->
 <g id="node45" class="node">
 <title>curve_0_38</title>
-<ellipse fill="#334155" stroke="#334155" cx="442.83" cy="-183.21" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="442.83" cy="-183.21" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_39 -->
 <g id="node46" class="node">
 <title>curve_0_39</title>
-<ellipse fill="#334155" stroke="#334155" cx="453.25" cy="-172.59" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="453.25" cy="-172.59" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_40 -->
 <g id="node47" class="node">
 <title>curve_0_40</title>
-<ellipse fill="#334155" stroke="#334155" cx="463.67" cy="-160.94" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="463.67" cy="-160.94" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_41 -->
 <g id="node48" class="node">
 <title>curve_0_41</title>
-<ellipse fill="#334155" stroke="#334155" cx="474.08" cy="-148.18" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="474.08" cy="-148.18" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_42 -->
 <g id="node49" class="node">
 <title>curve_0_42</title>
-<ellipse fill="#334155" stroke="#334155" cx="484.5" cy="-134.24" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="484.5" cy="-134.24" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_43 -->
 <g id="node50" class="node">
 <title>curve_0_43</title>
-<ellipse fill="#334155" stroke="#334155" cx="494.92" cy="-119.07" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="494.92" cy="-119.07" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_44 -->
 <g id="node51" class="node">
 <title>curve_0_44</title>
-<ellipse fill="#334155" stroke="#334155" cx="505.33" cy="-102.58" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="505.33" cy="-102.58" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_45 -->
 <g id="node52" class="node">
 <title>curve_0_45</title>
-<ellipse fill="#334155" stroke="#334155" cx="515.75" cy="-84.71" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="515.75" cy="-84.71" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_46 -->
 <g id="node53" class="node">
 <title>curve_0_46</title>
-<ellipse fill="#334155" stroke="#334155" cx="526.17" cy="-65.37" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="526.17" cy="-65.37" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_47 -->
 <g id="node54" class="node">
 <title>curve_0_47</title>
-<ellipse fill="#334155" stroke="#334155" cx="536.58" cy="-44.5" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="536.58" cy="-44.5" rx="0.72" ry="0.72"/>
 </g>
 <!-- curve_0_48 -->
 <g id="node55" class="node">
 <title>curve_0_48</title>
-<ellipse fill="#334155" stroke="#334155" cx="547" cy="-22" rx="0.72" ry="0.72"/>
+<ellipse fill="#cc0256" fill-opacity="0.635294" stroke="#cc0256" stroke-opacity="0.635294" cx="547" cy="-22" rx="0.72" ry="0.72"/>
 </g>
 </g>
 </svg>

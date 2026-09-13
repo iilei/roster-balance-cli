@@ -3,13 +3,13 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/iilei/roster-balance-cli/internal/config"
 	"github.com/iilei/roster-balance-cli/internal/planning"
+	"github.com/iilei/roster-balance-cli/policy"
 	"github.com/spf13/cobra"
 )
 
@@ -117,10 +117,14 @@ type lifecycleOutput struct {
 }
 
 type decayCurveOutput struct {
-	Kind     string       `json:"kind"`
-	Exponent float64      `json:"exponent,omitempty"`
-	Formula  string       `json:"formula"`
-	Samples  []curvePoint `json:"samples"`
+	Reference   string       `json:"reference"`
+	Origin      string       `json:"origin"`
+	Language    string       `json:"language"`
+	Source      string       `json:"source,omitempty"`
+	Description string       `json:"description,omitempty"`
+	Kind        string       `json:"kind"`
+	Exponent    float64      `json:"exponent,omitempty"`
+	Samples     []curvePoint `json:"samples"`
 }
 
 type curvePoint struct {
@@ -139,28 +143,30 @@ func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (d
 		)
 	}
 
+	registry := policy.DefaultDecayRegistry()
+	desc, ok := registry.Describe(profile)
+	if !ok {
+		return decayCurveOutput{}, fmt.Errorf("unsupported decay profile %q", profile)
+	}
+
 	curve := decayCurveOutput{
-		Kind:    "power",
-		Samples: make([]curvePoint, 0, sampleCount+1),
+		Reference:   desc.Reference,
+		Origin:      desc.Origin,
+		Language:    desc.Language,
+		Source:      desc.Source,
+		Description: desc.Description,
+		Kind:        "power",
+		Samples:     make([]curvePoint, 0, sampleCount+1),
 	}
 	switch profile {
-	case "hard-drop":
-		curve.Kind = "step"
-		curve.Formula = "impact = 1 until hold_duration, then 0"
-	case "front-loaded":
-		curve.Exponent = 0.1
-		curve.Formula = "impact = 1 - x^0.1"
-	case "linear":
-		curve.Exponent = 1
-		curve.Formula = "impact = 1 - x"
-	case "back-loaded":
-		curve.Exponent = 4
-		curve.Formula = "impact = 1 - x^4"
 	case "flat":
 		curve.Kind = "step"
-		curve.Formula = "impact = 1 until irrelevant_after, then 0"
-	default:
-		return decayCurveOutput{}, fmt.Errorf("unsupported decay profile %q", profile)
+	case "front-loaded":
+		curve.Exponent = 0.1
+	case "linear":
+		curve.Exponent = 1
+	case "back-loaded":
+		curve.Exponent = 4
 	}
 
 	// x is normalized over the full lifecycle; decay only starts after the hold span.
@@ -171,15 +177,20 @@ func buildDecayCurve(profile string, holdHours, irrelevantAfterHours float64) (d
 		switch {
 		case x < holdX:
 			impact = 1
-		case profile == "hard-drop":
-			impact = 0
 		case profile == "flat":
 			if index < sampleCount {
 				impact = 1
 			}
 		default:
 			decayX := (x - holdX) / (1 - holdX)
-			impact = 1 - math.Pow(decayX, curve.Exponent)
+			var err error
+			impact, err = registry.Evaluate(profile, decayX)
+			if err != nil {
+				return decayCurveOutput{}, fmt.Errorf("profile %q: %w", profile, err)
+			}
+			if impact < 0 || impact > 1 {
+				return decayCurveOutput{}, fmt.Errorf("profile %q returned out-of-range impact %g", profile, impact)
+			}
 		}
 		curve.Samples = append(curve.Samples, curvePoint{X: x, Impact: impact})
 	}

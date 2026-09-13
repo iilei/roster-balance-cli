@@ -1,7 +1,7 @@
 digraph factor_lifecycles {
   graph [bgcolor="transparent", compound=true, overlap=false, outputorder=edgesfirst]
-  node [color="#334155", fontcolor="#0f172a", fontname=" sans", fontsize=10]
-  edge [color="#2563eb", fontname=" sans", fontsize=9, arrowhead=none]
+  node [color="#cc0256a2", fontcolor="#0f172a", fontname=" sans", fontsize=10]
+  edge [color="#d85e91", fontname=" sans", fontsize=9, arrowhead=none]
 
 
 
@@ -20,10 +20,9 @@ digraph factor_lifecycles {
     axis_y_0 [label="impact", shape=none, fontsize=9, pos="-20,282!"]
 
     info_0 [
-      label="duty-work-served\limpact = 1 until irrelevant_after, then 0\lhold_duration: 48 h\lirrelevant_after: 336 h\l",
+      label="duty-work-served\lreference: flat\ldescription: lambda x: 1.0\lsource: builtins.star\lhold_duration: 48 h\lirrelevant_after: 336 h\l",
       shape=box, style="filled", fillcolor="#f8fafc", color="#94a3b8", fontsize=9,
-      width=3.1, height=0.85, fixedsize=true,
-      pos="66.4,185.4!"
+      pos="53.5,165.4!"
     ]
 
 

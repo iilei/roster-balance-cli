@@ -1,7 +1,7 @@
 digraph factor_lifecycles {
   graph [bgcolor="transparent", compound=true, overlap=false, outputorder=edgesfirst]
-  node [color="#334155", fontcolor="#0f172a", fontname=" sans", fontsize=10]
-  edge [color="#2563eb", fontname=" sans", fontsize=9, arrowhead=none]
+  node [color="#cc0256a2", fontcolor="#0f172a", fontname=" sans", fontsize=10]
+  edge [color="#d85e91", fontname=" sans", fontsize=9, arrowhead=none]
 
 {{ $config := datasource "config" }}
 {{ range $index, $factor := $config.factors }}
@@ -19,11 +19,24 @@ digraph factor_lifecycles {
     axis_x_{{ $index }} [label="time", shape=none, fontsize=9, pos="536,-4!"]
     axis_y_{{ $index }} [label="impact", shape=none, fontsize=9, pos="-20,282!"]
 
+{{- $l1 := $factor.name }}
+{{- $l2 := printf "reference: %s" $factor.lifecycle.curve.reference }}
+{{- $l3 := printf "description: %s" $factor.lifecycle.curve.description }}
+{{- $l4 := printf "source: %s" $factor.lifecycle.curve.source }}
+{{- $l5 := printf "hold_duration: %v h" $factor.lifecycle.hold_duration_hours }}
+{{- $l6 := printf "irrelevant_after: %v h" $factor.lifecycle.irrelevant_after_hours }}
+{{- $maxLen := len $l1 }}
+{{- range (coll.Slice $l2 $l3 $l4 $l5 $l6) }}
+  {{- if gt (len .) $maxLen }}{{ $maxLen = len . }}{{ end }}
+{{- end }}
+{{- $boxWidthPt := math.Sub (math.Add (math.Mul $maxLen 5.5) 18.0) 60 }}
+{{- $leftOffsetPt := 3.0 }}
+{{- $posX := math.Add $leftOffsetPt (math.Div $boxWidthPt 2.0) }}
+
     info_{{ $index }} [
-      label={{ printf "\"%s\\l%s\\lhold_duration: %v h\\lirrelevant_after: %v h\\l\"" $factor.name $factor.lifecycle.curve.formula $factor.lifecycle.hold_duration_hours $factor.lifecycle.irrelevant_after_hours }},
+      label={{ printf "\"%s\\lreference: %s\\ldescription: %s\\lsource: %s\\lhold_duration: %v h\\lirrelevant_after: %v h\\l\"" $factor.name $factor.lifecycle.curve.reference $factor.lifecycle.curve.description $factor.lifecycle.curve.source $factor.lifecycle.hold_duration_hours $factor.lifecycle.irrelevant_after_hours }},
       shape=box, style="filled", fillcolor="#f8fafc", color="#94a3b8", fontsize=9,
-      width=3.1, height=0.85, fixedsize=true,
-      pos="66.4,185.4!"
+      pos="{{ $posX }},165.4!"
     ]
 
 {{ range $pointIndex, $point := $factor.lifecycle.curve.samples }}

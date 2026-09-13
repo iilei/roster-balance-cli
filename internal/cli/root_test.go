@@ -108,3 +108,34 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 		)
 	}
 }
+
+func TestDecayCurvesStayCurvedAfterHold(t *testing.T) {
+	front, err := buildDecayCurve("front-loaded", 48, 336)
+	if err != nil {
+		t.Fatalf("front-loaded curve error = %v", err)
+	}
+	back, err := buildDecayCurve("back-loaded", 48, 336)
+	if err != nil {
+		t.Fatalf("back-loaded curve error = %v", err)
+	}
+	if front.Samples[7].Impact <= 0 || front.Samples[7].Impact >= 1 {
+		t.Fatalf("front-loaded sample after hold = %v, want a gradual curve value in (0,1)", front.Samples[7].Impact)
+	}
+	if back.Samples[7].Impact <= 0 || back.Samples[7].Impact >= 1 {
+		t.Fatalf("back-loaded sample after hold = %v, want a gradual curve value in (0,1)", back.Samples[7].Impact)
+	}
+	if front.Samples[7].Impact <= front.Samples[8].Impact {
+		t.Fatalf(
+			"front-loaded decay should decrease after hold: %v -> %v",
+			front.Samples[7].Impact,
+			front.Samples[8].Impact,
+		)
+	}
+	if back.Samples[7].Impact <= back.Samples[8].Impact {
+		t.Fatalf(
+			"back-loaded decay should fall gradually after hold: %v -> %v",
+			back.Samples[7].Impact,
+			back.Samples[8].Impact,
+		)
+	}
+}
