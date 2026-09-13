@@ -46,6 +46,7 @@ func setDefaults(v *viper.Viper, cfg Config) {
 	v.SetDefault("plan.options.days", cfg.Plan.Options.Days)
 	v.SetDefault("teams", cfg.Teams)
 	v.SetDefault("policies", cfg.Policies)
+	v.SetDefault("factors", cfg.Factors)
 }
 
 func discoverConfigPath(configPath string) (string, bool, error) {

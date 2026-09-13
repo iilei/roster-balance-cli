@@ -71,6 +71,38 @@
     },
     "required": ["id"]
    }
+  },
+  "factors": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "name": {
+      "type": "string",
+      "minLength": 1
+     },
+     "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+       "decay_profile": {
+        "enum": ["hard-drop", "front-loaded", "linear", "back-loaded", "flat"]
+       },
+       "hold_duration": {
+        "type": "string",
+        "minLength": 1
+       },
+       "irrelevant_after": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": ["decay_profile", "hold_duration", "irrelevant_after"]
+     }
+    },
+    "required": ["name", "lifecycle"]
+   }
   }
  },
  "required": ["plan"]

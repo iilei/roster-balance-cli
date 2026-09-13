@@ -18,5 +18,13 @@ func DefaultConfig() Config {
 		},
 		Teams:    []Team{{ID: defaultTeamID}},
 		Policies: []Policy{{ID: defaultPolicyID}},
+		Factors: []Factor{{
+			Name: "duty-work-served",
+			Lifecycle: Lifecycle{
+				DecayProfile:    "front-loaded",
+				HoldDuration:    "2d",
+				IrrelevantAfter: "14d",
+			},
+		}},
 	}
 }

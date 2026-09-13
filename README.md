@@ -5,22 +5,92 @@
 For v0, the CLI stays dumb about calendar providers and accepts normalized input through a single adapter layer. The first supported import format should be ICS exports, which lets Outlook and other corporate calendars work without committing to Graph or OAuth integration. Direct Outlook sync can come later only if the operational need justifies the extra scope.
 In the future, a Starlark-based ingestion layer could map raw calendar events into roster concepts like availability, absences, or team-specific exceptions while keeping provider connectors in Go.
 
+## Identity and event effects
+
+External inputs are resolved to a stable internal `MemberID` before they enter the domain model. Ingress adapters may start with an email address, calendar identity, or provider-specific user ID, but policies do not resolve identities themselves.
+
+The event flow is:
+
+```text
+external input
+  -> identity resolution
+  -> domain event with canonical member ID
+  -> track record
+  -> Starlark event rule
+  -> declarative effect
+```
+
+For example, an `on-call-call` event is recorded against a member. A Starlark event rule may then emit an eligibility lock for that member and role; the Go planner remains responsible for applying the effect and producing the explanation trace.
+
+These concepts remain separate:
+
+* **Team membership**: association and authorization within a team.
+* **Roster eligibility**: whether a member may be assigned to a roster.
+* **Event effects**: temporary restrictions or state changes derived from recorded events.
+
+Team membership does not imply roster eligibility. Effects target the canonical member identity, never an email address or an unresolved external identity.
+
+## Time semantics and timezone data
+
+Time calculations use explicit semantics:
+
+* **Calendar days** define planning boundaries in an IANA timezone. A planning horizon of seven days means seven local calendar dates, even when a daylight-saving transition creates a 23-hour or 25-hour day.
+* **Elapsed durations** define locks, cooldowns, and lifecycle durations. `24h` means exactly 24 elapsed hours.
+* **Instants** define event ordering. Recorded event timestamps are stored as instants, preferably in UTC, while retaining the timezone needed to interpret local schedule boundaries.
+
+The policy engine and its Starlark API must expose these concepts with distinct names. Calendar-day arithmetic must use timezone-aware date operations; policies must not assume that one calendar day equals 24 hours.
+
+The selected team's IANA timezone is inherited by the policy context:
+
+```yaml
+teams:
+  - id: team-a
+    timezone: Europe/Berlin
+```
+
+Rules do not repeat the timezone for every calculation. The context provides it from the selected team.
+
+The Starlark time API should expose the domain question directly:
+
+```python
+day_hours = time.calendar_day_hours(ctx.local_date)
+
+elapsed_hours = time.elapsed_hours(start_instant, end_instant)
+```
+
+`calendar_day_hours` measures the length of one local calendar day in `ctx.team.timezone` and may return 23, 24, or 25 around daylight-saving transitions. `elapsed_hours` measures the duration between two instants, so `24h` always means exactly 24 elapsed hours. Policies should not need to inspect raw timezone transition tables.
+
+Timezone transitions are provided by the IANA Time Zone Database. Historical transitions are required for past events, and the current database rules are sufficient for future schedules known today. Future legislation may change those rules, so published schedules must not change silently after a timezone database update.
+
+Generated schedules should record the timezone and tzdata version used to calculate them. A changed timezone database requires an explicit schedule regeneration.
+
 ## Bounded impact decay
 
 the impact of a duty-served on later decisions is visually represented by math plotting. Example:
 
-```
+```text
 https://www.desmos.com/calculator/ozfmmd1ztm
 ```
 
-Also see
-
-* [ntcharts](https://github.com/NimbleMarkets/ntcharts)
-* [bubbletea](https://github.com/charmbracelet/bubbletea)
+The CLI emits structured JSON for downstream consumers; rendering and transformation remain outside the binary.
 
 ## Team-Owned Policies
 
 For v0, Team-owned policies are git-managed.
+
+## Configuration schema status
+
+The configuration schema is work in progress. It currently covers the initial CLI configuration slice only; the factor lifecycle model and stricter ingress validation will be specified and implemented incrementally.
+
+## JSON factor inspection
+
+Inspect the current factor defaults as canonical JSON:
+
+```text
+rosterbalance inspect factors
+```
+
+The output includes a versioned schema identifier and lifecycle durations in hours. It is intended for downstream transformation, such as a separate `gomplate` step, rather than for terminal rendering.
 
 ## Math and Config
 
