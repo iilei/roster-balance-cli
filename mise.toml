@@ -12,6 +12,9 @@
 jfrog-cli = "latest"
 "github:iilei/rooster-balance-cli" = "0.0.0+pre-001"
 go = "1.25.0"
+prek = "0.5.0"
+rumdl = "0.2.62"
+golangci-lint = "2.13.2"
 
 [tasks.jf]
 description = "Run JFrog CLI"
@@ -29,3 +32,14 @@ run = "rooster-balance-cli"
 description = "Show rooster-balance-cli help"
 run = "rooster-balance-cli --help"
 
+[tasks.fmt]
+description = "Format Go sources"
+run = "golangci-lint fmt"
+
+[tasks.lint]
+description = "Run Go static analysis"
+run = "golangci-lint run"
+
+[tasks.test]
+description = "Run Go tests"
+run = "go test ./..."
