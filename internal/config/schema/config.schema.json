@@ -1,0 +1,77 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://github.com/iilei/roster-balance-cli/internal/config/schema/config.schema.json",
+ "type": "object",
+ "additionalProperties": false,
+ "properties": {
+  "plan": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "options": {
+     "type": "object",
+     "additionalProperties": false,
+     "properties": {
+      "team": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       "required": ["id"]
+      },
+      "policy": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "id": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       "required": ["id"]
+      },
+      "days": {
+       "type": "integer",
+       "minimum": 1
+      }
+     },
+     "required": ["team", "policy", "days"]
+    }
+   },
+   "required": ["options"]
+  },
+  "teams": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "required": ["id"]
+   }
+  },
+  "policies": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "id": {
+      "type": "string",
+      "minLength": 1
+     }
+    },
+    "required": ["id"]
+   }
+  }
+ },
+ "required": ["plan"]
+}

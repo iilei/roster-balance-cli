@@ -1,7 +1,12 @@
-// Package main provides command-line interface entrypoint for rosterbalance
+// Package main provides the rosterbalance CLI entrypoint.
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/iilei/roster-balance-cli/internal/cli"
+)
 
 // These variables are replaced by -ldflags during the build.
 var (
@@ -10,16 +15,9 @@ var (
 	date    = "unknown"
 )
 
-// Version holds the build metadata injected by GoReleaser.
-type Version struct {
-	Version string
-	Commit  string
-	Date    string
-}
-
-// GetVersion returns a populated Version struct.
-func GetVersion() Version {
-	return Version{
+// GetVersion returns the build metadata injected by GoReleaser.
+func GetVersion() cli.Version {
+	return cli.Version{
 		Version: version,
 		Commit:  commit,
 		Date:    date,
@@ -27,6 +25,8 @@ func GetVersion() Version {
 }
 
 func main() {
-	v := GetVersion()
-	fmt.Printf("app version %s (commit: %s, built at: %s)\n", v.Version, v.Commit, v.Date)
+	if err := cli.NewRootCommand(GetVersion()).Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }
