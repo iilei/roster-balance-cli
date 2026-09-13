@@ -43,3 +43,16 @@ run = "golangci-lint run"
 [tasks.test]
 description = "Run Go tests"
 run = "go test ./..."
+
+[tasks.factor-curves]
+description = "Generate lifecycle SVGs for built-in decay profiles"
+run = """
+set -euo pipefail
+mkdir -p docs/factor-curves
+for profile in hard-drop front-loaded linear back-loaded flat; do
+	go run ./cmd/rosterbalance inspect factors --decay-profile "$profile" \
+		| gomplate -d config='stdin:///dev/stdin?type=application/json' \
+				-f templates/factor-curve.dot.tmpl \
+		| neato -n2 -Tsvg -o "docs/factor-curves/${profile}.svg"
+done
+"""

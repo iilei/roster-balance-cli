@@ -90,7 +90,26 @@ Inspect the current factor defaults as canonical JSON:
 rosterbalance inspect factors
 ```
 
-The output includes a versioned schema identifier and lifecycle durations in hours. It is intended for downstream transformation, such as a separate `gomplate` step, rather than for terminal rendering.
+The output includes a versioned schema identifier, lifecycle durations in hours, and resolved curve samples. It is intended for downstream transformation, such as a separate `gomplate` step, rather than for terminal rendering.
+
+Render the lifecycle metadata as Graphviz DOT with the shipped template:
+
+```sh
+rosterbalance inspect factors \
+  | gomplate -d config='stdin:///dev/stdin?type=application/json' \
+      -f templates/factor-curve.dot.tmpl \
+  | neato -n2 -Tsvg > factor-curve.svg
+```
+
+The `--decay-profile` inspection option can select any built-in profile when comparing curve outputs.
+
+Generate diagrams for all built-in decay profiles with Mise:
+
+```sh
+mise run factor-curves
+```
+
+The generated SVGs are written to `docs/factor-curves/`.
 
 ## Math and Config
 
@@ -131,6 +150,10 @@ The built-in decay profiles are:
 * `flat`: do not decay before `irrelevant_after`, then make the impact zero.
 
 The lifecycle has two distinct boundaries:
+
+![Default duty-work-served lifecycle](docs/duty-work-served-lifecycle.svg)
+
+This diagram illustrates the current default lifecycle. The canonical machine-readable representation remains the JSON emitted by `rosterbalance inspect factors`.
 
 ```text
 0 -------- hold_duration ---------------- irrelevant_after

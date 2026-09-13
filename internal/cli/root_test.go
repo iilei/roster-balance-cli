@@ -64,6 +64,13 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 				DecayProfile         string  `json:"decay_profile"`
 				HoldDurationHours    float64 `json:"hold_duration_hours"`
 				IrrelevantAfterHours float64 `json:"irrelevant_after_hours"`
+				Curve                struct {
+					Kind    string `json:"kind"`
+					Samples []struct {
+						X      float64 `json:"x"`
+						Impact float64 `json:"impact"`
+					} `json:"samples"`
+				} `json:"curve"`
 			} `json:"lifecycle"`
 		} `json:"factors"`
 	}
@@ -87,5 +94,17 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 	}
 	if got.Factors[0].Lifecycle.IrrelevantAfterHours != 336 {
 		t.Fatalf("irrelevant after = %g", got.Factors[0].Lifecycle.IrrelevantAfterHours)
+	}
+	if got.Factors[0].Lifecycle.Curve.Kind != "power" {
+		t.Fatalf("curve kind = %q", got.Factors[0].Lifecycle.Curve.Kind)
+	}
+	if len(got.Factors[0].Lifecycle.Curve.Samples) != 17 {
+		t.Fatalf("curve sample count = %d, want 17", len(got.Factors[0].Lifecycle.Curve.Samples))
+	}
+	if got.Factors[0].Lifecycle.Curve.Samples[8].Impact >= 0.5 {
+		t.Fatalf(
+			"front-loaded midpoint impact = %g, want less than 0.5",
+			got.Factors[0].Lifecycle.Curve.Samples[8].Impact,
+		)
 	}
 }

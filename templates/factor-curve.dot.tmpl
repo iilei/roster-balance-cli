@@ -1,0 +1,28 @@
+digraph factor_lifecycles {
+  graph [bgcolor="transparent", compound=true, overlap=false, outputorder=edgesfirst]
+  node [color="#334155", fontcolor="#0f172a", fontname=" sans", fontsize=10]
+  edge [color="#2563eb", fontname=" sans", fontsize=9, arrowsize=0.4]
+
+{{ $config := datasource "config" }}
+{{ range $index, $factor := $config.factors }}
+  subgraph cluster_{{ $index }} {
+    label={{ printf "%q" $factor.name }}
+    color="#cbd5e1"
+    labelloc="t"
+
+    start_{{ $index }} [label="impact\n100%", shape=box, style="rounded,filled", fillcolor="#dbeafe", pos="0,240!"]
+    hold_{{ $index }} [label={{ printf "\"hold\\n%v h\"" $factor.lifecycle.hold_duration_hours }}, shape=box, style="rounded,filled", fillcolor="#e0f2fe", pos="{{ mul (div $factor.lifecycle.hold_duration_hours $factor.lifecycle.irrelevant_after_hours) 500 }},240!"]
+    end_{{ $index }} [label={{ printf "\"irrelevant\\n%v h\"" $factor.lifecycle.irrelevant_after_hours }}, shape=box, style="rounded,filled", fillcolor="#dcfce7", pos="500,0!"]
+
+    start_{{ $index }} -> hold_{{ $index }} [color="#64748b", label="unchanged"]
+{{ range $pointIndex, $point := $factor.lifecycle.curve.samples }}
+    curve_{{ $index }}_{{ $pointIndex }} [label="", shape=point, width=0.08, pos="{{ mul (div (add $factor.lifecycle.hold_duration_hours (mul $point.x (sub $factor.lifecycle.irrelevant_after_hours $factor.lifecycle.hold_duration_hours))) $factor.lifecycle.irrelevant_after_hours) 500 }},{{ mul $point.impact 240 }}!"]
+{{ if gt $pointIndex 0 }}
+    curve_{{ $index }}_{{ sub $pointIndex 1 }} -> curve_{{ $index }}_{{ $pointIndex }}
+{{ end }}
+{{ end }}
+    curve_{{ $index }}_0 -> hold_{{ $index }} [dir=none, color="#64748b"]
+    curve_{{ $index }}_{{ sub (len $factor.lifecycle.curve.samples) 1 }} -> end_{{ $index }} [dir=none, color="#64748b"]
+  }
+{{ end }}
+}
