@@ -1,0 +1,51 @@
+# docker-compose.yml
+services:
+  postgresql:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_DB=artifactory"
+      - "POSTGRES_USER=artifactory"
+      - "POSTGRES_PASSWORD=${ARTIFACTORY_DB_PASSWORD:-artifactory}"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U artifactory -d artifactory"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  artifactory:
+    image: releases-docker.jfrog.io/jfrog/artifactory-oss:7.104.12
+    container_name: artifactory
+    restart: unless-stopped
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      - "EXTRA_JAVA_OPTIONS=-Xms512m -Xmx2g -XX:+UseG1GC"
+      - "JF_SHARED_SECURITY_MASTERKEY=${JF_SHARED_SECURITY_MASTERKEY:-0123456789abcdef0123456789abcdef}"
+      - "JF_SHARED_DATABASE_TYPE=postgresql"
+      - "JF_SHARED_DATABASE_DRIVER=org.postgresql.Driver"
+      - "JF_SHARED_DATABASE_URL=jdbc:postgresql://postgresql:5432/artifactory"
+      - "JF_SHARED_DATABASE_USERNAME=artifactory"
+      - "JF_SHARED_DATABASE_PASSWORD=${ARTIFACTORY_DB_PASSWORD:-artifactory}"
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+    volumes:
+      - artifactory_data:/var/opt/jfrog/artifactory
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sf http://localhost:8081/artifactory/api/system/ping || exit 1",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 40
+      start_period: 180s
+
+volumes:
+  artifactory_data:
+  postgresql_data:

@@ -1,0 +1,31 @@
+# note that artifactory may require a login.
+# see https://mise.en.dev/configuration/settings.html#netrc_file
+# machine <hostname>
+#   login <username>
+#   password <redacted>
+
+
+[settings.url_replacements]
+"regex:^https://github\\.com/iilei/rooster-balance-cli/releases/download/v([^/]+)/(.+)" = "http://localhost:8081/artifactory/example-repo-local/rooster-balance-cli/$1/$2"
+
+[tools]
+jfrog-cli = "latest"
+"github:iilei/rooster-balance-cli" = "0.0.0+pre-001"
+go = "1.25.0"
+
+[tasks.jf]
+description = "Run JFrog CLI"
+raw = true
+raw_args = true
+run = "jf"
+
+[tasks.rooster-balance-cli]
+description = "Run the mise-managed rooster-balance-cli CLI"
+raw = true
+raw_args = true
+run = "rooster-balance-cli"
+
+[tasks.rooster-balance-cli-help]
+description = "Show rooster-balance-cli help"
+run = "rooster-balance-cli --help"
+
