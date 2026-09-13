@@ -1,4 +1,4 @@
-module github.com/iilei/lane-keeper
+module github.com/iilei/roster-balance-cli
 
 go 1.25
 

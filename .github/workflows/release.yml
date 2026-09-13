@@ -114,10 +114,10 @@ jobs:
             return 1
           }
 
-          SHA_MACOS_UNIVERSAL2="$(fetch_sha "proquint_${VERSION}_darwin_universal2.tar.gz")"
-          SHA_LINUX_X86_64="$(fetch_sha "proquint_${VERSION}_linux_x86_64.tar.gz")"
-          SHA_LINUX_ARM64="$(fetch_sha "proquint_${VERSION}_linux_arm64.tar.gz")"
-          SHA256_LINUX_ARMV7="$(fetch_sha "proquint_${VERSION}_linux_armv7.tar.gz")"
+          SHA_MACOS_UNIVERSAL2="$(fetch_sha "rosterbalance_${VERSION}_darwin_universal2.tar.gz")"
+          SHA_LINUX_X86_64="$(fetch_sha "rosterbalance_${VERSION}_linux_x86_64.tar.gz")"
+          SHA_LINUX_ARM64="$(fetch_sha "rosterbalance_${VERSION}_linux_arm64.tar.gz")"
+          SHA256_LINUX_ARMV7="$(fetch_sha "rosterbalance_${VERSION}_linux_armv7.tar.gz")"
           payload="$(jq -n \
             --arg version "$VERSION" \
             --arg sha_macos_universal2 "$SHA_MACOS_UNIVERSAL2" \
