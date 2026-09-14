@@ -219,6 +219,12 @@ role = "on-call"
 			ActiveLocks []struct {
 				Role string `json:"Role"`
 			} `json:"active_locks"`
+			ImpactCurves []struct {
+				Samples []struct {
+					Hours  float64 `json:"hours"`
+					Impact float64 `json:"impact"`
+				} `json:"samples"`
+			} `json:"impact_curves"`
 		} `json:"candidates"`
 	}
 	if err := json.Unmarshal(output.Bytes(), &got); err != nil {
@@ -228,7 +234,11 @@ role = "on-call"
 		t.Fatalf("unexpected recommendation output: %#v", got)
 	}
 	if got.Candidates[0].MemberID != "member-1" || len(got.Candidates[0].Occurrences) != 1 ||
-		len(got.Candidates[0].ActiveLocks) != 1 {
+		len(got.Candidates[0].ActiveLocks) != 1 || len(got.Candidates[0].ImpactCurves) != 1 {
 		t.Fatalf("unexpected candidate evidence: %#v", got.Candidates[0])
+	}
+	samples := got.Candidates[0].ImpactCurves[0].Samples
+	if samples[len(samples)-1].Hours <= 0 || samples[len(samples)-1].Impact != 0 {
+		t.Fatalf("curve endpoint = %#v, want zero impact after now", samples[len(samples)-1])
 	}
 }

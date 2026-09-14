@@ -73,3 +73,20 @@ for profile in front-loaded linear back-loaded; do
 		-Tsvg "docs/factor-curves/${profile}.dot" -o "docs/factor-curves/${profile}.svg"
 done
 """
+
+[tasks.recommendation-evidence]
+description = "Render the recommendation evidence demo as DOT and SVG"
+run = """
+set -euo pipefail
+mkdir -p docs/recommendation
+go run ./cmd/rosterbalance inspect recommendation \
+	--config examples/recommendation/config.toml \
+	--duty on-call \
+	--now 2026-09-14T10:00:00Z \
+	--team-data-fs examples/recommendation/team-members.json \
+	--tracked-data-fs examples/recommendation/tracked-data.jsonl \
+	| gomplate -d data='stdin:///dev/stdin?type=application/json' \
+		-f templates/recommendation-evidence.dot.tmpl \
+		-o docs/recommendation/evidence.dot
+neato -n2 -Tsvg docs/recommendation/evidence.dot -o docs/recommendation/evidence.svg
+"""

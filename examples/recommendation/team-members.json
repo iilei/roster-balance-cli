@@ -1,0 +1,17 @@
+[
+ {
+  "member_id": "member-ava",
+  "joined_at": "2026-09-01T00:00:00Z",
+  "eligible_duties": ["on-call"]
+ },
+ {
+  "member_id": "member-ben",
+  "joined_at": "2026-09-13T00:00:00Z",
+  "eligible_duties": ["on-call"]
+ },
+ {
+  "member_id": "member-cam",
+  "joined_at": "2026-09-01T00:00:00Z",
+  "eligible_duties": ["database"]
+ }
+]

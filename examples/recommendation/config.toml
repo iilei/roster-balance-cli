@@ -1,0 +1,24 @@
+[plan.options.team]
+id = "team-demo"
+
+[plan.options.policy]
+id = "policy-demo"
+
+[plan.options]
+days = 7
+
+[limits]
+max_irrelevant_after = "48h"
+
+[impact_maths.call_recovery]
+starts_from = "event.ends_at"
+
+[impact_maths.call_recovery.lifecycle]
+decay_profile = "front-loaded"
+hold_duration = "2h"
+irrelevant_after = "24h"
+
+[[event_types."on-call-call-answered".impacts]]
+impact_math = "call_recovery"
+effect = "roster-lock"
+role = "on-call"

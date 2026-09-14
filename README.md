@@ -35,11 +35,27 @@ irrelevant_after = "24h"
 
 [[event_types.on_call_call_answered.impacts]]
 impact_math = "call_recovery_24h"
-effect = "roster-lock"
+effect = "roster-penalty"
 role = "on-call"
 ```
 
-For an answered call, the factual call duration and the protection period are independent. Equal `hold_duration` and `irrelevant_after` values define a hard cutoff, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.
+### Planned roster-penalty semantics
+
+`roster-penalty` is the single planned event-derived roster effect. Its value is the impact calculated by the selected decay profile, $p(t) \in [0, 1]$. The event remains a binary fact; it has no magnitude of its own.
+
+Each team will configure a `roster_penalty_lock_threshold`, defaulting to `1.0`:
+
+```toml
+[[teams]]
+id = "team-demo"
+roster_penalty_lock_threshold = 1.0
+```
+
+A candidate is locked only when their current penalty $p(t)$ meets or exceeds that team's `roster_penalty_lock_threshold`.
+
+At the default threshold, an impact of $1.0$ is a hard lock. Once a decay profile lowers the penalty below $1.0$, the candidate is eligible again but remains discouraged for future ranking by the remaining penalty. Equal `hold_duration` and `irrelevant_after` values therefore define a hard cutoff: the penalty remains $1.0$ until its exclusive EOL and is zero thereafter.
+
+The red lock overlay in a future renderer is derived from the penalty and threshold; it is not a separate policy effect. Additional visual thresholds may be added by frontend/rendering layers without changing event, impact-math, or planner contracts. Implementation of `roster-penalty` and threshold-based eligibility is the next planned slice.
 
 Each lifecycle must remain within the system-wide maximum EOL, initially `26280h` (three 365-day years). This is a resource boundary for predictable planner lookback and memory allocation, not a default or a recommended impact duration. Durable audit retention remains independent of that limit.
 
@@ -164,6 +180,16 @@ Tracked data is an external occurrence feed. Each occurrence occupies the half-o
 ```
 
 For every eligible candidate, the command examines history from the later of the member's `joined_at` and `now - max_irrelevant_after`, up to `now`. The JSON identifies which boundary limited the lookback. This keeps explanation input bounded without making the CLI responsible for storage or retention.
+
+Render the supplied two-candidate example, where `now` is the zero point on each timeline, earlier history extends left into negative time, and active impact curves continue right to their EOL:
+
+```sh
+mise run recommendation-evidence
+```
+
+![Recommendation evidence demo](docs/recommendation/evidence.svg)
+
+The diagram uses blue spans for event occurrences, translucent red overlays for active or future roster locks, and pink curves for decaying impact. It reports evidence only; candidate ranking and a final recommendation remain intentionally out of scope.
 
 ### Previewing your own factor configuration
 
