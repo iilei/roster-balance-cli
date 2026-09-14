@@ -60,10 +60,10 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 		Factors       []struct {
 			Name      string `json:"name"`
 			Lifecycle struct {
-				DecayProfile string `json:"decay_profile"`
-				Curve        struct {
-					Kind    string `json:"kind"`
-					Samples []struct {
+				Curve struct {
+					Reference   string `json:"reference"`
+					Description string `json:"description"`
+					Samples     []struct {
 						X      float64 `json:"x"`
 						Impact float64 `json:"impact"`
 					} `json:"samples"`
@@ -79,7 +79,8 @@ func TestInspectFactorsPrintsDefaultJSON(t *testing.T) {
 	if got.SchemaVersion != "rosterbalance.factor-output/v1" || len(got.Factors) != 1 {
 		t.Fatalf("unexpected factor output: %#v", got)
 	}
-	if got.Factors[0].Lifecycle.DecayProfile != "front-loaded" || got.Factors[0].Lifecycle.Curve.Kind != "power" {
+	if got.Factors[0].Lifecycle.Curve.Reference != "front-loaded" ||
+		got.Factors[0].Lifecycle.Curve.Description != "lambda x: 1.0 - math.pow(x, 0.1)" {
 		t.Fatalf("unexpected factor lifecycle: %#v", got.Factors[0].Lifecycle)
 	}
 	if got.Factors[0].Lifecycle.Curve.Samples[24].Impact >= 0.5 {
