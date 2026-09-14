@@ -3,8 +3,6 @@ digraph factor_lifecycles {
   node [color="#cc0256a2", fontcolor="#0f172a", fontname=" sans", fontsize=10]
   edge [color="#d85e91", fontname=" sans", fontsize=9, arrowhead=none]
 
-
-
   subgraph cluster_0 {
     label="duty-work-served"
     color="#cbd5e1"
@@ -25,251 +23,103 @@ digraph factor_lifecycles {
       pos="105.75,165.4!"
     ]
 
-
     curve_0_0 [label="", shape=point, width=0.02, pos="0,240!"]
-
-
     curve_0_1 [label="", shape=point, width=0.02, pos="10.416666666666666,240!"]
-
     curve_0_0 -> curve_0_1
-
-
     curve_0_2 [label="", shape=point, width=0.02, pos="20.833333333333332,240!"]
-
     curve_0_1 -> curve_0_2
-
-
     curve_0_3 [label="", shape=point, width=0.02, pos="31.25,240!"]
-
     curve_0_2 -> curve_0_3
-
-
     curve_0_4 [label="", shape=point, width=0.02, pos="41.666666666666664,240!"]
-
     curve_0_3 -> curve_0_4
-
-
     curve_0_5 [label="", shape=point, width=0.02, pos="52.083333333333336,240!"]
-
     curve_0_4 -> curve_0_5
-
-
     curve_0_6 [label="", shape=point, width=0.02, pos="62.5,240!"]
-
     curve_0_5 -> curve_0_6
-
-
     curve_0_7 [label="", shape=point, width=0.02, pos="72.91666666666667,103.7702395533746!"]
-
     curve_0_6 -> curve_0_7
-
-
     curve_0_8 [label="", shape=point, width=0.02, pos="83.33333333333333,72.28149149482101!"]
-
     curve_0_7 -> curve_0_8
-
-
     curve_0_9 [label="", shape=point, width=0.02, pos="93.75,61.4001380584219!"]
-
     curve_0_8 -> curve_0_9
-
-
     curve_0_10 [label="", shape=point, width=0.02, pos="104.16666666666667,54.42722546503661!"]
-
     curve_0_9 -> curve_0_10
-
-
     curve_0_11 [label="", shape=point, width=0.02, pos="114.58333333333333,49.229247529216266!"]
-
     curve_0_10 -> curve_0_11
-
-
     curve_0_12 [label="", shape=point, width=0.02, pos="125,45.059424874503485!"]
-
     curve_0_11 -> curve_0_12
-
-
     curve_0_13 [label="", shape=point, width=0.02, pos="135.41666666666666,41.56474276550676!"]
-
     curve_0_12 -> curve_0_13
-
-
     curve_0_14 [label="", shape=point, width=0.02, pos="145.83333333333334,38.54920140350699!"]
-
     curve_0_13 -> curve_0_14
-
-
     curve_0_15 [label="", shape=point, width=0.02, pos="156.25,35.89225787153822!"]
-
     curve_0_14 -> curve_0_15
-
-
     curve_0_16 [label="", shape=point, width=0.02, pos="166.66666666666666,33.51429523930703!"]
-
     curve_0_15 -> curve_0_16
-
-
     curve_0_17 [label="", shape=point, width=0.02, pos="177.08333333333334,31.359878092814117!"]
-
     curve_0_16 -> curve_0_17
-
-
     curve_0_18 [label="", shape=point, width=0.02, pos="187.5,29.38880456498806!"]
-
     curve_0_17 -> curve_0_18
-
-
     curve_0_19 [label="", shape=point, width=0.02, pos="197.91666666666666,27.57096046913621!"]
-
     curve_0_18 -> curve_0_19
-
-
     curve_0_20 [label="", shape=point, width=0.02, pos="208.33333333333334,25.883184474280696!"]
-
     curve_0_19 -> curve_0_20
-
-
     curve_0_21 [label="", shape=point, width=0.02, pos="218.75,24.307267469154805!"]
-
     curve_0_20 -> curve_0_21
-
-
     curve_0_22 [label="", shape=point, width=0.02, pos="229.16666666666666,22.828625794613615!"]
-
     curve_0_21 -> curve_0_22
-
-
     curve_0_23 [label="", shape=point, width=0.02, pos="239.58333333333334,21.4353925280271!"]
-
     curve_0_22 -> curve_0_23
-
-
     curve_0_24 [label="", shape=point, width=0.02, pos="250,20.117777746452816!"]
-
     curve_0_23 -> curve_0_24
-
-
     curve_0_25 [label="", shape=point, width=0.02, pos="260.4166666666667,18.867607337248273!"]
-
     curve_0_24 -> curve_0_25
-
-
     curve_0_26 [label="", shape=point, width=0.02, pos="270.8333333333333,17.677983573079892!"]
-
     curve_0_25 -> curve_0_26
-
-
     curve_0_27 [label="", shape=point, width=0.02, pos="281.25,16.543030712228102!"]
-
     curve_0_26 -> curve_0_27
-
-
     curve_0_28 [label="", shape=point, width=0.02, pos="291.6666666666667,15.457701220873723!"]
-
     curve_0_27 -> curve_0_28
-
-
     curve_0_29 [label="", shape=point, width=0.02, pos="302.0833333333333,14.417626026775556!"]
-
     curve_0_28 -> curve_0_29
-
-
     curve_0_30 [label="", shape=point, width=0.02, pos="312.5,13.418997289223524!"]
-
     curve_0_29 -> curve_0_30
-
-
     curve_0_31 [label="", shape=point, width=0.02, pos="322.9166666666667,12.45847554307705!"]
-
     curve_0_30 -> curve_0_31
-
-
     curve_0_32 [label="", shape=point, width=0.02, pos="333.3333333333333,11.53311536236405!"]
-
     curve_0_31 -> curve_0_32
-
-
     curve_0_33 [label="", shape=point, width=0.02, pos="343.75,10.640305269373194!"]
-
     curve_0_32 -> curve_0_33
-
-
     curve_0_34 [label="", shape=point, width=0.02, pos="354.1666666666667,9.777718725472972!"]
-
     curve_0_33 -> curve_0_34
-
-
     curve_0_35 [label="", shape=point, width=0.02, pos="364.5833333333333,8.943273831906264!"]
-
     curve_0_34 -> curve_0_35
-
-
     curve_0_36 [label="", shape=point, width=0.02, pos="375,8.135099941737822!"]
-
     curve_0_35 -> curve_0_36
-
-
     curve_0_37 [label="", shape=point, width=0.02, pos="385.4166666666667,7.351509803950265!"]
-
     curve_0_36 -> curve_0_37
-
-
     curve_0_38 [label="", shape=point, width=0.02, pos="395.8333333333333,6.590976171980616!"]
-
     curve_0_37 -> curve_0_38
-
-
     curve_0_39 [label="", shape=point, width=0.02, pos="406.25,5.852112042373321!"]
-
     curve_0_38 -> curve_0_39
-
-
     curve_0_40 [label="", shape=point, width=0.02, pos="416.6666666666667,5.133653865988714!"]
-
     curve_0_39 -> curve_0_40
-
-
     curve_0_41 [label="", shape=point, width=0.02, pos="427.0833333333333,4.434447209367756!"]
-
     curve_0_40 -> curve_0_41
-
-
     curve_0_42 [label="", shape=point, width=0.02, pos="437.5,3.7534344481226434!"]
-
     curve_0_41 -> curve_0_42
-
-
     curve_0_43 [label="", shape=point, width=0.02, pos="447.9166666666667,3.089644155333673!"]
-
     curve_0_42 -> curve_0_43
-
-
     curve_0_44 [label="", shape=point, width=0.02, pos="458.3333333333333,2.442181911519059!"]
-
     curve_0_43 -> curve_0_44
-
-
     curve_0_45 [label="", shape=point, width=0.02, pos="468.75,1.8102223129610273!"]
-
     curve_0_44 -> curve_0_45
-
-
     curve_0_46 [label="", shape=point, width=0.02, pos="479.1666666666667,1.1930019951010529!"]
-
     curve_0_45 -> curve_0_46
-
-
     curve_0_47 [label="", shape=point, width=0.02, pos="489.5833333333333,0.589813519675646!"]
-
     curve_0_46 -> curve_0_47
-
-
     curve_0_48 [label="", shape=point, width=0.02, pos="500,0!"]
-
     curve_0_47 -> curve_0_48
-
-
   }
-
 }
 

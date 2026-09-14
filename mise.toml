@@ -49,7 +49,7 @@ description = "Generate lifecycle DOT files for built-in decay profiles"
 run = """
 set -euo pipefail
 mkdir -p docs/factor-curves
-for profile in front-loaded linear back-loaded flat; do
+for profile in front-loaded linear back-loaded; do
 	go run ./cmd/rosterbalance inspect factors --config "examples/factor-profiles/${profile}.toml" \
 		| gomplate -d config='stdin:///dev/stdin?type=application/json' \
 				-f templates/factor-curve.dot.tmpl \
@@ -68,8 +68,25 @@ if fc-list | grep -i 'ubuntu mono' >/dev/null; then
 elif fc-list | grep -i 'fira code' >/dev/null; then
 	font="Fira Code"
 fi
-for profile in front-loaded linear back-loaded flat; do
+for profile in front-loaded linear back-loaded; do
 	neato -n2 -Nfontname="$font" -Efontname="$font" -Gfontname="$font" \
 		-Tsvg "docs/factor-curves/${profile}.dot" -o "docs/factor-curves/${profile}.svg"
 done
+"""
+
+[tasks.recommendation-evidence]
+description = "Render the recommendation evidence demo as DOT and SVG"
+run = """
+set -euo pipefail
+mkdir -p docs/recommendation
+go run ./cmd/rosterbalance inspect recommendation \
+	--config examples/recommendation/config.toml \
+	--duty on-call \
+	--now 2026-09-14T10:00:00Z \
+	--team-data-fs examples/recommendation/team-members.json \
+	--tracked-data-fs examples/recommendation/tracked-data.jsonl \
+	| gomplate -d data='stdin:///dev/stdin?type=application/json' \
+		-f templates/recommendation-evidence.dot.tmpl \
+		-o docs/recommendation/evidence.dot
+neato -n2 -Tsvg docs/recommendation/evidence.dot -o docs/recommendation/evidence.svg
 """

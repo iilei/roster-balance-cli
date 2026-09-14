@@ -1,7 +1,0 @@
-[[factors]]
-name = "duty-work-served"
-
-[factors.lifecycle]
-decay_profile = "flat"
-hold_duration = "48h"
-irrelevant_after = "336h"

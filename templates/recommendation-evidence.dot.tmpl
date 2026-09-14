@@ -1,0 +1,63 @@
+digraph recommendation_evidence {
+  graph [bgcolor="transparent", overlap=false, outputorder=edgesfirst]
+  node [color="#334155", fontcolor="#0f172a", fontname="sans", fontsize=10]
+  edge [arrowhead=none, fontname="sans", fontsize=9]
+
+{{- $data := datasource "data" }}
+{{- $timelineHours := math.Add $data.lookback_hours $data.future_hours }}
+{{- $nowX := math.Mul 500 (math.Div $data.lookback_hours $timelineHours) }}
+{{- range $candidateIndex, $candidate := $data.candidates }}
+{{- $rowY := math.Sub 220 (math.Mul $candidateIndex 120) }}
+{{- $axisStart := math.Sub 500 500 }}
+  subgraph cluster_candidate_{{ $candidateIndex }} {
+    label={{ printf "%q" $candidate.member_id }}
+    color="#cbd5e1"
+    labelloc="t"
+
+    lookback_{{ $candidateIndex }} [label="", shape=point, width=0.001, style=invis, pos="{{ $axisStart }},{{ $rowY }}!"]
+    now_{{ $candidateIndex }} [label="now (0 h)", shape=plain, pos="{{ $nowX }},{{ math.Add $rowY 15 }}!"]
+    axis_end_{{ $candidateIndex }} [label="", shape=point, width=0.001, style=invis, pos="500,{{ $rowY }}!"]
+    lookback_{{ $candidateIndex }} -> axis_end_{{ $candidateIndex }} [color="#0f172a", penwidth=1, arrowhead=normal, arrowsize=0.5]
+    lookback_label_{{ $candidateIndex }} [label="lookback: {{ $candidate.lookback_bound }}", shape=plain, fontsize=9, pos="0,{{ math.Sub $rowY 18 }}!"]
+
+{{- range $spanIndex, $span := $candidate.timeline }}
+  {{- $startHours := math.Max (math.Sub 0 $data.lookback_hours) (math.Min 0 $span.starts_hours) }}
+  {{- $endHours := math.Max (math.Sub 0 $data.lookback_hours) (math.Min $data.future_hours $span.ends_hours) }}
+{{- $startX := math.Mul 500 (math.Div (math.Add $startHours $data.lookback_hours) $timelineHours) }}
+{{- $endX := math.Mul 500 (math.Div (math.Add $endHours $data.lookback_hours) $timelineHours) }}
+{{- $spanY := math.Add $rowY (math.Mul $spanIndex 14) }}
+{{- if ne $span.kind "eligibility-lock" }}
+    span_start_{{ $candidateIndex }}_{{ $spanIndex }} [label="", shape=point, width=0.06, color="{{ if eq $span.kind "occurrence" }}#2563eb{{ else }}#dc2626{{ end }}", pos="{{ $startX }},{{ $spanY }}!"]
+    span_end_{{ $candidateIndex }}_{{ $spanIndex }} [label="{{ $span.kind }}: {{ $span.label }}", shape=plain, fontsize=8, pos="{{ $endX }},{{ math.Add $spanY 9 }}!"]
+    span_start_{{ $candidateIndex }}_{{ $spanIndex }} -> span_end_{{ $candidateIndex }}_{{ $spanIndex }} [color="{{ if eq $span.kind "occurrence" }}#2563eb{{ else }}#dc2626{{ end }}", penwidth=3]
+{{- end }}
+{{- end }}
+
+  {{- range $curveIndex, $curve := $candidate.impact_curves }}
+    curve_label_{{ $candidateIndex }}_{{ $curveIndex }} [label="impact: {{ $curve.impact_math }} ({{ $curve.description }})", shape=plain, fontsize=8, pos="0,{{ math.Add $rowY 88 }}!"]
+  {{- range $sampleIndex, $sample := $curve.samples }}
+  {{- $hours := math.Max (math.Sub 0 $data.lookback_hours) (math.Min $data.future_hours $sample.hours) }}
+  {{- $x := math.Mul 500 (math.Div (math.Add $hours $data.lookback_hours) $timelineHours) }}
+  {{- $y := math.Add (math.Add $rowY 24) (math.Mul 62 $sample.impact) }}
+    curve_{{ $candidateIndex }}_{{ $curveIndex }}_{{ $sampleIndex }} [label="", shape=point, width=0.03, color="#d85e91", pos="{{ $x }},{{ $y }}!"]
+  {{- if gt $sampleIndex 0 }}
+    curve_{{ $candidateIndex }}_{{ $curveIndex }}_{{ sub $sampleIndex 1 }} -> curve_{{ $candidateIndex }}_{{ $curveIndex }}_{{ $sampleIndex }} [color="#d85e91", penwidth=2]
+  {{- end }}
+  {{- end }}
+  {{- end }}
+
+{{- range $spanIndex, $span := $candidate.timeline }}
+{{- if eq $span.kind "eligibility-lock" }}
+  {{- $startHours := math.Max (math.Sub 0 $data.lookback_hours) (math.Min $data.future_hours $span.starts_hours) }}
+  {{- $endHours := math.Max (math.Sub 0 $data.lookback_hours) (math.Min $data.future_hours $span.ends_hours) }}
+  {{- $startX := math.Mul 500 (math.Div (math.Add $startHours $data.lookback_hours) $timelineHours) }}
+  {{- $endX := math.Mul 500 (math.Div (math.Add $endHours $data.lookback_hours) $timelineHours) }}
+  {{- $overlayWidth := math.Max 0.08 (math.Div (math.Sub $endX $startX) 72) }}
+  {{- $overlayX := math.Div (math.Add $startX $endX) 2 }}
+    lock_{{ $candidateIndex }}_{{ $spanIndex }} [label="", shape=box, style="filled", fixedsize=true, width="{{ $overlayWidth }}", height=1.1, color="#dc262600", fillcolor="#fecdd380", pos="{{ $overlayX }},{{ math.Add $rowY 56 }}!"]
+    lock_label_{{ $candidateIndex }}_{{ $spanIndex }} [label="roster lock: {{ $span.label }}", shape=plain, fontsize=8, pos="{{ $overlayX }},{{ math.Add $rowY 91 }}!"]
+{{- end }}
+{{- end }}
+  }
+{{- end }}
+}

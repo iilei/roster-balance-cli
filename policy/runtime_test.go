@@ -11,18 +11,19 @@ import (
 func TestRuntimeEvaluatesOnCallEffects(t *testing.T) {
 	callAt := time.Date(2026, 9, 14, 3, 0, 0, 0, time.UTC)
 	onCallEnds := time.Date(2026, 9, 14, 8, 0, 0, 0, time.UTC)
-	event := domain.Event{
+	event := domain.EventOccurrence{
 		ID:         "event-1",
 		Type:       "on-call-call",
 		MemberID:   "member-1",
-		OccurredAt: callAt,
+		StartsAt:   callAt,
+		Duration:   30 * time.Minute,
 		Attributes: map[string]any{"received_at": callAt, "on_call_span": map[string]any{"ends_at": onCallEnds}},
 	}
 	source := `
 def on_event(ctx):
     lock_start = time.max(ctx.event.received_at, ctx.event.on_call_span.ends_at)
     return [
-        effects.eligibility_lock(
+		effects.roster_penalty(
             role = "remediation-manager",
             starts_at = lock_start,
             duration_hours = 24,
@@ -41,7 +42,7 @@ def on_event(ctx):
 	if len(effects) != 2 {
 		t.Fatalf("effect count = %d, want 2", len(effects))
 	}
-	if got := effects[0]; got.Kind != domain.EffectEligibilityLock || got.Role != "remediation-manager" ||
+	if got := effects[0]; got.Kind != domain.EffectRosterPenalty || got.Role != "remediation-manager" ||
 		!got.StartsAt.Equal(onCallEnds) ||
 		!got.EndsAt.Equal(onCallEnds.Add(24*time.Hour)) {
 		t.Fatalf("lock = %#v", got)

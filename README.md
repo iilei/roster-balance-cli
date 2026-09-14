@@ -1,5 +1,7 @@
 # Roster balance CLI
 
+[![codecov](https://codecov.io/gh/iilei/roster-balance-cli/graph/badge.svg?token=V209JTFDSE)](https://codecov.io/gh/iilei/roster-balance-cli)
+
 ## Calendar ingestion
 
 For v0, the CLI stays dumb about calendar providers and accepts normalized input through a single adapter layer. The first supported import format should be ICS exports, which lets Outlook and other corporate calendars work without committing to Graph or OAuth integration. Direct Outlook sync can come later only if the operational need justifies the extra scope.
@@ -27,15 +29,56 @@ An **impact math** is a named, reusable lifecycle. It selects an anchor such as 
 ```toml
 [impact_maths.call_recovery_24h]
 starts_from = "event.ends_at"
-decay_profile = "flat"
-impact_duration = "24h"
+
+[impact_maths.call_recovery_24h.lifecycle]
+decay_profile = "front-loaded"
+hold_duration = "24h"
+irrelevant_after = "24h"
 
 [[event_types.on_call_call_answered.impacts]]
 impact_math = "call_recovery_24h"
-application = "roster-lock"
+effect = "roster-penalty"
+role = "on-call"
 ```
 
-For an answered call, the factual call duration and the protection period are independent. The `roster-lock` application treats a positive `flat` impact as a hard lock, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.
+### Planned roster-penalty semantics
+
+`roster-penalty` is the single planned event-derived roster effect. Its value is the impact calculated by the selected decay profile, $p(t) \in [0, 1]$. The event remains a binary fact; it has no magnitude of its own.
+
+Each team will configure a `roster_penalty_lock_threshold`, defaulting to `1.0`:
+
+```toml
+[[teams]]
+id = "team-demo"
+roster_penalty_lock_threshold = 1.0
+```
+
+A candidate is locked only when their current penalty $p(t)$ meets or exceeds that team's `roster_penalty_lock_threshold`.
+
+At the default threshold, an impact of $1.0$ is operationally unavailable. Once a decay profile lowers the penalty below $1.0$, the candidate is eligible again but remains discouraged for future ranking by the remaining penalty. Equal `hold_duration` and `irrelevant_after` values therefore define a hard cutoff: the penalty remains $1.0$ until its exclusive EOL and is zero thereafter.
+
+The planner normalizes direct availability and penalty outcomes into one assignment result:
+
+```text
+Available = false, NegotiationCost = 1
+  categorically unavailable, such as vacation or sick leave
+
+Available = false, NegotiationCost < 1
+  fallback assignment is possible with confirmation
+
+Available = true, NegotiationCost = 0
+  freely assignable
+
+Available = true, 0 < NegotiationCost < 1
+  assignable but increasingly undesirable
+
+NegotiationCost = 1
+  maximally costly and normally blocked by the team threshold
+```
+
+The assignment result retains provenance: vacation and sick leave remain direct availability constraints, while a roster penalty remains an event-derived cost. They share the same planner decision without pretending they have the same cause.
+
+The red unavailability overlay in a future renderer is derived from the normalized assignment result; it is not a separate policy effect. Additional visual thresholds may be added by frontend/rendering layers without changing event, impact-math, or planner contracts.
 
 Each lifecycle must remain within the system-wide maximum EOL, initially `26280h` (three 365-day years). This is a resource boundary for predictable planner lookback and memory allocation, not a default or a recommended impact duration. Durable audit retention remains independent of that limit.
 
@@ -127,6 +170,50 @@ mise run factor-curves
 
 The generated SVGs are written to `docs/factor-curves/`.
 
+## Recommendation evidence inspection
+
+Inspect the bounded evidence for every member eligible for a duty. The command reports each candidate's relevant event occurrences, resolved effects, and currently active roster locks; it does not yet rank candidates or select a recommendation.
+
+```sh
+rosterbalance inspect recommendation \
+  --duty on-call \
+  --now 2026-09-14T10:00:00Z \
+  --team-data-fs team-members.json \
+  --tracked-data-fs occurrences.jsonl
+```
+
+`--now` accepts an RFC 3339 instant and defaults to the system time captured when the command starts. `--team-data-fs` and `--tracked-data-fs` may be repeated; shell-expand file patterns before passing them to the command. Each file may contain either one JSON array or JSON Lines, but not a mixture of both formats.
+
+Team data is an external membership and eligibility projection:
+
+```json
+[
+  {
+    "member_id": "member-1",
+    "joined_at": "2026-09-01T00:00:00Z",
+    "eligible_duties": ["on-call"]
+  }
+]
+```
+
+Tracked data is an external occurrence feed. Each occurrence occupies the half-open interval [`starts_at`, `starts_at + duration`):
+
+```json
+{"id":"call-1","type":"on-call-call-answered","member_id":"member-1","starts_at":"2026-09-14T09:15:00Z","duration":"27m"}
+```
+
+For every eligible candidate, the command examines history from the later of the member's `joined_at` and `now - max_irrelevant_after`, up to `now`. The JSON identifies which boundary limited the lookback. This keeps explanation input bounded without making the CLI responsible for storage or retention.
+
+Render the supplied two-candidate example, where `now` is the zero point on each timeline, earlier history extends left into negative time, and active impact curves continue right to their EOL:
+
+```sh
+mise run recommendation-evidence
+```
+
+![Recommendation evidence demo](docs/recommendation/evidence.svg)
+
+The diagram uses blue spans for event occurrences, translucent red overlays for active or future roster locks, and pink curves for decaying impact. It reports evidence only; candidate ranking and a final recommendation remain intentionally out of scope.
+
 ### Previewing your own factor configuration
 
 To preview curves for your own config on your own machine, install [Graphviz](https://graphviz.org/download/) and [gomplate](https://docs.gomplate.ca/installing/), then either use the shipped Mise task against your config:
@@ -205,18 +292,12 @@ Preserve most of the impact until later in the transition, dropping steeply near
 
 ![Back-loaded duty-work-served lifecycle](docs/factor-curves/back-loaded.svg)
 
-#### `flat`
-
-Do not decay before `irrelevant_after`, retaining full impact until the end-of-life cutoff.
-
-![Flat duty-work-served lifecycle](docs/factor-curves/flat.svg)
-
 ### Lifecycle validation
 
 Lifecycle validation ensures:
 
 * Durations are non-negative.
-* `irrelevant_after` (EOL) is strictly greater than `hold_duration`.
+* `irrelevant_after` (EOL) cannot be lower than `hold_duration`; equal values produce a hard cutoff.
 * Impact stays between $0$ and $1$.
 * Impact does not increase after the hold period.
 * Impact is zero at `irrelevant_after`.

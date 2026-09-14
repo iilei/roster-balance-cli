@@ -3,7 +3,7 @@ digraph factor_lifecycles {
   node [color="#cc0256a2", fontcolor="#0f172a", fontname=" sans", fontsize=10]
   edge [color="#d85e91", fontname=" sans", fontsize=9, arrowhead=none]
 
-{{ $config := datasource "config" }}
+{{- $config := datasource "config" }}
 {{ range $index, $factor := $config.factors }}
   subgraph cluster_{{ $index }} {
     label={{ printf "%q" $factor.name }}
@@ -38,14 +38,13 @@ digraph factor_lifecycles {
       shape=box, style="filled", fillcolor="#f8fafc", color="#94a3b8", fontsize=9,
       pos="{{ $posX }},165.4!"
     ]
-
 {{ range $pointIndex, $point := $factor.lifecycle.curve.samples }}
     curve_{{ $index }}_{{ $pointIndex }} [label="", shape=point, width=0.02, pos="{{ mul $point.x 500 }},{{ mul $point.impact 240 }}!"]
-{{ if gt $pointIndex 0 }}
+{{- if gt $pointIndex 0 }}
     curve_{{ $index }}_{{ sub $pointIndex 1 }} -> curve_{{ $index }}_{{ $pointIndex }}
-{{ end }}
-{{ end }}
+{{- end }}
+{{- end }}
   }
-{{ end }}
+{{- end }}
 }
 

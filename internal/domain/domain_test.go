@@ -38,12 +38,26 @@ func TestResolveLifecycleRejectsInvalidBoundaries(t *testing.T) {
 	}
 }
 
+func TestResolveLifecycleAllowsEqualBoundaries(t *testing.T) {
+	const cutoff = 24 * time.Hour
+	resolved, err := domain.ResolveLifecycle(
+		domain.Lifecycle{HoldDuration: cutoff, IrrelevantAfter: cutoff},
+		domain.SystemLimits{},
+	)
+	if err != nil {
+		t.Fatalf("ResolveLifecycle() error = %v", err)
+	}
+	if resolved.HoldDuration != cutoff || resolved.IrrelevantAfter != cutoff {
+		t.Fatalf("ResolveLifecycle() = %#v, want equal 24h boundaries", resolved)
+	}
+}
+
 func TestEffectsKeepHardAndSoftInfluencesDistinct(t *testing.T) {
-	event := domain.Event{ID: testEventID, Type: onCallCallType, MemberID: testMemberID}
-	lock := domain.EligibilityLock(&event, "remediation-manager", time.Unix(0, 0), 24*time.Hour, "on-call recovery")
+	event := domain.EventOccurrence{ID: testEventID, Type: onCallCallType, MemberID: testMemberID}
+	lock := domain.RosterPenalty(&event, "remediation-manager", time.Unix(0, 0), 24*time.Hour, "on-call recovery")
 	factor := domain.FactorEvent(&event, "duty-work-served", time.Unix(0, 0))
 
-	if lock.Kind != domain.EffectEligibilityLock || lock.Role != "remediation-manager" || lock.Factor != "" {
+	if lock.Kind != domain.EffectRosterPenalty || lock.Role != "remediation-manager" || lock.Factor != "" {
 		t.Fatalf("lock = %#v, want hard role lock", lock)
 	}
 	if factor.Kind != domain.EffectFactorEvent || factor.Factor != "duty-work-served" || factor.Role != "" {
@@ -53,21 +67,22 @@ func TestEffectsKeepHardAndSoftInfluencesDistinct(t *testing.T) {
 
 func TestTrackRecordQueriesEventsAndOverlappingEffects(t *testing.T) {
 	start := time.Date(2026, 9, 13, 0, 0, 0, 0, time.UTC)
-	event := domain.Event{
+	event := domain.EventOccurrence{
 		ID:         testEventID,
 		Type:       onCallCallType,
 		MemberID:   testMemberID,
-		OccurredAt: start.Add(2 * time.Hour),
+		StartsAt:   start.Add(2 * time.Hour),
+		Duration:   time.Hour,
 		Attributes: map[string]any{"role": "RB"},
 	}
-	lock := domain.EligibilityLock(
+	lock := domain.RosterPenalty(
 		&event,
 		"remediation-manager",
 		start.Add(3*time.Hour),
 		24*time.Hour,
 		"on-call recovery",
 	)
-	factor := domain.FactorEvent(&event, "duty-work-served", event.OccurredAt)
+	factor := domain.FactorEvent(&event, "duty-work-served", event.StartsAt)
 
 	var record domain.TrackRecord
 	if err := record.Record(&event, lock, factor); err != nil {
@@ -80,15 +95,20 @@ func TestTrackRecordQueriesEventsAndOverlappingEffects(t *testing.T) {
 	}
 
 	effects := record.EffectsOverlapping(testMemberID, start.Add(4*time.Hour), start.Add(5*time.Hour))
-	if len(effects) != 1 || effects[0].Kind != domain.EffectEligibilityLock {
+	if len(effects) != 1 || effects[0].Kind != domain.EffectRosterPenalty {
 		t.Fatalf("EffectsOverlapping() = %#v, want active lock only", effects)
 	}
 }
 
 func TestTrackRecordRejectsDuplicateAndMismatchedEffects(t *testing.T) {
-	event := domain.Event{ID: testEventID, Type: testEventType, MemberID: testMemberID, OccurredAt: time.Now()}
-	wrongEvent := domain.Event{ID: "event-2", Type: testEventType, MemberID: "member-2", OccurredAt: event.OccurredAt}
-	lock := domain.EligibilityLock(&wrongEvent, "role", event.OccurredAt, time.Hour, "wrong source")
+	event := domain.EventOccurrence{ID: testEventID, Type: testEventType, MemberID: testMemberID, StartsAt: time.Now()}
+	wrongEvent := domain.EventOccurrence{
+		ID:       "event-2",
+		Type:     testEventType,
+		MemberID: "member-2",
+		StartsAt: event.StartsAt,
+	}
+	lock := domain.RosterPenalty(&wrongEvent, "role", event.StartsAt, time.Hour, "wrong source")
 
 	var record domain.TrackRecord
 	if err := record.Record(&event, lock); err == nil {
@@ -99,5 +119,39 @@ func TestTrackRecordRejectsDuplicateAndMismatchedEffects(t *testing.T) {
 	}
 	if err := record.Record(&event); err == nil {
 		t.Fatal("Record() duplicate error = nil")
+	}
+}
+
+func TestEventOccurrenceUsesAnExclusiveEnd(t *testing.T) {
+	start := time.Date(2026, 9, 13, 9, 15, 0, 0, time.UTC)
+	event := domain.EventOccurrence{StartsAt: start, Duration: 27 * time.Minute}
+	if got, want := event.EndsAt(), start.Add(27*time.Minute); !got.Equal(want) {
+		t.Fatalf("EndsAt() = %s, want %s", got, want)
+	}
+}
+
+func TestAvailabilityUsesCostAndThreshold(t *testing.T) {
+	cases := []struct {
+		name      string
+		available bool
+		blocked   bool
+		cost      float64
+		threshold float64
+	}{
+		{name: "categorically unavailable", available: false, cost: 1, threshold: 1, blocked: true},
+		{name: "fallback unavailable", available: false, cost: 0.5, threshold: 1, blocked: false},
+		{name: "freely available", available: true, cost: 0, threshold: 1, blocked: false},
+		{name: "penalty threshold", available: true, cost: 1, threshold: 1, blocked: true},
+	}
+	for _, testCase := range cases {
+		t.Run(testCase.name, func(t *testing.T) {
+			availability := domain.Availability{Available: testCase.available, NegotiationCost: testCase.cost}
+			if err := availability.Validate(); err != nil {
+				t.Fatalf("Validate() error = %v", err)
+			}
+			if got := availability.AssignmentBlocked(testCase.threshold); got != testCase.blocked {
+				t.Fatalf("AssignmentBlocked() = %v, want %v", got, testCase.blocked)
+			}
+		})
 	}
 }
