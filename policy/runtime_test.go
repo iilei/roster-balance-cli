@@ -11,11 +11,12 @@ import (
 func TestRuntimeEvaluatesOnCallEffects(t *testing.T) {
 	callAt := time.Date(2026, 9, 14, 3, 0, 0, 0, time.UTC)
 	onCallEnds := time.Date(2026, 9, 14, 8, 0, 0, 0, time.UTC)
-	event := domain.Event{
+	event := domain.EventOccurrence{
 		ID:         "event-1",
 		Type:       "on-call-call",
 		MemberID:   "member-1",
-		OccurredAt: callAt,
+		StartsAt:   callAt,
+		Duration:   30 * time.Minute,
 		Attributes: map[string]any{"received_at": callAt, "on_call_span": map[string]any{"ends_at": onCallEnds}},
 	}
 	source := `

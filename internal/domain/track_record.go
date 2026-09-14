@@ -9,12 +9,12 @@ import (
 
 // TrackRecord stores immutable events and their declarative derived effects.
 type TrackRecord struct {
-	events  []Event
+	events  []EventOccurrence
 	effects []Effect
 }
 
 // Record appends an event and effects derived from that event.
-func (record *TrackRecord) Record(event *Event, effects ...Effect) error {
+func (record *TrackRecord) Record(event *EventOccurrence, effects ...Effect) error {
 	if event.ID == "" {
 		return errors.New("event ID is required")
 	}
@@ -24,8 +24,11 @@ func (record *TrackRecord) Record(event *Event, effects ...Effect) error {
 	if event.MemberID == "" {
 		return errors.New("event member ID is required")
 	}
-	if event.OccurredAt.IsZero() {
-		return errors.New("event occurred-at time is required")
+	if event.StartsAt.IsZero() {
+		return errors.New("event starts-at time is required")
+	}
+	if event.Duration < 0 {
+		return errors.New("event duration must not be negative")
 	}
 	for _, existing := range record.events {
 		if existing.ID == event.ID {
@@ -51,12 +54,12 @@ func (record *TrackRecord) Record(event *Event, effects ...Effect) error {
 	return nil
 }
 
-// EventsBetween returns events in the half-open interval [from, until).
-func (record *TrackRecord) EventsBetween(memberID string, from, until time.Time) []Event {
-	result := make([]Event, 0)
+// EventsBetween returns occurrences overlapping the half-open interval [from, until).
+func (record *TrackRecord) EventsBetween(memberID string, from, until time.Time) []EventOccurrence {
+	result := make([]EventOccurrence, 0)
 	for index := range record.events {
 		event := &record.events[index]
-		if event.MemberID == memberID && inHalfOpenRange(event.OccurredAt, from, until) {
+		if event.MemberID == memberID && event.StartsAt.Before(until) && event.EndsAt().After(from) {
 			result = append(result, copyEvent(event))
 		}
 	}
@@ -88,7 +91,7 @@ func inHalfOpenRange(value, from, until time.Time) bool {
 	return !value.Before(from) && value.Before(until)
 }
 
-func copyEvent(event *Event) Event {
+func copyEvent(event *EventOccurrence) EventOccurrence {
 	eventCopy := *event
 	eventCopy.Attributes = make(map[string]any, len(event.Attributes))
 	maps.Copy(eventCopy.Attributes, event.Attributes)

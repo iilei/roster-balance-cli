@@ -44,6 +44,17 @@
    },
    "required": ["options"]
   },
+  "limits": {
+   "type": "object",
+   "additionalProperties": false,
+   "properties": {
+    "max_irrelevant_after": {
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "required": ["max_irrelevant_after"]
+  },
   "teams": {
    "type": "array",
    "items": {
@@ -102,6 +113,68 @@
      }
     },
     "required": ["name", "lifecycle"]
+   }
+  },
+  "impact_maths": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "starts_from": {
+      "enum": ["event.starts_at", "event.ends_at"]
+     },
+     "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+       "decay_profile": {
+        "enum": ["front-loaded", "linear", "back-loaded"]
+       },
+       "hold_duration": {
+        "type": "string",
+        "minLength": 1
+       },
+       "irrelevant_after": {
+        "type": "string",
+        "minLength": 1
+       }
+      },
+      "required": ["decay_profile", "hold_duration", "irrelevant_after"]
+     }
+    },
+    "required": ["starts_from", "lifecycle"]
+   }
+  },
+  "event_types": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+     "impacts": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "additionalProperties": false,
+       "properties": {
+        "impact_math": {
+         "type": "string",
+         "minLength": 1
+        },
+        "effect": {
+         "enum": ["roster-lock"]
+        },
+        "role": {
+         "type": "string",
+         "minLength": 1
+        }
+       },
+       "required": ["impact_math", "effect", "role"]
+      }
+     }
+    },
+    "required": ["impacts"]
    }
   }
  },

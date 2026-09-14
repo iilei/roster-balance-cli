@@ -53,7 +53,7 @@ func TestResolveLifecycleAllowsEqualBoundaries(t *testing.T) {
 }
 
 func TestEffectsKeepHardAndSoftInfluencesDistinct(t *testing.T) {
-	event := domain.Event{ID: testEventID, Type: onCallCallType, MemberID: testMemberID}
+	event := domain.EventOccurrence{ID: testEventID, Type: onCallCallType, MemberID: testMemberID}
 	lock := domain.EligibilityLock(&event, "remediation-manager", time.Unix(0, 0), 24*time.Hour, "on-call recovery")
 	factor := domain.FactorEvent(&event, "duty-work-served", time.Unix(0, 0))
 
@@ -67,11 +67,12 @@ func TestEffectsKeepHardAndSoftInfluencesDistinct(t *testing.T) {
 
 func TestTrackRecordQueriesEventsAndOverlappingEffects(t *testing.T) {
 	start := time.Date(2026, 9, 13, 0, 0, 0, 0, time.UTC)
-	event := domain.Event{
+	event := domain.EventOccurrence{
 		ID:         testEventID,
 		Type:       onCallCallType,
 		MemberID:   testMemberID,
-		OccurredAt: start.Add(2 * time.Hour),
+		StartsAt:   start.Add(2 * time.Hour),
+		Duration:   time.Hour,
 		Attributes: map[string]any{"role": "RB"},
 	}
 	lock := domain.EligibilityLock(
@@ -81,7 +82,7 @@ func TestTrackRecordQueriesEventsAndOverlappingEffects(t *testing.T) {
 		24*time.Hour,
 		"on-call recovery",
 	)
-	factor := domain.FactorEvent(&event, "duty-work-served", event.OccurredAt)
+	factor := domain.FactorEvent(&event, "duty-work-served", event.StartsAt)
 
 	var record domain.TrackRecord
 	if err := record.Record(&event, lock, factor); err != nil {
@@ -100,9 +101,14 @@ func TestTrackRecordQueriesEventsAndOverlappingEffects(t *testing.T) {
 }
 
 func TestTrackRecordRejectsDuplicateAndMismatchedEffects(t *testing.T) {
-	event := domain.Event{ID: testEventID, Type: testEventType, MemberID: testMemberID, OccurredAt: time.Now()}
-	wrongEvent := domain.Event{ID: "event-2", Type: testEventType, MemberID: "member-2", OccurredAt: event.OccurredAt}
-	lock := domain.EligibilityLock(&wrongEvent, "role", event.OccurredAt, time.Hour, "wrong source")
+	event := domain.EventOccurrence{ID: testEventID, Type: testEventType, MemberID: testMemberID, StartsAt: time.Now()}
+	wrongEvent := domain.EventOccurrence{
+		ID:       "event-2",
+		Type:     testEventType,
+		MemberID: "member-2",
+		StartsAt: event.StartsAt,
+	}
+	lock := domain.EligibilityLock(&wrongEvent, "role", event.StartsAt, time.Hour, "wrong source")
 
 	var record domain.TrackRecord
 	if err := record.Record(&event, lock); err == nil {
@@ -113,5 +119,13 @@ func TestTrackRecordRejectsDuplicateAndMismatchedEffects(t *testing.T) {
 	}
 	if err := record.Record(&event); err == nil {
 		t.Fatal("Record() duplicate error = nil")
+	}
+}
+
+func TestEventOccurrenceUsesAnExclusiveEnd(t *testing.T) {
+	start := time.Date(2026, 9, 13, 9, 15, 0, 0, time.UTC)
+	event := domain.EventOccurrence{StartsAt: start, Duration: 27 * time.Minute}
+	if got, want := event.EndsAt(), start.Add(27*time.Minute); !got.Equal(want) {
+		t.Fatalf("EndsAt() = %s, want %s", got, want)
 	}
 }

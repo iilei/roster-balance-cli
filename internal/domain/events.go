@@ -9,13 +9,15 @@ const (
 )
 
 type (
-	// Event is an immutable domain fact associated with a canonical member.
-	Event struct {
-		OccurredAt time.Time
+	// EventOccurrence is an immutable fact associated with a canonical member.
+	// Its occupied interval is [StartsAt, EndsAt()).
+	EventOccurrence struct {
+		StartsAt   time.Time
 		Attributes map[string]any
 		ID         string
 		Type       string
 		MemberID   string
+		Duration   time.Duration
 	}
 
 	// EffectKind identifies the distinct ways an event can influence planning.
@@ -34,8 +36,19 @@ type (
 	}
 )
 
+// EndsAt returns the exclusive upper bound of the occurrence interval.
+func (event *EventOccurrence) EndsAt() time.Time {
+	return event.StartsAt.Add(event.Duration)
+}
+
 // EligibilityLock creates a hard exclusion for a member and role.
-func EligibilityLock(event *Event, role string, startsAt time.Time, duration time.Duration, reason string) Effect {
+func EligibilityLock(
+	event *EventOccurrence,
+	role string,
+	startsAt time.Time,
+	duration time.Duration,
+	reason string,
+) Effect {
 	return Effect{
 		Kind:          EffectEligibilityLock,
 		SourceEventID: event.ID,
@@ -48,7 +61,7 @@ func EligibilityLock(event *Event, role string, startsAt time.Time, duration tim
 }
 
 // FactorEvent records a soft factor contribution caused by an event.
-func FactorEvent(event *Event, factor string, occurredAt time.Time) Effect {
+func FactorEvent(event *EventOccurrence, factor string, occurredAt time.Time) Effect {
 	return Effect{
 		Kind:          EffectFactorEvent,
 		SourceEventID: event.ID,

@@ -27,13 +27,16 @@ An **impact math** is a named, reusable lifecycle. It selects an anchor such as 
 ```toml
 [impact_maths.call_recovery_24h]
 starts_from = "event.ends_at"
+
+[impact_maths.call_recovery_24h.lifecycle]
 decay_profile = "front-loaded"
 hold_duration = "24h"
 irrelevant_after = "24h"
 
 [[event_types.on_call_call_answered.impacts]]
 impact_math = "call_recovery_24h"
-application = "roster-lock"
+effect = "roster-lock"
+role = "on-call"
 ```
 
 For an answered call, the factual call duration and the protection period are independent. Equal `hold_duration` and `irrelevant_after` values define a hard cutoff, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.

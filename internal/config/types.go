@@ -3,10 +3,18 @@ package config
 type (
 	// Config describes the effective rosterbalance configuration.
 	Config struct {
-		Plan     PlanConfig `json:"plan"               mapstructure:"plan"`
-		Teams    []Team     `json:"teams,omitempty"    mapstructure:"teams"`
-		Policies []Policy   `json:"policies,omitempty" mapstructure:"policies"`
-		Factors  []Factor   `json:"factors,omitempty"  mapstructure:"factors"`
+		Limits      SystemLimits          `json:"limits"                 mapstructure:"limits"`
+		Teams       []Team                `json:"teams,omitempty"        mapstructure:"teams"`
+		Policies    []Policy              `json:"policies,omitempty"     mapstructure:"policies"`
+		Factors     []Factor              `json:"factors,omitempty"      mapstructure:"factors"`
+		ImpactMaths map[string]ImpactMath `json:"impact_maths,omitempty" mapstructure:"impact_maths"`
+		EventTypes  map[string]EventType  `json:"event_types,omitempty"  mapstructure:"event_types"`
+		Plan        PlanConfig            `json:"plan"                   mapstructure:"plan"`
+	}
+
+	// SystemLimits bounds lifecycle durations across planning inputs.
+	SystemLimits struct {
+		MaxIrrelevantAfter string `json:"max_irrelevant_after" mapstructure:"max_irrelevant_after"`
 	}
 
 	// PlanConfig holds planning defaults and options.
@@ -47,6 +55,24 @@ type (
 		DecayProfile    string `json:"decay_profile"    mapstructure:"decay_profile"`
 		HoldDuration    string `json:"hold_duration"    mapstructure:"hold_duration"`
 		IrrelevantAfter string `json:"irrelevant_after" mapstructure:"irrelevant_after"`
+	}
+
+	// ImpactMath defines a reusable impact lifecycle anchored to an occurrence boundary.
+	ImpactMath struct {
+		StartsFrom string    `json:"starts_from" mapstructure:"starts_from"`
+		Lifecycle  Lifecycle `json:"lifecycle"   mapstructure:"lifecycle"`
+	}
+
+	// EventType composes the impacts produced by an occurrence type.
+	EventType struct {
+		Impacts []ImpactApplication `json:"impacts" mapstructure:"impacts"`
+	}
+
+	// ImpactApplication applies reusable impact math as a planning effect.
+	ImpactApplication struct {
+		ImpactMath string `json:"impact_math" mapstructure:"impact_math"`
+		Effect     string `json:"effect"      mapstructure:"effect"`
+		Role       string `json:"role"        mapstructure:"role"`
 	}
 
 	// LoadOptions configures config discovery and overrides.

@@ -18,7 +18,7 @@ const maxInstantArgumentCount = 2
 type Runtime struct{}
 
 // EvaluateEvent runs on_event(ctx) from a Starlark source file.
-func (Runtime) EvaluateEvent(event *domain.Event, source string) ([]domain.Effect, error) {
+func (Runtime) EvaluateEvent(event *domain.EventOccurrence, source string) ([]domain.Effect, error) {
 	thread := &starlark.Thread{Name: "rosterbalance-policy"}
 	globals, err := starlark.ExecFileOptions(
 		&syntax.FileOptions{},
@@ -55,12 +55,13 @@ func predeclared(thread *starlark.Thread) starlark.StringDict {
 	}
 }
 
-func eventContext(event *domain.Event) starlark.Value {
+func eventContext(event *domain.EventOccurrence) starlark.Value {
 	eventFields := []starlark.Tuple{
 		{starlark.String("id"), starlark.String(event.ID)},
 		{starlark.String("type"), starlark.String(event.Type)},
 		{starlark.String("member_id"), starlark.String(event.MemberID)},
-		{starlark.String("occurred_at"), starlark.MakeInt64(event.OccurredAt.Unix())},
+		{starlark.String("starts_at"), starlark.MakeInt64(event.StartsAt.Unix())},
+		{starlark.String("ends_at"), starlark.MakeInt64(event.EndsAt().Unix())},
 	}
 	for key, value := range event.Attributes {
 		converted, ok := starlarkAttribute(value)
@@ -173,7 +174,7 @@ func effectValue(kind string, args starlark.Tuple, kwargs []starlark.Tuple) (sta
 	return result, nil
 }
 
-func effectsFromValue(event *domain.Event, value starlark.Value) ([]domain.Effect, error) {
+func effectsFromValue(event *domain.EventOccurrence, value starlark.Value) ([]domain.Effect, error) {
 	list, ok := value.(*starlark.List)
 	if !ok {
 		return nil, errors.New("on_event must return a list of effects")
@@ -208,7 +209,7 @@ func effectsFromValue(event *domain.Event, value starlark.Value) ([]domain.Effec
 					SourceEventID: event.ID,
 					MemberID:      memberID,
 					Factor:        factor,
-					StartsAt:      event.OccurredAt,
+					StartsAt:      event.StartsAt,
 				},
 			)
 		case domain.EffectEligibilityLock:
@@ -216,7 +217,7 @@ func effectsFromValue(event *domain.Event, value starlark.Value) ([]domain.Effec
 			if err != nil {
 				return nil, err
 			}
-			startsAt, err := dictTime(dict, "starts_at", event.OccurredAt)
+			startsAt, err := dictTime(dict, "starts_at", event.StartsAt)
 			if err != nil {
 				return nil, err
 			}

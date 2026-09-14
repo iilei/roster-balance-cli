@@ -2,16 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
-	"time"
 
 	"github.com/iilei/roster-balance-cli/internal/config"
 	"github.com/iilei/roster-balance-cli/policy"
 )
 
 const (
-	hoursPerDay = 24
 	sampleCount = 48
 )
 
@@ -53,11 +49,11 @@ func inspectFactors(cfg *config.Config) (factorInspectionOutput, error) {
 		Factors:       make([]factorInspectionItem, 0, len(cfg.Factors)),
 	}
 	for _, factor := range cfg.Factors {
-		hold, err := parseLifecycleDuration(factor.Lifecycle.HoldDuration)
+		hold, err := config.ParseElapsedDuration(factor.Lifecycle.HoldDuration)
 		if err != nil {
 			return factorInspectionOutput{}, fmt.Errorf("factor %q hold_duration: %w", factor.Name, err)
 		}
-		irrelevantAfter, err := parseLifecycleDuration(factor.Lifecycle.IrrelevantAfter)
+		irrelevantAfter, err := config.ParseElapsedDuration(factor.Lifecycle.IrrelevantAfter)
 		if err != nil {
 			return factorInspectionOutput{}, fmt.Errorf("factor %q irrelevant_after: %w", factor.Name, err)
 		}
@@ -140,16 +136,4 @@ func lifecycleImpact(
 		return 0, fmt.Errorf("profile %q returned out-of-range impact %g", profile, impact)
 	}
 	return impact, nil
-}
-
-func parseLifecycleDuration(value string) (time.Duration, error) {
-	// time.ParseDuration supports elapsed hours but has no day unit.
-	if daysText, ok := strings.CutSuffix(value, "d"); ok {
-		days, err := strconv.ParseFloat(daysText, 64)
-		if err != nil {
-			return 0, err
-		}
-		return time.Duration(days * float64(hoursPerDay*time.Hour)), nil
-	}
-	return time.ParseDuration(value)
 }
