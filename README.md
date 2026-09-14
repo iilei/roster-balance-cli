@@ -1,5 +1,7 @@
 # Roster balance CLI
 
+[![codecov](https://codecov.io/gh/iilei/roster-balance-cli/graph/badge.svg?token=V209JTFDSE)](https://codecov.io/gh/iilei/roster-balance-cli)
+
 ## Calendar ingestion
 
 For v0, the CLI stays dumb about calendar providers and accepts normalized input through a single adapter layer. The first supported import format should be ICS exports, which lets Outlook and other corporate calendars work without committing to Graph or OAuth integration. Direct Outlook sync can come later only if the operational need justifies the extra scope.
@@ -53,9 +55,30 @@ roster_penalty_lock_threshold = 1.0
 
 A candidate is locked only when their current penalty $p(t)$ meets or exceeds that team's `roster_penalty_lock_threshold`.
 
-At the default threshold, an impact of $1.0$ is a hard lock. Once a decay profile lowers the penalty below $1.0$, the candidate is eligible again but remains discouraged for future ranking by the remaining penalty. Equal `hold_duration` and `irrelevant_after` values therefore define a hard cutoff: the penalty remains $1.0$ until its exclusive EOL and is zero thereafter.
+At the default threshold, an impact of $1.0$ is operationally unavailable. Once a decay profile lowers the penalty below $1.0$, the candidate is eligible again but remains discouraged for future ranking by the remaining penalty. Equal `hold_duration` and `irrelevant_after` values therefore define a hard cutoff: the penalty remains $1.0$ until its exclusive EOL and is zero thereafter.
 
-The red lock overlay in a future renderer is derived from the penalty and threshold; it is not a separate policy effect. Additional visual thresholds may be added by frontend/rendering layers without changing event, impact-math, or planner contracts. Implementation of `roster-penalty` and threshold-based eligibility is the next planned slice.
+The planner normalizes direct availability and penalty outcomes into one assignment result:
+
+```text
+Available = false, NegotiationCost = 1
+  categorically unavailable, such as vacation or sick leave
+
+Available = false, NegotiationCost < 1
+  fallback assignment is possible with confirmation
+
+Available = true, NegotiationCost = 0
+  freely assignable
+
+Available = true, 0 < NegotiationCost < 1
+  assignable but increasingly undesirable
+
+NegotiationCost = 1
+  maximally costly and normally blocked by the team threshold
+```
+
+The assignment result retains provenance: vacation and sick leave remain direct availability constraints, while a roster penalty remains an event-derived cost. They share the same planner decision without pretending they have the same cause.
+
+The red unavailability overlay in a future renderer is derived from the normalized assignment result; it is not a separate policy effect. Additional visual thresholds may be added by frontend/rendering layers without changing event, impact-math, or planner contracts.
 
 Each lifecycle must remain within the system-wide maximum EOL, initially `26280h` (three 365-day years). This is a resource boundary for predictable planner lookback and memory allocation, not a default or a recommended impact duration. Durable audit retention remains independent of that limit.
 

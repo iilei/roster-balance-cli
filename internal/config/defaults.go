@@ -19,7 +19,7 @@ func DefaultConfig() Config {
 			},
 		},
 		Limits:   SystemLimits{MaxIrrelevantAfter: maxImpactAge},
-		Teams:    []Team{{ID: defaultTeamID}},
+		Teams:    []Team{{ID: defaultTeamID, RosterPenaltyLockThreshold: 1}},
 		Policies: []Policy{{ID: defaultPolicyID}},
 		Factors: []Factor{{
 			Name: "duty-work-served",

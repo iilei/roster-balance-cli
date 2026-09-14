@@ -36,7 +36,8 @@ type (
 
 	// Team represents a roster team definition.
 	Team struct {
-		ID string `json:"id" mapstructure:"id"`
+		ID                         string  `json:"id"                            mapstructure:"id"`
+		RosterPenaltyLockThreshold float64 `json:"roster_penalty_lock_threshold" mapstructure:"roster_penalty_lock_threshold"`
 	}
 
 	// Policy represents a roster policy definition.

@@ -14,13 +14,13 @@ type (
 	// CandidateEvidence describes one duty-eligible member's relevant history.
 	//nolint:govet // RFC 3339 timestamps keep this external JSON contract clear.
 	CandidateEvidence struct {
-		Occurrences   []domain.EventOccurrence `json:"occurrences"`
-		Effects       []domain.Effect          `json:"effects"`
-		ActiveLocks   []domain.Effect          `json:"active_locks"`
-		MemberID      string                   `json:"member_id"`
-		LookbackBound string                   `json:"lookback_bound"`
-		JoinedAt      time.Time                `json:"joined_at"`
-		LookbackStart time.Time                `json:"lookback_start"`
+		Occurrences     []domain.EventOccurrence `json:"occurrences"`
+		Effects         []domain.Effect          `json:"effects"`
+		ActivePenalties []domain.Effect          `json:"active_penalties"`
+		MemberID        string                   `json:"member_id"`
+		LookbackBound   string                   `json:"lookback_bound"`
+		JoinedAt        time.Time                `json:"joined_at"`
+		LookbackStart   time.Time                `json:"lookback_start"`
 	}
 
 	// RecommendationEvidence is the input for a future recommendation decision.
@@ -82,11 +82,11 @@ func inspectCandidateEvidence(
 	maximumStart, now time.Time,
 ) (CandidateEvidence, error) {
 	candidate := CandidateEvidence{
-		MemberID:    member.MemberID,
-		JoinedAt:    member.JoinedAt,
-		Occurrences: make([]domain.EventOccurrence, 0),
-		Effects:     make([]domain.Effect, 0),
-		ActiveLocks: make([]domain.Effect, 0),
+		MemberID:        member.MemberID,
+		JoinedAt:        member.JoinedAt,
+		Occurrences:     make([]domain.EventOccurrence, 0),
+		Effects:         make([]domain.Effect, 0),
+		ActivePenalties: make([]domain.Effect, 0),
 	}
 	boundary := lookbackStart(member.JoinedAt, maximumStart)
 	candidate.LookbackStart = boundary.Start
@@ -114,7 +114,7 @@ func appendRelevantEffects(candidate *CandidateEvidence, effects []domain.Effect
 			candidate.Effects = append(candidate.Effects, *effect)
 		}
 		if activeAt(effect, now) {
-			candidate.ActiveLocks = append(candidate.ActiveLocks, *effect)
+			candidate.ActivePenalties = append(candidate.ActivePenalties, *effect)
 		}
 	}
 }

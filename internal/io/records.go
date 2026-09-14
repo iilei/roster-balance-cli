@@ -16,10 +16,12 @@ import (
 
 type (
 	// TeamMember is the externally supplied team and duty-eligibility projection.
+	//nolint:govet // JSON field order follows the external team-data contract.
 	TeamMember struct {
-		MemberID       string    `json:"member_id"`
-		JoinedAt       time.Time `json:"joined_at"`
-		EligibleDuties []string  `json:"eligible_duties"`
+		JoinedAt       time.Time            `json:"joined_at"`
+		MemberID       string               `json:"member_id"`
+		EligibleDuties []string             `json:"eligible_duties"`
+		Availability   *domain.Availability `json:"availability,omitempty"`
 	}
 
 	//nolint:govet // RFC 3339 timestamps make the external record format explicit.
@@ -48,6 +50,11 @@ func LoadTeamMembers(paths []string) ([]TeamMember, error) {
 			}
 			if member.JoinedAt.IsZero() {
 				return nil, recordError(path, index, errors.New("joined_at is required"))
+			}
+			if member.Availability != nil {
+				if err := member.Availability.Validate(); err != nil {
+					return nil, recordError(path, index, err)
+				}
 			}
 			members = append(members, *member)
 		}

@@ -44,7 +44,7 @@ func TestResolveEventEffectsCreatesRosterLockFromOccurrenceEnd(t *testing.T) {
 			onCallCallAnswered: {
 				Impacts: []config.ImpactApplication{{
 					ImpactMath: callRecoveryImpactMath,
-					Effect:     "roster-lock",
+					Effect:     "roster-penalty",
 					Role:       onCallDuty,
 				}},
 			},

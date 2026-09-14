@@ -175,7 +175,7 @@ irrelevant_after = "24h"
 
 [[event_types."on-call-call-answered".impacts]]
 impact_math = "call_recovery"
-effect = "roster-lock"
+effect = "roster-penalty"
 role = "on-call"
 `)
 	teamData := []byte(`[{"member_id":"member-1","joined_at":"2026-09-01T00:00:00Z","eligible_duties":["on-call"]}]`)
@@ -216,9 +216,9 @@ role = "on-call"
 			Occurrences []struct {
 				ID string `json:"ID"`
 			} `json:"occurrences"`
-			ActiveLocks []struct {
+			ActivePenalties []struct {
 				Role string `json:"Role"`
-			} `json:"active_locks"`
+			} `json:"active_penalties"`
 			ImpactCurves []struct {
 				Samples []struct {
 					Hours  float64 `json:"hours"`
@@ -234,7 +234,7 @@ role = "on-call"
 		t.Fatalf("unexpected recommendation output: %#v", got)
 	}
 	if got.Candidates[0].MemberID != "member-1" || len(got.Candidates[0].Occurrences) != 1 ||
-		len(got.Candidates[0].ActiveLocks) != 1 || len(got.Candidates[0].ImpactCurves) != 1 {
+		len(got.Candidates[0].ActivePenalties) != 1 || len(got.Candidates[0].ImpactCurves) != 1 {
 		t.Fatalf("unexpected candidate evidence: %#v", got.Candidates[0])
 	}
 	samples := got.Candidates[0].ImpactCurves[0].Samples

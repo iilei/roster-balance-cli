@@ -15,6 +15,9 @@ digraph recommendation_evidence {
     span_start_0_0 [label="", shape=point, width=0.06, color="#2563eb", pos="175.82417582417582,220!"]
     span_end_0_0 [label="occurrence: on-call-call-answered", shape=plain, fontsize=8, pos="179.12087912087912,229!"]
     span_start_0_0 -> span_end_0_0 [color="#2563eb", penwidth=3]
+    span_start_0_1 [label="", shape=point, width=0.06, color="#dc2626", pos="179.12087912087912,234!"]
+    span_end_0_1 [label="roster-penalty: call_recovery", shape=plain, fontsize=8, pos="354.94505494505495,243!"]
+    span_start_0_1 -> span_end_0_1 [color="#dc2626", penwidth=3]
     curve_label_0_0 [label="impact: call_recovery (lambda x: 1.0 - math.pow(x, 0.1))", shape=plain, fontsize=8, pos="0,308!"]
     curve_0_0_0 [label="", shape=point, width=0.03, color="#d85e91", pos="179.12087912087912,306!"]
     curve_0_0_1 [label="", shape=point, width=0.03, color="#d85e91", pos="184.00488400488402,306!"]
@@ -89,8 +92,6 @@ digraph recommendation_evidence {
     curve_0_0_34 -> curve_0_0_35 [color="#d85e91", penwidth=2]
     curve_0_0_36 [label="", shape=point, width=0.03, color="#d85e91", pos="354.94505494505495,244!"]
     curve_0_0_35 -> curve_0_0_36 [color="#d85e91", penwidth=2]
-    lock_0_1 [label="", shape=box, style="filled", fixedsize=true, width="2.442002442002442", height=1.1, color="#dc262600", fillcolor="#fecdd380", pos="267.032967032967,276!"]
-    lock_label_0_1 [label="roster lock: call_recovery", shape=plain, fontsize=8, pos="267.032967032967,311!"]
   }
   subgraph cluster_candidate_1 {
     label="member-ben"
@@ -105,6 +106,9 @@ digraph recommendation_evidence {
     span_start_1_0 [label="", shape=point, width=0.06, color="#2563eb", pos="322.3443223443224,100!"]
     span_end_1_0 [label="occurrence: on-call-call-answered", shape=plain, fontsize=8, pos="324.1758241758242,109!"]
     span_start_1_0 -> span_end_1_0 [color="#2563eb", penwidth=3]
+    span_start_1_1 [label="", shape=point, width=0.06, color="#dc2626", pos="324.1758241758242,114!"]
+    span_end_1_1 [label="roster-penalty: call_recovery", shape=plain, fontsize=8, pos="500,123!"]
+    span_start_1_1 -> span_end_1_1 [color="#dc2626", penwidth=3]
     curve_label_1_0 [label="impact: call_recovery (lambda x: 1.0 - math.pow(x, 0.1))", shape=plain, fontsize=8, pos="0,188!"]
     curve_1_0_0 [label="", shape=point, width=0.03, color="#d85e91", pos="324.1758241758242,186!"]
     curve_1_0_1 [label="", shape=point, width=0.03, color="#d85e91", pos="329.05982905982904,186!"]
@@ -179,7 +183,5 @@ digraph recommendation_evidence {
     curve_1_0_34 -> curve_1_0_35 [color="#d85e91", penwidth=2]
     curve_1_0_36 [label="", shape=point, width=0.03, color="#d85e91", pos="500,124!"]
     curve_1_0_35 -> curve_1_0_36 [color="#d85e91", penwidth=2]
-    lock_1_1 [label="", shape=box, style="filled", fixedsize=true, width="2.442002442002442", height=1.1, color="#dc262600", fillcolor="#fecdd380", pos="412.08791208791206,156!"]
-    lock_label_1_1 [label="roster lock: call_recovery", shape=plain, fontsize=8, pos="412.08791208791206,191!"]
   }
 }

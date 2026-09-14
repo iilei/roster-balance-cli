@@ -20,5 +20,5 @@ irrelevant_after = "24h"
 
 [[event_types."on-call-call-answered".impacts]]
 impact_math = "call_recovery"
-effect = "roster-lock"
+effect = "roster-penalty"
 role = "on-call"

@@ -9,7 +9,7 @@ import (
 	"github.com/iilei/roster-balance-cli/internal/domain"
 )
 
-const rosterLockEffect = "roster-lock"
+const rosterPenaltyEffect = "roster-penalty"
 
 // ResolveEventEffects applies an occurrence's configured impacts as planning effects.
 func ResolveEventEffects(cfg *config.Config, event *domain.EventOccurrence) ([]domain.Effect, error) {
@@ -70,10 +70,10 @@ func resolveImpactApplication(
 	if err != nil {
 		return domain.Effect{}, fmt.Errorf("impact math %q: %w", application.ImpactMath, err)
 	}
-	if application.Effect != rosterLockEffect {
+	if application.Effect != rosterPenaltyEffect {
 		return domain.Effect{}, fmt.Errorf("unsupported impact effect %q", application.Effect)
 	}
-	return domain.EligibilityLock(
+	return domain.RosterPenalty(
 		event,
 		application.Role,
 		startsAt,

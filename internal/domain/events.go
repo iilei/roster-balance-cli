@@ -1,11 +1,14 @@
 // Package domain defines roster planning concepts and invariants.
 package domain
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 const (
-	EffectEligibilityLock EffectKind = "eligibility-lock"
-	EffectFactorEvent     EffectKind = "factor-event"
+	EffectRosterPenalty EffectKind = "roster-penalty"
+	EffectFactorEvent   EffectKind = "factor-event"
 )
 
 type (
@@ -34,6 +37,15 @@ type (
 		EndsAt        time.Time  `json:"ends_at"`
 		Reason        string     `json:"reason,omitempty"`
 	}
+
+	// Availability describes whether a member may be assigned and the cost of overriding that state.
+	//nolint:govet // JSON field order follows the external availability contract.
+	Availability struct {
+		Available       bool    `json:"available"`
+		NegotiationCost float64 `json:"negotiation_cost"`
+		Reason          string  `json:"reason,omitempty"`
+		Kind            string  `json:"kind,omitempty"`
+	}
 )
 
 // EndsAt returns the exclusive upper bound of the occurrence interval.
@@ -41,8 +53,8 @@ func (event *EventOccurrence) EndsAt() time.Time {
 	return event.StartsAt.Add(event.Duration)
 }
 
-// EligibilityLock creates a hard exclusion for a member and role.
-func EligibilityLock(
+// RosterPenalty creates a bounded roster penalty interval derived from an event.
+func RosterPenalty(
 	event *EventOccurrence,
 	role string,
 	startsAt time.Time,
@@ -50,7 +62,7 @@ func EligibilityLock(
 	reason string,
 ) Effect {
 	return Effect{
-		Kind:          EffectEligibilityLock,
+		Kind:          EffectRosterPenalty,
 		SourceEventID: event.ID,
 		MemberID:      event.MemberID,
 		Role:          role,
@@ -58,6 +70,20 @@ func EligibilityLock(
 		EndsAt:        startsAt.Add(duration),
 		Reason:        reason,
 	}
+}
+
+// Validate checks the bounded negotiation cost.
+func (availability Availability) Validate() error {
+	if availability.NegotiationCost < 0 || availability.NegotiationCost > 1 {
+		return fmt.Errorf("negotiation cost %g is outside [0, 1]", availability.NegotiationCost)
+	}
+	return nil
+}
+
+// AssignmentBlocked reports whether the normalized availability is effectively locked.
+func (availability Availability) AssignmentBlocked(threshold float64) bool {
+	return !availability.Available && availability.NegotiationCost >= 1 ||
+		availability.NegotiationCost >= threshold
 }
 
 // FactorEvent records a soft factor contribution caused by an event.

@@ -28,15 +28,15 @@ type (
 	}
 
 	recommendationCandidateOutput struct {
-		ImpactCurves  []impactCurve                `json:"impact_curves"`
-		Timeline      []recommendationTimelineSpan `json:"timeline"`
-		MemberID      string                       `json:"member_id"`
-		LookbackBound string                       `json:"lookback_bound"`
-		JoinedAt      time.Time                    `json:"joined_at"`
-		LookbackStart time.Time                    `json:"lookback_start"`
-		Occurrences   []domain.EventOccurrence     `json:"occurrences"`
-		Effects       []domain.Effect              `json:"effects"`
-		ActiveLocks   []domain.Effect              `json:"active_locks"`
+		ImpactCurves    []impactCurve                `json:"impact_curves"`
+		Timeline        []recommendationTimelineSpan `json:"timeline"`
+		MemberID        string                       `json:"member_id"`
+		LookbackBound   string                       `json:"lookback_bound"`
+		JoinedAt        time.Time                    `json:"joined_at"`
+		LookbackStart   time.Time                    `json:"lookback_start"`
+		Occurrences     []domain.EventOccurrence     `json:"occurrences"`
+		Effects         []domain.Effect              `json:"effects"`
+		ActivePenalties []domain.Effect              `json:"active_penalties"`
 	}
 
 	recommendationTimelineSpan struct {
@@ -141,15 +141,15 @@ func recommendationCandidates(
 	for index := range evidence.Candidates {
 		candidate := &evidence.Candidates[index]
 		output := recommendationCandidateOutput{
-			MemberID:      candidate.MemberID,
-			LookbackBound: candidate.LookbackBound,
-			JoinedAt:      candidate.JoinedAt,
-			LookbackStart: candidate.LookbackStart,
-			Occurrences:   candidate.Occurrences,
-			Effects:       candidate.Effects,
-			ActiveLocks:   candidate.ActiveLocks,
-			Timeline:      make([]recommendationTimelineSpan, 0, len(candidate.Occurrences)+len(candidate.Effects)),
-			ImpactCurves:  make([]impactCurve, 0, len(candidate.Effects)),
+			MemberID:        candidate.MemberID,
+			LookbackBound:   candidate.LookbackBound,
+			JoinedAt:        candidate.JoinedAt,
+			LookbackStart:   candidate.LookbackStart,
+			Occurrences:     candidate.Occurrences,
+			Effects:         candidate.Effects,
+			ActivePenalties: candidate.ActivePenalties,
+			Timeline:        make([]recommendationTimelineSpan, 0, len(candidate.Occurrences)+len(candidate.Effects)),
+			ImpactCurves:    make([]impactCurve, 0, len(candidate.Effects)),
 		}
 		for occurrenceIndex := range candidate.Occurrences {
 			occurrence := &candidate.Occurrences[occurrenceIndex]

@@ -46,7 +46,7 @@ func predeclared(thread *starlark.Thread) starlark.StringDict {
 		{starlark.String("max"), starlark.NewBuiltin("max", maxInstant)},
 	})
 	effectsNamespace, _ := starlarkstruct.Make(thread, nil, nil, []starlark.Tuple{
-		{starlark.String("eligibility_lock"), starlark.NewBuiltin("eligibility_lock", eligibilityLock)},
+		{starlark.String("roster_penalty"), starlark.NewBuiltin("roster_penalty", rosterPenalty)},
 		{starlark.String("factor_event"), starlark.NewBuiltin("factor_event", factorEvent)},
 	})
 	return starlark.StringDict{
@@ -135,13 +135,13 @@ func maxInstant(
 	return left, nil
 }
 
-func eligibilityLock(
+func rosterPenalty(
 	_ *starlark.Thread,
 	_ *starlark.Builtin,
 	args starlark.Tuple,
 	kwargs []starlark.Tuple,
 ) (starlark.Value, error) {
-	return effectValue("eligibility-lock", args, kwargs)
+	return effectValue("roster-penalty", args, kwargs)
 }
 
 func factorEvent(
@@ -212,7 +212,7 @@ func effectsFromValue(event *domain.EventOccurrence, value starlark.Value) ([]do
 					StartsAt:      event.StartsAt,
 				},
 			)
-		case domain.EffectEligibilityLock:
+		case domain.EffectRosterPenalty:
 			role, err := dictString(dict, "role")
 			if err != nil {
 				return nil, err
@@ -228,7 +228,7 @@ func effectsFromValue(event *domain.EventOccurrence, value starlark.Value) ([]do
 			reason, _ := optionalDictString(dict, "reason")
 			effects = append(
 				effects,
-				domain.EligibilityLock(event, role, startsAt, time.Duration(durationHours*float64(time.Hour)), reason),
+				domain.RosterPenalty(event, role, startsAt, time.Duration(durationHours*float64(time.Hour)), reason),
 			)
 		default:
 			return nil, fmt.Errorf("unsupported effect kind %q", kind)
