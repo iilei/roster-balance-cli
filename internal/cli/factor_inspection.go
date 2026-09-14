@@ -143,6 +143,7 @@ func lifecycleImpact(
 }
 
 func parseLifecycleDuration(value string) (time.Duration, error) {
+	// time.ParseDuration supports elapsed hours but has no day unit.
 	if daysText, ok := strings.CutSuffix(value, "d"); ok {
 		days, err := strconv.ParseFloat(daysText, 64)
 		if err != nil {
