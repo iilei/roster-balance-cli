@@ -11,9 +11,8 @@ import (
 )
 
 const (
-	flatDecayProfile = "flat"
-	hoursPerDay      = 24
-	sampleCount      = 48
+	hoursPerDay = 24
+	sampleCount = 48
 )
 
 type (
@@ -86,9 +85,9 @@ func buildDecayProfileExplanation(
 	profile string,
 	holdHours, irrelevantAfterHours float64,
 ) (decayProfileExplanation, error) {
-	if holdHours >= irrelevantAfterHours {
+	if holdHours > irrelevantAfterHours {
 		return decayProfileExplanation{}, fmt.Errorf(
-			"hold_duration_hours (%g) must be less than irrelevant_after_hours (%g)",
+			"hold_duration_hours (%g) must not exceed irrelevant_after_hours (%g)",
 			holdHours,
 			irrelevantAfterHours,
 		)
@@ -126,14 +125,11 @@ func lifecycleImpact(
 	x, holdX float64,
 	index int,
 ) (float64, error) {
-	if x < holdX {
-		return 1, nil
-	}
-	if profile == flatDecayProfile {
-		if index < sampleCount {
-			return 1, nil
-		}
+	if index == sampleCount {
 		return 0, nil
+	}
+	if holdX == 1 || x < holdX {
+		return 1, nil
 	}
 	decayX := (x - holdX) / (1 - holdX)
 	impact, err := registry.Evaluate(profile, decayX)

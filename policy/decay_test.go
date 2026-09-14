@@ -43,9 +43,6 @@ func TestDefaultDecayRegistryIncludesBuiltins(t *testing.T) {
 	if got, err := reg.Evaluate("back-loaded", 0.5); err != nil || got <= 0.5 {
 		t.Fatalf("back-loaded(0.5) = (%v, %v), want greater than 0.5", got, err)
 	}
-	if got, err := reg.Evaluate("flat", 0.5); err != nil || got != 1.0 {
-		t.Fatalf("flat(0.5) = (%v, %v), want 1.0", got, err)
-	}
 }
 
 func TestDecayRegistryRejectsDuplicateAliases(t *testing.T) {

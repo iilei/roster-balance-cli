@@ -38,6 +38,20 @@ func TestResolveLifecycleRejectsInvalidBoundaries(t *testing.T) {
 	}
 }
 
+func TestResolveLifecycleAllowsEqualBoundaries(t *testing.T) {
+	const cutoff = 24 * time.Hour
+	resolved, err := domain.ResolveLifecycle(
+		domain.Lifecycle{HoldDuration: cutoff, IrrelevantAfter: cutoff},
+		domain.SystemLimits{},
+	)
+	if err != nil {
+		t.Fatalf("ResolveLifecycle() error = %v", err)
+	}
+	if resolved.HoldDuration != cutoff || resolved.IrrelevantAfter != cutoff {
+		t.Fatalf("ResolveLifecycle() = %#v, want equal 24h boundaries", resolved)
+	}
+}
+
 func TestEffectsKeepHardAndSoftInfluencesDistinct(t *testing.T) {
 	event := domain.Event{ID: testEventID, Type: onCallCallType, MemberID: testMemberID}
 	lock := domain.EligibilityLock(&event, "remediation-manager", time.Unix(0, 0), 24*time.Hour, "on-call recovery")

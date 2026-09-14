@@ -49,7 +49,7 @@ description = "Generate lifecycle DOT files for built-in decay profiles"
 run = """
 set -euo pipefail
 mkdir -p docs/factor-curves
-for profile in front-loaded linear back-loaded flat; do
+for profile in front-loaded linear back-loaded; do
 	go run ./cmd/rosterbalance inspect factors --config "examples/factor-profiles/${profile}.toml" \
 		| gomplate -d config='stdin:///dev/stdin?type=application/json' \
 				-f templates/factor-curve.dot.tmpl \
@@ -68,7 +68,7 @@ if fc-list | grep -i 'ubuntu mono' >/dev/null; then
 elif fc-list | grep -i 'fira code' >/dev/null; then
 	font="Fira Code"
 fi
-for profile in front-loaded linear back-loaded flat; do
+for profile in front-loaded linear back-loaded; do
 	neato -n2 -Nfontname="$font" -Efontname="$font" -Gfontname="$font" \
 		-Tsvg "docs/factor-curves/${profile}.dot" -o "docs/factor-curves/${profile}.svg"
 done

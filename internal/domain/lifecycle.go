@@ -30,9 +30,9 @@ func ResolveLifecycle(lifecycle Lifecycle, limits SystemLimits) (ResolvedLifecyc
 	if lifecycle.HoldDuration < 0 {
 		return ResolvedLifecycle{}, errors.New("hold duration must not be negative")
 	}
-	if lifecycle.IrrelevantAfter <= lifecycle.HoldDuration {
+	if lifecycle.IrrelevantAfter < lifecycle.HoldDuration {
 		return ResolvedLifecycle{}, fmt.Errorf(
-			"irrelevant-after duration %s must be greater than hold duration %s",
+			"irrelevant-after duration %s must not be less than hold duration %s",
 			lifecycle.IrrelevantAfter,
 			lifecycle.HoldDuration,
 		)
@@ -41,8 +41,8 @@ func ResolveLifecycle(lifecycle Lifecycle, limits SystemLimits) (ResolvedLifecyc
 	resolved := ResolvedLifecycle(lifecycle)
 	if limits.MaxFactorLifetime > 0 && resolved.IrrelevantAfter > limits.MaxFactorLifetime {
 		resolved.IrrelevantAfter = limits.MaxFactorLifetime
-		if resolved.IrrelevantAfter <= resolved.HoldDuration {
-			return ResolvedLifecycle{}, errors.New("maximum factor lifetime must be greater than hold duration")
+		if resolved.IrrelevantAfter < resolved.HoldDuration {
+			return ResolvedLifecycle{}, errors.New("maximum factor lifetime must not be less than hold duration")
 		}
 	}
 	return resolved, nil

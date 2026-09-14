@@ -27,15 +27,16 @@ An **impact math** is a named, reusable lifecycle. It selects an anchor such as 
 ```toml
 [impact_maths.call_recovery_24h]
 starts_from = "event.ends_at"
-decay_profile = "flat"
-impact_duration = "24h"
+decay_profile = "front-loaded"
+hold_duration = "24h"
+irrelevant_after = "24h"
 
 [[event_types.on_call_call_answered.impacts]]
 impact_math = "call_recovery_24h"
 application = "roster-lock"
 ```
 
-For an answered call, the factual call duration and the protection period are independent. The `roster-lock` application treats a positive `flat` impact as a hard lock, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.
+For an answered call, the factual call duration and the protection period are independent. Equal `hold_duration` and `irrelevant_after` values define a hard cutoff, so the member cannot be rostered for the 24 elapsed hours following the call's end. At the exclusive end of that interval, the impact is zero and the lock is gone.
 
 Each lifecycle must remain within the system-wide maximum EOL, initially `26280h` (three 365-day years). This is a resource boundary for predictable planner lookback and memory allocation, not a default or a recommended impact duration. Durable audit retention remains independent of that limit.
 
@@ -205,18 +206,12 @@ Preserve most of the impact until later in the transition, dropping steeply near
 
 ![Back-loaded duty-work-served lifecycle](docs/factor-curves/back-loaded.svg)
 
-#### `flat`
-
-Do not decay before `irrelevant_after`, retaining full impact until the end-of-life cutoff.
-
-![Flat duty-work-served lifecycle](docs/factor-curves/flat.svg)
-
 ### Lifecycle validation
 
 Lifecycle validation ensures:
 
 * Durations are non-negative.
-* `irrelevant_after` (EOL) is strictly greater than `hold_duration`.
+* `irrelevant_after` (EOL) cannot be lower than `hold_duration`; equal values produce a hard cutoff.
 * Impact stays between $0$ and $1$.
 * Impact does not increase after the hold period.
 * Impact is zero at `irrelevant_after`.
