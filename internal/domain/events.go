@@ -12,12 +12,12 @@ type (
 	// EventOccurrence is an immutable fact associated with a canonical member.
 	// Its occupied interval is [StartsAt, EndsAt()).
 	EventOccurrence struct {
-		StartsAt   time.Time
-		Attributes map[string]any
-		ID         string
-		Type       string
-		MemberID   string
-		Duration   time.Duration
+		StartsAt   time.Time      `json:"starts_at"`
+		Attributes map[string]any `json:"attributes,omitempty"`
+		ID         string         `json:"id"`
+		Type       string         `json:"type"`
+		MemberID   string         `json:"member_id"`
+		Duration   time.Duration  `json:"duration"`
 	}
 
 	// EffectKind identifies the distinct ways an event can influence planning.
@@ -25,14 +25,14 @@ type (
 
 	// Effect is a declarative result derived from an event.
 	Effect struct {
-		Kind          EffectKind
-		SourceEventID string
-		MemberID      string
-		Role          string
-		Factor        string
-		StartsAt      time.Time
-		EndsAt        time.Time
-		Reason        string
+		Kind          EffectKind `json:"kind"`
+		SourceEventID string     `json:"source_event_id"`
+		MemberID      string     `json:"member_id"`
+		Role          string     `json:"role,omitempty"`
+		Factor        string     `json:"factor,omitempty"`
+		StartsAt      time.Time  `json:"starts_at"`
+		EndsAt        time.Time  `json:"ends_at"`
+		Reason        string     `json:"reason,omitempty"`
 	}
 )
 

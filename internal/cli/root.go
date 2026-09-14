@@ -45,6 +45,7 @@ func newInspectCommand() *cobra.Command {
 		Short: "Inspect validated configuration data",
 	}
 	cmd.AddCommand(newInspectFactorsCommand())
+	cmd.AddCommand(newInspectRecommendationCommand())
 	return cmd
 }
 

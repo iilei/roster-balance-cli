@@ -131,6 +131,40 @@ mise run factor-curves
 
 The generated SVGs are written to `docs/factor-curves/`.
 
+## Recommendation evidence inspection
+
+Inspect the bounded evidence for every member eligible for a duty. The command reports each candidate's relevant event occurrences, resolved effects, and currently active roster locks; it does not yet rank candidates or select a recommendation.
+
+```sh
+rosterbalance inspect recommendation \
+  --duty on-call \
+  --now 2026-09-14T10:00:00Z \
+  --team-data-fs team-members.json \
+  --tracked-data-fs occurrences.jsonl
+```
+
+`--now` accepts an RFC 3339 instant and defaults to the system time captured when the command starts. `--team-data-fs` and `--tracked-data-fs` may be repeated; shell-expand file patterns before passing them to the command. Each file may contain either one JSON array or JSON Lines, but not a mixture of both formats.
+
+Team data is an external membership and eligibility projection:
+
+```json
+[
+  {
+    "member_id": "member-1",
+    "joined_at": "2026-09-01T00:00:00Z",
+    "eligible_duties": ["on-call"]
+  }
+]
+```
+
+Tracked data is an external occurrence feed. Each occurrence occupies the half-open interval [`starts_at`, `starts_at + duration`):
+
+```json
+{"id":"call-1","type":"on-call-call-answered","member_id":"member-1","starts_at":"2026-09-14T09:15:00Z","duration":"27m"}
+```
+
+For every eligible candidate, the command examines history from the later of the member's `joined_at` and `now - max_irrelevant_after`, up to `now`. The JSON identifies which boundary limited the lookback. This keeps explanation input bounded without making the CLI responsible for storage or retention.
+
 ### Previewing your own factor configuration
 
 To preview curves for your own config on your own machine, install [Graphviz](https://graphviz.org/download/) and [gomplate](https://docs.gomplate.ca/installing/), then either use the shipped Mise task against your config:
